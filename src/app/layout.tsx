@@ -2,6 +2,8 @@ import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/layout/sidebar/sidebar";
+import {Toaster} from "react-hot-toast";
+import React from "react";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,7 +31,15 @@ export default function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
         <Sidebar/>
-        {children}
+        <main className='p-4 md:p-8 md:ml-64'>
+            {children}
+        </main>
+        <Toaster
+            position="top-center"
+            toastOptions={{
+                className: 'text-sm shadow-md rounded-lg text-amber-500 text-center',
+            }}
+        ></Toaster>
         </body>
         </html>
     );
