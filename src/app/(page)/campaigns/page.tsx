@@ -15,7 +15,7 @@ const Campaigns = async () => {
             <Card>
                 <CardHeader className='flex justify-between items-center'>
                     <CardTitle>Campaign Management</CardTitle>
-                    <Link href='/campaigns/create'>
+                    <Link href='/src/app/(page)/campaigns/create'>
                         <Button>Add Campaign</Button>
                     </Link>
                 </CardHeader>
