@@ -5,17 +5,19 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
+import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 
 const Campaigns = async () => {
-
-    const listCampaign = await getCampaigns()
+    const user = await getUserInfoFromCookie()
+    const { id } = user
+    const listCampaign = await getCampaigns(id)
 
     return (
         <div>
             <Card>
                 <CardHeader className='flex justify-between items-center'>
                     <CardTitle>Campaign Management</CardTitle>
-                    <Link href='/src/app/(page)/campaigns/create'>
+                    <Link href='/campaigns/create'>
                         <Button>Add Campaign</Button>
                     </Link>
                 </CardHeader>
