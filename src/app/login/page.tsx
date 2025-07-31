@@ -3,7 +3,8 @@ import Link from "next/link";
 import AuthImgContent from "@/components/pages/auth/auth.img.content";
 import AuthWrapper from "@/components/pages/auth/auth.wrapper";
 
-const LoginPage = () => {
+const LoginPage =  () => {
+
     return (
         <AuthWrapper>
 
