@@ -1,13 +1,19 @@
 import FormCreateCampaign from "@/components/pages/campaigns/form.create.campaign";
-import Heading from "@/components/typography/heading";
-import Description from "@/components/typography/description";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Separator} from "@/components/ui/separator";
 
 const CreateCampaigns = () => {
     return (
         <div>
-            <Heading>Create New Campaign</Heading>
-            <Description className='mt-1'>Set up a new check-in campaign for your business location</Description>
-            <FormCreateCampaign/>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Add Campaign</CardTitle>
+                </CardHeader>
+                <Separator />
+                <CardContent>
+                    <FormCreateCampaign/>
+                </CardContent>
+            </Card>
         </div>
     )
 }

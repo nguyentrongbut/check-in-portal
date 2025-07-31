@@ -1,10 +1,9 @@
-import {Calendar, Gift, Home, Plus, Shield, Users, Wallet} from "lucide-react";
+import {Calendar, Gift, Home, Shield, Users, Wallet} from "lucide-react";
 import {TNavSideBar} from "@/types/layout";
 
 export const allocatorNavItems: TNavSideBar[] = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/campaigns", label: "View All Campaigns", icon: Calendar },
-    { href: "/campaigns/create", label: "Create New Campaign", icon: Plus },
+    { href: "/campaigns", label: "Campaigns", icon: Calendar },
     { href: "/vouchers", label: "Vouchers", icon: Gift },
     { href: "/wallet", label: "Wallet / Point Balance", icon: Wallet },
 ]
