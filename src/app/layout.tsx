@@ -28,7 +28,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted`}
         >
         <Sidebar/>
         <main className='p-4 md:p-8 md:ml-64'>

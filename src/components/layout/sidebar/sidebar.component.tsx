@@ -32,7 +32,7 @@ const SidebarComponent = () => {
                     </div>
                     {navItems.map((item) => {
                         const Icon = item.icon
-                        const isActive = pathname === item.href
+                        const isActive = pathname.startsWith(item.href)
 
                         return (
                             <Link
