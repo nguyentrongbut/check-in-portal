@@ -1,7 +1,7 @@
 import {TCardOverview} from "@/types/component";
 import {Clock, DollarSign, Gift, Users} from "lucide-react";
 import {formatNumber} from "@/utils/formatHelpers";
-import CardOverview from "@/components/pages/campaigns/detail/card.overview";
+import CardOverview from "@/components/pages/campaign/detail/card.overview";
 import {TCampaign} from "@/types/data";
 import {makeCampaignMetrics} from "@/utils/campaignMetrics";
 

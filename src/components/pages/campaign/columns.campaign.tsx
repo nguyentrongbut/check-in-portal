@@ -184,8 +184,8 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                 return (
                     <EntityActions
                         id={campaignId}
-                        viewUrl={`/campaigns/detail/${campaignId}`}
-                        editUrl={`/campaigns/edit/${campaignId}`}
+                        viewUrl={`/campaign/detail/${campaignId}`}
+                        editUrl={`/campaign/edit/${campaignId}`}
                         entityName={`${nameCampaign} campaign`}
                         onDelete={() => deleteCampaign(campaignId)}
                         edit={canEdit}

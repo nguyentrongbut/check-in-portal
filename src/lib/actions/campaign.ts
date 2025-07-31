@@ -1,7 +1,7 @@
 'use server'
 
-import {CreateCampaignForm} from "@/components/pages/campaigns/form.create.campaign";
-import {UpdateCampaignForm} from "@/components/pages/campaigns/form.edit.campaign";
+import {CreateCampaignForm} from "@/components/pages/campaign/form.create.campaign";
+import {UpdateCampaignForm} from "@/components/pages/campaign/form.edit.campaign";
 
 const url = `${process.env.API_URL}/campaigns`;
 
@@ -23,7 +23,7 @@ export async function getCampaigns(userId: number) {
 
         return data;
     } catch (err) {
-        console.error('Failed when get campaigns:', err);
+        console.error('Failed when get campaign:', err);
         throw err;
     }
 }
@@ -46,7 +46,7 @@ export async function getCampaign(id: number) {
 
         return data;
     } catch (err) {
-        console.error('Failed when get campaigns:', err);
+        console.error('Failed when get campaign:', err);
         throw err;
     }
 }
