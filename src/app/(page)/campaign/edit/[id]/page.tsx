@@ -1,6 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
-import FormEditCampaign from "@/components/pages/campaigns/form.edit.campaign";
+import FormEditCampaign from "@/components/pages/campaign/form.edit.campaign";
 import {Params} from "@/types/common";
 import {TCampaign} from "@/types/data";
 import {getCampaign} from "@/lib/actions/campaign";

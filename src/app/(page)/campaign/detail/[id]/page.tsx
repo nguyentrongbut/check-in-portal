@@ -6,10 +6,10 @@ import {ArrowLeft, Edit, QrCode} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
 import {getBadgeVariant} from "@/utils/getBadgeVariant";
-import ListCardOverview from "@/components/pages/campaigns/detail/list.card.overview";
-import CampaignInformation from "@/components/pages/campaigns/detail/campaign.information";
-import PerformanceSummary from "@/components/pages/campaigns/detail/performance.summary";
-import TableCheckIns from "@/components/pages/campaigns/detail/table.check.ins";
+import ListCardOverview from "@/components/pages/campaign/detail/list.card.overview";
+import CampaignInformation from "@/components/pages/campaign/detail/campaign.information";
+import PerformanceSummary from "@/components/pages/campaign/detail/performance.summary";
+import TableCheckIns from "@/components/pages/campaign/detail/table.check.ins";
 
 const DetailPage = async ({params}: { params: Params }) => {
     const {id} = await params
@@ -20,7 +20,7 @@ const DetailPage = async ({params}: { params: Params }) => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <Link href='/campaigns'>
+                    <Link href='/campaign'>
                         <Button variant="ghost" className="p-2">
                             <ArrowLeft className="h-4 w-4"/>
                         </Button>

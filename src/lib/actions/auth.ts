@@ -26,7 +26,7 @@ export async function registerUser(data: RegisterForm) {
 
         return res.status;
     } catch (err) {
-        console.error('Failed when get campaigns:', err);
+        console.error('Failed when get campaign:', err);
     }
 }
 
@@ -58,7 +58,7 @@ export async function loginUser(data: LoginForm) {
         cookieStore.set({
             name: 'CIPUserInfo',
             value: JSON.stringify({id, role, name}),
-            httpOnly: true,
+            httpOnly: false,
             path: '/',
         });
 
@@ -68,7 +68,7 @@ export async function loginUser(data: LoginForm) {
     }
 }
 
-export async function logoutUser() {
+export async function logout() {
     try {
         const cookieStore = await cookies();
 
@@ -80,3 +80,4 @@ export async function logoutUser() {
         return {success: false, error: 'Logout failed'};
     }
 }
+

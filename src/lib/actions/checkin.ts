@@ -20,7 +20,7 @@ export async function getCheckIn(campaignId: number) {
 
         return data;
     } catch (err) {
-        console.error('Failed when get campaigns:', err);
+        console.error('Failed when get campaign:', err);
         throw err;
     }
 }

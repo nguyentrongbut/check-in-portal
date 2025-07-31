@@ -5,11 +5,14 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {adminNavItems, allocatorNavItems} from "@/constants/sidebar";
 import {usePathname} from "next/navigation";
-import {TRole} from "@/types/data";
+import {useUserInfoFromCookie} from "@/hooks/useUserInfoFromCookie";
+import UserInfoSidebar from "@/components/layout/sidebar/user.info.sidebar";
 
 const SidebarComponent = () => {
+    const userInfo = useUserInfoFromCookie();
 
-    const userRole = "merchant" as TRole;
+    const role = userInfo?.role
+    const userRole = role;
     const navItems = userRole === "admin" ? adminNavItems : allocatorNavItems
 
     const pathname = usePathname()
@@ -20,7 +23,7 @@ const SidebarComponent = () => {
                 {/* Logo */}
                 <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
                     <div className="flex items-center space-x-2">
-                        <BarChart3 className="size-8 text-blue-600" />
+                        <BarChart3 className="size-8 text-blue-600"/>
                         <span className="text-xl font-bold text-gray-900">Check-in Portal</span>
                     </div>
                 </div>
@@ -43,7 +46,7 @@ const SidebarComponent = () => {
                                     isActive ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                                 )}
                             >
-                                <Icon className="mr-3 size-5" />
+                                <Icon className="mr-3 size-5"/>
                                 {item.label}
                             </Link>
                         )
@@ -51,19 +54,7 @@ const SidebarComponent = () => {
                 </nav>
 
                 {/* User info */}
-                <div className="p-4 border-t border-gray-200">
-                    <div className="flex items-center space-x-3">
-                        <div className="size-8 bg-blue-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-sm font-medium">{userRole === "admin" ? "A" : "U"}</span>
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-900">
-                                {userRole === "admin" ? "Admin User" : "Business User"}
-                            </p>
-                            <p className="text-xs text-gray-500 capitalize">{userRole}</p>
-                        </div>
-                    </div>
-                </div>
+                <UserInfoSidebar userRole={userRole}/>
             </div>
         </aside>
     )

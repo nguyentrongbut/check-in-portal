@@ -11,8 +11,9 @@ import {Input} from "@/components/ui/input";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
 import {Textarea} from "@/components/ui/textarea";
-import CalendarDate from "@/components/pages/campaigns/calendar.date";
-import {createCampaign} from "@/lib/actions/campaign";
+import CalendarDate from "@/components/pages/campaign/calendar.date";
+import {updateCampaign} from "@/lib/actions/campaign";
+import {TCampaign} from "@/types/data";
 
 export const formSchema = z.object({
     name: z.string().min(1),
@@ -28,46 +29,48 @@ export const formSchema = z.object({
     pointBudget: z.number().min(1),
 });
 
-export type CreateCampaignForm = z.infer<typeof formSchema>;
+export type UpdateCampaignForm = z.infer<typeof formSchema>;
 
-const FormCreateCampaign = () => {
+const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
-    const form = useForm<CreateCampaignForm>({
+    const form = useForm<UpdateCampaignForm>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            description: "",
-            startDate: undefined,
-            endDate: undefined,
-            startTime: "",
-            endTime: "",
-            location: "",
-            ssid: "",
-            bssid: "",
-            rewardPerCheckin: 10,
-            pointBudget: 1000,
+            name: campaign?.name,
+            description: campaign?.description,
+            startDate: campaign?.startDate ? new Date(campaign.startDate) : undefined,
+            endDate: campaign?.endDate ? new Date(campaign.endDate) : undefined,
+            startTime: campaign?.startTime,
+            endTime: campaign?.endTime,
+            location: campaign?.location,
+            ssid: campaign?.wifi?.ssid,
+            bssid: campaign?.wifi?.bssid,
+            rewardPerCheckin: campaign?.rewardPerCheckin,
+            pointBudget: campaign?.pointBudget,
         },
     });
 
-    const onSubmit = async (values: CreateCampaignForm) => {
+    const onSubmit = async (values: UpdateCampaignForm) => {
         setIsSubmitting(true);
         try {
-            const result = await createCampaign(values);
+            const {id} = campaign
 
-            if (result === 201) {
-                toast.success("Campaign created successfully");
-                router.push("/campaigns");
+            const result = await updateCampaign(id, values);
+
+            if (result === 200) {
+                toast.success("Campaign updated successfully");
+                router.push(`/campaign/detail/${id}`);
                 return
             }
 
-            toast.error("Create new campaign fail!");
+            toast.error("Update new campaign fail!");
 
         } catch (error) {
             console.error(error);
-            toast.error("Campaign creation error");
+            toast.error("Campaign update error");
         } finally {
             setIsSubmitting(false);
         }
@@ -198,11 +201,11 @@ const FormCreateCampaign = () => {
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">
-                    <Link href="/campaigns">
+                    <Link href="/campaign">
                         <Button variant="outline" type="button" disabled={isSubmitting}>Cancel</Button>
                     </Link>
                     <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
-                        Create Campaign
+                        Update Campaign
                     </Button>
                 </div>
             </form>
@@ -210,4 +213,4 @@ const FormCreateCampaign = () => {
     )
 }
 
-export default FormCreateCampaign
+export default FormEditCampaign
