@@ -5,9 +5,9 @@ import {UpdateCampaignForm} from "@/components/pages/campaigns/form.edit.campaig
 
 const url = `${process.env.API_URL}/campaigns`;
 
-export async function getCampaigns() {
+export async function getCampaigns(userId: number) {
     try {
-        const res = await fetch(url, {
+        const res = await fetch(`${url}?userId=${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

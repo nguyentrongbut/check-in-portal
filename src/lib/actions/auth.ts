@@ -51,6 +51,10 @@ export async function loginUser(data: LoginForm) {
 
         const {id, role, name} = users[0];
 
+        if (role !== 'merchant' && role !== 'admin') {
+            return null
+        }
+
         cookieStore.set({
             name: 'CIPUserInfo',
             value: JSON.stringify({id, role, name}),
