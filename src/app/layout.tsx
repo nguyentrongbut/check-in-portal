@@ -1,7 +1,6 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/layout/sidebar/sidebar";
 import {Toaster} from "react-hot-toast";
 import React from "react";
 
@@ -30,8 +29,7 @@ export default function RootLayout({
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted`}
         >
-        <Sidebar/>
-        <main className='p-4 md:p-8 md:ml-64'>
+        <main>
             {children}
         </main>
         <Toaster

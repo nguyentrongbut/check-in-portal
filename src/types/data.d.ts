@@ -1,4 +1,4 @@
-export type TRole = 'admin' | 'merchant';
+export type TRole = 'admin' | 'merchant' | 'user';
 
 export type TStatus = 'pending' | 'approved' | 'rejected' | 'completed' | 'paused'
 
