@@ -43,7 +43,7 @@ export const columnsCheckin: ColumnDef<TCheckIn>[] = [
             )
         },
         cell: ({row}) => {
-            const checkInTime = row.getValue("checkInTime")
+            const checkInTime: string = row.getValue("checkInTime")
 
             return (
                 <div>
@@ -80,7 +80,7 @@ export const columnsCheckin: ColumnDef<TCheckIn>[] = [
                 )
             },
         cell: ({row}) => {
-            const verify = row.getValue("verify");
+            const verify: string = row.getValue("verify");
 
             return (
                 <div>
