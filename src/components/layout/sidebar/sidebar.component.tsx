@@ -23,7 +23,7 @@ const SidebarComponent = () => {
                 {/* Logo */}
                 <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
                     <div className="flex items-center space-x-2">
-                        <BarChart3 className="size-8 text-blue-600"/>
+                        <BarChart3 className="size-8 text-primary"/>
                         <span className="text-xl font-bold text-gray-900">Check-in Portal</span>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ const SidebarComponent = () => {
                                 href={item.href}
                                 className={cn(
                                     "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                                    isActive ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                                    isActive ? "bg-primary/10 text-primary" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                                 )}
                             >
                                 <Icon className="mr-3 size-5"/>
