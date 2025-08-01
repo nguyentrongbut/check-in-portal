@@ -24,7 +24,7 @@ const UserInfoSidebar = ({userRole} : {userRole: string | undefined}) => {
                 <DropdownMenuTrigger asChild>
                     <div
                         className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors">
-                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                                     <span
                                         className="text-white text-sm font-medium">{userRole === "admin" ? "A" : "U"}</span>
                         </div>

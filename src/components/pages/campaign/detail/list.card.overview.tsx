@@ -1,9 +1,9 @@
 import {TCardOverview} from "@/types/component";
 import {Clock, DollarSign, Gift, Users} from "lucide-react";
 import {formatNumber} from "@/utils/formatHelpers";
-import CardOverview from "@/components/pages/campaign/detail/card.overview";
 import {TCampaign} from "@/types/data";
 import {makeCampaignMetrics} from "@/utils/campaignMetrics";
+import CardOverview from "@/components/common/card.overview";
 
 const ListCardOverview = ({campaign}: {campaign : TCampaign}) => {
     const { budgetUsedPercentage, daysRemaining, averageCheckinsPerDay } = makeCampaignMetrics(campaign);
