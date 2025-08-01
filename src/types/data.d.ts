@@ -17,6 +17,7 @@ export type TCampaign = {
         ssid: string,
         bssid: string
     },
+    qrUrl: string,
     used: number,
     checkIns: number,
     status: TStatus,
