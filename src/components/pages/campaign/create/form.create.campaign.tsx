@@ -13,6 +13,8 @@ import {useRouter} from "next/navigation";
 import {Textarea} from "@/components/ui/textarea";
 import CalendarDate from "@/components/pages/campaign/calendar.date";
 import {createCampaign} from "@/lib/actions/campaign";
+import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
+
 
 export const formSchema = z.object({
     name: z.string().min(1),
@@ -21,7 +23,10 @@ export const formSchema = z.object({
     endDate: z.date(),
     startTime: z.string().min(1, "Start time is required"),
     endTime: z.string().min(1, "End time is required"),
-    location: z.string().min(1),
+    location: z.object({
+        lat: z.number(),
+        lng: z.number(),
+    }).nullable(),
     ssid: z.string().min(1),
     bssid: z.string().min(1),
     rewardPerCheckin: z.number().min(1),
@@ -30,7 +35,7 @@ export const formSchema = z.object({
 
 export type CreateCampaignForm = z.infer<typeof formSchema>;
 
-const FormCreateCampaign = () => {
+const FormCreateCampaign = ({userId} : {userId: number}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
@@ -44,7 +49,7 @@ const FormCreateCampaign = () => {
             endDate: undefined,
             startTime: "",
             endTime: "",
-            location: "",
+            location: null,
             ssid: "",
             bssid: "",
             rewardPerCheckin: 10,
@@ -55,7 +60,8 @@ const FormCreateCampaign = () => {
     const onSubmit = async (values: CreateCampaignForm) => {
         setIsSubmitting(true);
         try {
-            const result = await createCampaign(values);
+
+            const result = await createCampaign(values, userId);
 
             if (result === 201) {
                 toast.success("Campaign created successfully");
@@ -83,13 +89,23 @@ const FormCreateCampaign = () => {
                             <FormMessage/>
                         </FormItem>
                     )}/>
-                    <FormField name="location" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Location</FormLabel>
-                            <FormControl><Input {...field} placeholder="e.g. Ton That Thuyet"/></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <FormField name="rewardPerCheckin" control={form.control} render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Points per Check-in</FormLabel>
+                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}/>
+                        <FormField name="pointBudget" control={form.control} render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Total Point Budget</FormLabel>
+                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}/>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -121,7 +137,6 @@ const FormCreateCampaign = () => {
                             </FormItem>
                         )}
                     />
-
 
                     <FormField
                         name="endDate"
@@ -180,22 +195,15 @@ const FormCreateCampaign = () => {
                     )}/>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <FormField name="rewardPerCheckin" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Points per Check-in</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
-                    <FormField name="pointBudget" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Total Point Budget</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
-                </div>
+                <FormField name="location" control={form.control} render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Location (Lat,Lng or Address)</FormLabel>
+                        <FormControl>
+                            <LocationPickerWrapper value={field.value} onChange={field.onChange}/>
+                        </FormControl>
+                        <FormMessage/>
+                    </FormItem>
+                )}/>
 
                 <div className="flex justify-end gap-3 pt-4">
                     <Link href="/campaign">

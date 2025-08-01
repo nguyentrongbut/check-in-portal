@@ -26,7 +26,7 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
             <div className="space-y-3 pt-4 border-t">
                 <div className="flex items-center space-x-3">
                     <MapPin className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm">{campaign?.location}</span>
+                    {/*<span className="text-sm">{campaign?.location}</span>*/}
                 </div>
                 {campaign.wifi && (
                     <>
