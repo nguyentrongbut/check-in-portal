@@ -34,3 +34,13 @@ export type TCheckIn = {
     verify: string,
     campaignId: number
 }
+
+export type TTransaction = {
+    id: number,
+    type: string,
+    amount: number,
+    description: string,
+    date: string,
+    campaignName: string,
+    userId: number,
+}
