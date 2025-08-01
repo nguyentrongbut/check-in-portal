@@ -9,7 +9,7 @@ const AuthImgContent = ({ title }: { title: string }) => {
     if (!isMd) return null;
 
     return (
-        <div className="bg-blue-500 rounded-2xl relative h-full">
+        <div className="bg-primary rounded-2xl relative h-full">
             <h2 className='w-[50%] text-white font-medium text-[40px] absolute top-1/2 left-1/2 -translate-1/2 xl:-translate-0 xl:top-[120px] xl:left-[60px]'>
                 Very good works are waiting for you {title} Now
             </h2>

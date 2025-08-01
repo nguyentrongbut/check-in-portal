@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
                     <TableBody>
                         {table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} className='hover:bg-gray-50'>
+                                <TableRow key={row.id} className='hover:bg-[#fafafa]'>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(
