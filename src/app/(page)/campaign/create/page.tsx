@@ -1,8 +1,10 @@
-import FormCreateCampaign from "@/components/pages/campaign/form.create.campaign";
+import FormCreateCampaign from "@/components/pages/campaign/create/form.create.campaign";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
+import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 
-const CreateCampaign = () => {
+const CreateCampaign = async () => {
+    const userInfo =  await getUserInfoFromCookie()
     return (
         <div>
             <Card>
@@ -11,7 +13,7 @@ const CreateCampaign = () => {
                 </CardHeader>
                 <Separator />
                 <CardContent>
-                    <FormCreateCampaign/>
+                    <FormCreateCampaign userId={userInfo?.id}/>
                 </CardContent>
             </Card>
         </div>

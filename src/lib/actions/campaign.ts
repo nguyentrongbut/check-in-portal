@@ -1,7 +1,8 @@
 'use server'
 
-import {CreateCampaignForm} from "@/components/pages/campaign/form.create.campaign";
+import {CreateCampaignForm} from "@/components/pages/campaign/create/form.create.campaign";
 import {UpdateCampaignForm} from "@/components/pages/campaign/form.edit.campaign";
+import QRCode from "qrcode";
 
 const url = `${process.env.API_URL}/campaigns`;
 
@@ -51,10 +52,17 @@ export async function getCampaign(id: number) {
     }
 }
 
-export async function createCampaign(data: CreateCampaignForm) {
+export async function createCampaign(data: CreateCampaignForm, userId: number) {
     try {
 
         const { ssid, bssid, ...rest } = data;
+
+        // Generate QR string (tùy chỉnh dữ liệu bạn muốn encode)
+        const qrData = JSON.stringify({
+            userId
+        });
+
+        const qrUrl = await QRCode.toDataURL(qrData);
 
         const payload = {
             ...rest,
@@ -63,10 +71,12 @@ export async function createCampaign(data: CreateCampaignForm) {
                 bssid,
             },
             status: "pending",
+            qrUrl,
             used: 0,
             checkIns: 0,
             createdAt: new Date(),
             updatedAt: new Date(),
+            userId
         };
 
         const res = await fetch(url, {
