@@ -32,6 +32,9 @@ const badgeVariants = cva(
                     "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
                 topup:
                     "bg-primary/20 text-primary/80 dark:bg-primary/90 dark:text-primary/30",
+
+                // voucher
+                paused: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
             },
         },
         defaultVariants: {

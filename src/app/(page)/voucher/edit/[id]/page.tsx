@@ -1,14 +1,14 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
-import FormEditCampaign from "@/components/pages/campaign/form.edit.campaign";
+import FormEditVoucher from "@/components/pages/voucher/form.edit.voucher";
 import {Params} from "@/types/common";
-import {TCampaign} from "@/types/data";
-import {getCampaign} from "@/lib/actions/campaign";
+import {TVoucher} from "@/types/data";
+import {getVoucher} from "@/lib/actions/voucher";
 
-const EditCampaign = async ({params}: { params: Params }) => {
+const EditVoucherPage = async ({params}: { params: Params }) => {
 
     const {id} = await params
-    const campaign: TCampaign = await getCampaign(id)
+    const voucher: TVoucher = await getVoucher(id)
 
     return (
         <Card>
@@ -17,10 +17,10 @@ const EditCampaign = async ({params}: { params: Params }) => {
             </CardHeader>
             <Separator/>
             <CardContent>
-                <FormEditCampaign campaign={campaign}/>
+                <FormEditVoucher voucher={voucher}/>
             </CardContent>
         </Card>
     )
 }
 
-export default EditCampaign
+export default EditVoucherPage
