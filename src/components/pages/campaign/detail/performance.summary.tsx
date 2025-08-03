@@ -25,24 +25,24 @@ const PerformanceSummary = ({campaign}: {campaign : TCampaign}) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 pt-4">
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">{campaign?.checkIns}</div>
-                        <div className="text-xs text-green-600">Total Check-ins</div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-gray-600">{campaign?.checkIns}</div>
+                        <div className="text-xs text-gray-600">Total Check-ins</div>
                     </div>
-                    <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-600">{formatNumber(campaign?.used)}</div>
-                        <div className="text-xs text-blue-600">Points Spent</div>
+                    <div className="text-center p-4 bg-red-50 rounded-lg">
+                        <div className="text-2xl font-bold text-red-600">{formatNumber(campaign?.used)}</div>
+                        <div className="text-xs text-red-600">Points Spent</div>
                     </div>
                 </div>
 
                 <div className="pt-4 border-t">
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Remaining Budget</span>
-                        <span className="font-medium">{formatNumber(remainingBudget)} pts</span>
+                        <span className="font-medium text-yellow-600">{formatNumber(remainingBudget)} pts</span>
                     </div>
                     <div className="flex justify-between text-sm mt-1">
                         <span className="text-gray-600">Estimated Duration</span>
-                        <span className="font-medium">{daysRemaining} days</span>
+                        <span className="font-medium text-red-600">{daysRemaining} days</span>
                     </div>
                 </div>
             </CardContent>

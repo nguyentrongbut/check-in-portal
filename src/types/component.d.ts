@@ -5,4 +5,5 @@ export type TCardOverview = {
     Icon: LucideIcon;
     titleContent: string;
     desc: string;
+    color?: string;
 }

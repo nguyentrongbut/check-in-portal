@@ -38,9 +38,20 @@ export type TCheckIn = {
 export type TTransaction = {
     id: number,
     type: string,
+    point: number,
     amount: number,
     description: string,
-    date: string,
     campaignName: string,
     userId: number,
+    createdAt: string,
+}
+
+export type TWallet = {
+    id: number,
+    userId: number,
+    balance: number,
+    totalSpent: number,
+    totalTopup: number,
+    createdAt: string,
+    updatedAt: string
 }

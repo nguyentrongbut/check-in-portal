@@ -1,44 +1,44 @@
 import {TCardOverview} from "@/types/component";
 import CardOverview from "@/components/common/card.overview";
-import {formatNumber} from "@/utils/formatHelpers";
-import {ArrowDownLeft, ArrowUpRight, Calendar, CreditCard, DollarSign, MapPin, WalletIcon} from "lucide-react";
+import {formatNumber, formatPointsToUSD} from "@/utils/formatHelpers";
+import { ArrowUpRight, DollarSign, WalletIcon} from "lucide-react";
+import {TWallet} from "@/types/data";
 
-const ListBalanceCard = () => {
+const ListBalanceCard = async ({wallet} : {wallet: TWallet}) => {
+
 
     const balanceCards: TCardOverview[] = [
         {
             title: 'Current Balance',
-            titleContent: formatNumber(3342),
-            desc: '~ 3342 USD',
-            Icon: WalletIcon
-        },
-        {
-            title: 'Total Earned',
-            titleContent: formatNumber(8350),
-            desc: 'From check-ins and bonuses',
-            Icon: ArrowDownLeft
+            titleContent: formatNumber(wallet?.balance),
+            desc: formatPointsToUSD(wallet?.balance),
+            Icon: WalletIcon,
+            color: 'text-blue-600'
         },
         {
             title: 'Total Spent',
-            titleContent: formatNumber(8),
+            titleContent: formatNumber(wallet?.totalSpent),
             desc: 'On vouchers and rewards',
-            Icon: ArrowUpRight
+            Icon: ArrowUpRight,
+            color: 'text-red-600'
         },
         {
             title: 'Total Top-up',
-            titleContent: `${formatNumber(2000)} pts`,
-            desc: '$20.00 USD converted',
-            Icon: DollarSign
+            titleContent: `${formatNumber(wallet?.totalTopup)} pts`,
+            desc: formatPointsToUSD(wallet?.totalTopup),
+            Icon: DollarSign,
+            color: 'text-primary'
         }
     ]
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {balanceCards.map((card: TCardOverview) => (
                 <CardOverview
                     key={card.title}
                     title={card.title}
                     desc={card.desc}
+                    color={card.color}
                     titleContent={card.titleContent}
                     Icon={card.Icon}/>
             ))}
