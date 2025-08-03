@@ -1,5 +1,8 @@
 'use server'
 
+import {CreateTransactionData} from "@/components/pages/wallet/form.top.up";
+import QRCode from "qrcode";
+
 const url = `${process.env.API_URL}/transactions`;
 
 export async function getTransactions(userId: number) {
@@ -21,6 +24,23 @@ export async function getTransactions(userId: number) {
         return data;
     } catch (err) {
         console.error('Failed when get transaction:', err);
+        throw err;
+    }
+}
+
+export async function createTransaction(data: CreateTransactionData) {
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        return res.status
+    } catch (err) {
+        console.error('Failed when create transaction:', err);
         throw err;
     }
 }

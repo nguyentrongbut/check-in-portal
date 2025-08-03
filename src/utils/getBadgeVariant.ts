@@ -5,8 +5,17 @@ type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 const allowedVariants: BadgeVariant[] = ["pending", "approved", "rejected"];
 
-export function getBadgeVariant(status: string): BadgeVariant {
+export function getBadgeStatusVariant(status: string): BadgeVariant {
     return allowedVariants.includes(status as BadgeVariant)
         ? (status as BadgeVariant)
+        : "default";
+}
+
+
+const transactionVariants: BadgeVariant[] = ["spent", "topup"];
+
+export function getBadgeWalletVariant(type: string): BadgeVariant {
+    return transactionVariants.includes(type as BadgeVariant)
+        ? (type as BadgeVariant)
         : "default";
 }

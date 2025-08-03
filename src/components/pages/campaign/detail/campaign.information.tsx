@@ -3,7 +3,7 @@ import {Calendar, HouseWifi, MapPin, Target, Wifi} from "lucide-react";
 import {TCampaign} from "@/types/data";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import {Badge} from "@/components/ui/badge";
-import {getBadgeVariant} from "@/utils/getBadgeVariant";
+import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 
 const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
     return (
@@ -19,7 +19,7 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
                 </div>
                 <div>
                     <h4 className="font-medium text-sm text-gray-500 mb-1">Status</h4>
-                    <Badge variant={getBadgeVariant(campaign?.status)}>{campaign?.status}</Badge>
+                    <Badge variant={getBadgeStatusVariant(campaign?.status)}>{campaign?.status}</Badge>
                 </div>
             </div>
 
@@ -43,12 +43,14 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
                 <div className="flex items-center space-x-3">
                     <Calendar className="h-4 w-4 text-gray-500" />
                     <span className="text-sm">
-                      {formatDate(campaign?.startDate)} <span className='opacity-60'>{campaign?.startTime}</span> - {formatDate(campaign?.endDate)} <span className='opacity-60'>{campaign?.endTime}</span>
+                      {formatDate(campaign?.startDate)} <span className='opacity-60'>{campaign?.startTime}</span> -
+                        <span className='text-red-600 ml-1'>{formatDate(campaign?.endDate)} <span className='opacity-60'>{campaign?.endTime}</span>
+                    </span>
                     </span>
                 </div>
                 <div className="flex items-center space-x-3">
                     <Target className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm">Budget: {formatNumber(campaign?.pointBudget)} points</span>
+                    <span className="text-sm">Budget: <span className='text-yellow-600'>{formatNumber(campaign?.pointBudget)} points</span></span>
                 </div>
             </div>
         </CardContent>

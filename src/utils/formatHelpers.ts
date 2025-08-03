@@ -13,3 +13,10 @@ export const formatNumber = (
 ) => {
     return new Intl.NumberFormat(locale, options).format(value);
 };
+
+export const formatPointsToUSD = (points?: number | null): string => {
+    const exchangeRate = 100;
+    if (!points || isNaN(points)) return '$0 USD';
+    const usd = points / exchangeRate;
+    return `$${usd.toFixed(2)}`;
+};
