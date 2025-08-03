@@ -1,7 +1,6 @@
 'use server'
 
 import {CreateTransactionData} from "@/components/pages/wallet/form.top.up";
-import QRCode from "qrcode";
 
 const url = `${process.env.API_URL}/transactions`;
 

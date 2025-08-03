@@ -14,6 +14,7 @@ import {Textarea} from "@/components/ui/textarea";
 import CalendarDate from "@/components/pages/campaign/calendar.date";
 import {updateCampaign} from "@/lib/actions/campaign";
 import {TCampaign} from "@/types/data";
+import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 
 export const formSchema = z.object({
     name: z.string().min(1),
@@ -22,7 +23,10 @@ export const formSchema = z.object({
     endDate: z.date(),
     startTime: z.string().min(1, "Start time is required"),
     endTime: z.string().min(1, "End time is required"),
-    location: z.string().min(1),
+    location: z.object({
+        lat: z.number(),
+        lng: z.number(),
+    }).nullable(),
     ssid: z.string().min(1),
     bssid: z.string().min(1),
     rewardPerCheckin: z.number().min(1),
@@ -45,7 +49,10 @@ const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
             endDate: campaign?.endDate ? new Date(campaign.endDate) : undefined,
             startTime: campaign?.startTime,
             endTime: campaign?.endTime,
-            location: campaign?.location,
+            location: {
+                lat: campaign?.location?.lat || 0,
+                lng: campaign?.location?.lng || 0,
+            },
             ssid: campaign?.wifi?.ssid,
             bssid: campaign?.wifi?.bssid,
             rewardPerCheckin: campaign?.rewardPerCheckin,
@@ -86,13 +93,23 @@ const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
                             <FormMessage/>
                         </FormItem>
                     )}/>
-                    <FormField name="location" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Location</FormLabel>
-                            <FormControl><Input {...field} placeholder="e.g. Ton That Thuyet"/></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <FormField name="rewardPerCheckin" control={form.control} render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Points per Check-in</FormLabel>
+                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}/>
+                        <FormField name="pointBudget" control={form.control} render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Total Point Budget</FormLabel>
+                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}/>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -124,7 +141,6 @@ const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
                             </FormItem>
                         )}
                     />
-
 
                     <FormField
                         name="endDate"
@@ -183,22 +199,15 @@ const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
                     )}/>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <FormField name="rewardPerCheckin" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Points per Check-in</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
-                    <FormField name="pointBudget" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Total Point Budget</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
-                </div>
+                <FormField name="location" control={form.control} render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Location (Lat,Lng or Address)</FormLabel>
+                        <FormControl>
+                            <LocationPickerWrapper value={field.value} onChange={field.onChange}/>
+                        </FormControl>
+                        <FormMessage/>
+                    </FormItem>
+                )}/>
 
                 <div className="flex justify-end gap-3 pt-4">
                     <Link href="/campaign">

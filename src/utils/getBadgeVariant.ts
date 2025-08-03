@@ -3,7 +3,7 @@ import { badgeVariants } from "@/components/ui/badge";
 
 type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
-const allowedVariants: BadgeVariant[] = ["pending", "approved", "rejected"];
+const allowedVariants: BadgeVariant[] = ["pending", "approved", "rejected" , 'cancelled', 'active', 'expired'];
 
 export function getBadgeStatusVariant(status: string): BadgeVariant {
     return allowedVariants.includes(status as BadgeVariant)

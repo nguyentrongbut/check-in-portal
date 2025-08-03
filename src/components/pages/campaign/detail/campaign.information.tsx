@@ -1,5 +1,5 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Calendar, HouseWifi, MapPin, Target, Wifi} from "lucide-react";
+import {Calendar, CalendarX, HouseWifi, MapPin, Target, Wifi} from "lucide-react";
 import {TCampaign} from "@/types/data";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import {Badge} from "@/components/ui/badge";
@@ -24,10 +24,6 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
             </div>
 
             <div className="space-y-3 pt-4 border-t">
-                <div className="flex items-center space-x-3">
-                    <MapPin className="h-4 w-4 text-gray-500" />
-                    {/*<span className="text-sm">{campaign?.location}</span>*/}
-                </div>
                 {campaign.wifi && (
                     <>
                         <div className="flex items-center space-x-3">
@@ -43,9 +39,13 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
                 <div className="flex items-center space-x-3">
                     <Calendar className="h-4 w-4 text-gray-500" />
                     <span className="text-sm">
-                      {formatDate(campaign?.startDate)} <span className='opacity-60'>{campaign?.startTime}</span> -
-                        <span className='text-red-600 ml-1'>{formatDate(campaign?.endDate)} <span className='opacity-60'>{campaign?.endTime}</span>
+                      {formatDate(campaign?.startDate)} <span className='opacity-60'>{campaign?.startTime}</span>
                     </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                    <CalendarX className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm text-red-600">
+                      {formatDate(campaign?.endDate)} <span className='opacity-60'>{campaign?.endTime}</span>
                     </span>
                 </div>
                 <div className="flex items-center space-x-3">

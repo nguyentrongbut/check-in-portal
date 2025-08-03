@@ -13,17 +13,19 @@ type LocationValue = {
 
 type Props = {
     value: LocationValue;
-    onChange: (value: LocationValue) => void;
+    onChange?: (value: LocationValue) => void;
     placeholder?: string;
+    view?: boolean;
 };
 
 const LocationPickerWrapper = ({
                                    value,
                                    onChange,
                                    placeholder = "Enter address or coordinates (lat,lng)",
+                                   view = false,
                                }: Props) => {
     return (
-        <LocationPicker value={value} onChange={onChange} placeholder={placeholder}/>
+        <LocationPicker value={value} onChange={onChange} placeholder={placeholder} view={view} />
     )
 }
 
