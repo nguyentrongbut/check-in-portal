@@ -8,7 +8,7 @@ import {ArrowUpDown} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import Image from "next/image";
-import {getBadgeVariant} from "@/utils/getBadgeVariant";
+import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 
 export const columnsCampaign: ColumnDef<TCampaign>[] = [
     {
@@ -52,7 +52,7 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
 
             return (
                 <Badge
-                    variant={getBadgeVariant(status)}
+                    variant={getBadgeStatusVariant(status)}
                 >
                     {status}
                 </Badge>

@@ -10,29 +10,33 @@ const ListKpiCard = () => {
             title: 'Total Check-ins',
             titleContent: formatNumber(1247),
             desc: '+12% from last month',
-            Icon: MapPin
+            Icon: MapPin,
+            color: 'text-primary'
         },
         {
             title: 'Points Spent',
             titleContent: formatNumber(8350),
             desc: '+8% from last month',
-            Icon: CreditCard
+            Icon: CreditCard,
+            color: 'text-red-600'
         },
         {
             title: 'Active Campaigns',
             titleContent: formatNumber(8),
             desc: '3 pending approval',
-            Icon: Calendar
+            Icon: Calendar,
+            color: 'text-green-600'
         }
     ]
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {kpiCards.map((card: TCardOverview) => (
                 <CardOverview
                     key={card.title}
                     title={card.title}
                     desc={card.desc}
                     titleContent={card.titleContent}
+                    color={card.color}
                     Icon={card.Icon}/>
             ))}
         </div>

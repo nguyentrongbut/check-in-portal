@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import {ArrowLeft, Edit, QrCode} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
-import {getBadgeVariant} from "@/utils/getBadgeVariant";
+import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 import ListCardOverview from "@/components/pages/campaign/detail/list.card.overview";
 import CampaignInformation from "@/components/pages/campaign/detail/campaign.information";
 import PerformanceSummary from "@/components/pages/campaign/detail/performance.summary";
@@ -34,7 +34,7 @@ const DetailPage = async ({params}: { params: Params }) => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Badge variant={getBadgeVariant(campaign?.status)}>{campaign?.status}</Badge>
+                    <Badge variant={getBadgeStatusVariant(campaign?.status)}>{campaign?.status}</Badge>
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline" size="sm">
@@ -65,10 +65,12 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </DialogContent>
                     </Dialog>
 
-                    <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4 mr-1"/>
-                        Edit
-                    </Button>
+                   <Link href={`/campaign/edit/${id}`}>
+                       <Button variant="outline" size="sm">
+                           <Edit className="h-4 w-4 mr-1"/>
+                           Edit
+                       </Button>
+                   </Link>
                 </div>
             </div>
 

@@ -80,7 +80,7 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
     };
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <FormField name="name" control={form.control} render={({field}) => (
                         <FormItem>
