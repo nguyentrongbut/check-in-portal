@@ -19,3 +19,11 @@ export function getBadgeWalletVariant(type: string): BadgeVariant {
         ? (type as BadgeVariant)
         : "default";
 }
+
+const voucherVariants: BadgeVariant[] = ["active", "expired", "draft", "scheduled", "disabled"];
+
+export function getBadgeVoucherVariant(status: string): BadgeVariant {
+    return voucherVariants.includes(status as BadgeVariant)
+        ? (status as BadgeVariant)
+        : "default";
+}

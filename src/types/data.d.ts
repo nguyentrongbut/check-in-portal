@@ -2,6 +2,8 @@ export type TRole = 'admin' | 'merchant' | 'user';
 
 export type TStatus = 'pending' | 'approved' | 'active' | 'rejected' | 'expired' | 'cancelled'
 
+export type TStatusVoucher = 'active' | 'expired' | 'draft' | 'scheduled' | 'disabled';
+
 export type TCampaign = {
     id: number,
     name: string,
@@ -58,4 +60,34 @@ export type TWallet = {
     totalTopup: number,
     createdAt: string,
     updatedAt: string
+}
+
+export type TVoucher = {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    discountType: 'fixed' | 'percent';
+    discountValue: number;
+    minOrderValue: number;
+    maxDiscount: number;
+    pointCost: number;
+    quantity: number;
+    claimed: number;
+    startDate: string;
+    endDate: string;
+    status: TStatusVoucher;
+    isPublished: boolean;
+    userId: number;
+    createdAt: string,
+    updatedAt: string
+}
+
+export type TRedemption = {
+    id: number,
+    userName: string,
+    userId: number,
+    voucherId: number,
+    pointsSpent: number,
+    createdAt: string,
 }
