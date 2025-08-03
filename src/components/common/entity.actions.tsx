@@ -1,6 +1,6 @@
 "use client";
 
-import {Trash2, Edit, Eye, MoreHorizontal} from "lucide-react";
+import {Trash2, Edit, Eye, MoreHorizontal, X} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,7 +19,9 @@ interface EntityActionsProps {
     editUrl: string;
     entityName: string;
     onDelete: () => Promise<boolean>;
-    edit?: boolean
+    edit?: boolean;
+    canCancel?: boolean;
+    canDelete?: boolean;
 }
 
 const EntityActions = ({
@@ -27,7 +29,9 @@ const EntityActions = ({
                            editUrl,
                            entityName,
                            onDelete,
-                           edit = true
+                           edit = true,
+                           canDelete = true,
+                           canCancel = true
                        }: EntityActionsProps) => {
     const [open, setOpen] = useState(false);
 
@@ -59,26 +63,40 @@ const EntityActions = ({
                         </DropdownMenuItem>
                     )}
 
-                    <DropdownMenuSeparator/>
+                    {canCancel && (
+                        <DropdownMenuItem
+                            className="text-yellow-600 cursor-pointer"
+                        >
+                            <X className="size-4 text-inherit"/>
+                            Cancel
+                        </DropdownMenuItem>
+                    )}
 
-                    <DropdownMenuItem
-                        className="text-red-600 cursor-pointer"
-                        onSelect={() => setOpen(true)}
-                    >
-                        <Trash2 className="size-4"/>
-                        Delete
-                    </DropdownMenuItem>
+                    {canDelete && (
+                        <>
+                            <DropdownMenuSeparator/>
+                            <DropdownMenuItem
+                                className="text-red-600 cursor-pointer"
+                                onSelect={() => setOpen(true)}
+                            >
+                                <Trash2 className="size-4 text-inherit"/>
+                                Delete
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <DialogDelete
-                open={open}
-                onOpenChange={setOpen}
-                name={entityName}
-                onConfirm={onDelete}
-                successMessage={`Successfully deleted ${entityName}`}
-                errorMessage={`Failed to delete ${entityName}, please try again`}
-            />
+            {canDelete && (
+                <DialogDelete
+                    open={open}
+                    onOpenChange={setOpen}
+                    name={entityName}
+                    onConfirm={onDelete}
+                    successMessage={`Successfully deleted ${entityName}`}
+                    errorMessage={`Failed to delete ${entityName}, please try again`}
+                />
+            )}
         </div>
     );
 };

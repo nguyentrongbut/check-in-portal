@@ -19,12 +19,13 @@ const badgeVariants = cva(
                     "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
 
                 // status
-                pending:
-                    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
-                approved:
-                    "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-                rejected:
-                    "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
+
+                pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+                approved: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
+                rejected: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
+                active: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
+                expired: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300",
+                cancelled: "bg-zinc-100 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300",
 
                 // wallet
                 spent:
