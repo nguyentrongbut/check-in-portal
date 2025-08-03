@@ -1,12 +1,12 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
-import { LatLngExpression, Map } from 'leaflet';
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { defaultIcon } from '@/utils/leaflet-icon';
-import { MapPin, Search } from 'lucide-react';
+import {MapContainer, TileLayer, Marker, useMapEvents} from 'react-leaflet';
+import {LatLngExpression, Map} from 'leaflet';
+import {useEffect, useState, useCallback, useRef} from 'react';
+import {Input} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {defaultIcon} from '@/utils/leaflet-icon';
+import {MapPin, Search} from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 
 type LocationValue = {
@@ -16,19 +16,22 @@ type LocationValue = {
 
 type Props = {
     value: LocationValue;
-    onChange: (value: LocationValue) => void;
+    onChange?: (value: LocationValue) => void;
     placeholder?: string;
+    view?: boolean;
 };
 
 export default function LocationPicker({
                                            value,
                                            onChange,
                                            placeholder = "Enter address or coordinates (lat,lng)",
+                                           view = false,
                                        }: Props) {
     const [position, setPosition] = useState<LatLngExpression>([21.0285, 105.8542]);
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [addressLabel, setAddressLabel] = useState<string | null>(null);
     const [mapKey, setMapKey] = useState(0);
     const mapRef = useRef<Map | null>(null);
 
@@ -39,15 +42,28 @@ export default function LocationPicker({
 
     const parseCoordinates = useCallback((coordString: string): LocationValue => {
         if (!coordString.trim()) return null;
-
         const coords = coordString.split(',').map(coord => parseFloat(coord.trim()));
         if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
             if (coords[0] >= -90 && coords[0] <= 90 && coords[1] >= -180 && coords[1] <= 180) {
-                return { lat: coords[0], lng: coords[1] };
+                return {lat: coords[0], lng: coords[1]};
             }
         }
         return null;
     }, []);
+
+    const reverseGeocode = async (lat: number, lng: number) => {
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+            );
+            if (!response.ok) throw new Error('Reverse geocoding failed');
+            const data = await response.json();
+            setAddressLabel(data.display_name || 'Unknown location');
+        } catch (err) {
+            console.error('Reverse geocoding error:', err);
+            setAddressLabel(null);
+        }
+    };
 
     useEffect(() => {
         const newInputValue = locationToString(value);
@@ -58,6 +74,7 @@ export default function LocationPicker({
                 setPosition(newPosition);
                 setMapKey(prev => prev + 1);
                 setError(null);
+                reverseGeocode(value.lat, value.lng);
             }
         }
     }, [value, inputValue, locationToString]);
@@ -66,6 +83,7 @@ export default function LocationPicker({
         if (value && !inputValue) {
             setInputValue(locationToString(value));
             setPosition([value.lat, value.lng]);
+            reverseGeocode(value.lat, value.lng);
         }
     }, []);
 
@@ -86,9 +104,11 @@ export default function LocationPicker({
         if (coords) {
             setPosition([coords.lat, coords.lng]);
             setMapKey(prev => prev + 1);
-            onChange(coords);
+            onChange?.(coords);
+            reverseGeocode(coords.lat, coords.lng);
         } else if (newValue.trim() === '') {
-            onChange(null);
+            onChange?.(null);
+            setAddressLabel(null);
         }
     };
 
@@ -110,12 +130,13 @@ export default function LocationPicker({
             if (data && data.length > 0) {
                 const lat = parseFloat(data[0].lat);
                 const lng = parseFloat(data[0].lon);
-                const locationObj = { lat, lng };
+                const locationObj = {lat, lng};
 
                 setPosition([lat, lng]);
                 setInputValue(`${lat},${lng}`);
                 setMapKey(prev => prev + 1);
-                onChange(locationObj);
+                onChange?.(locationObj);
+                reverseGeocode(lat, lng);
             } else {
                 setError('Address not found. Please try a different keyword.');
             }
@@ -138,13 +159,14 @@ export default function LocationPicker({
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                const { latitude, longitude } = position.coords;
-                const locationObj = { lat: latitude, lng: longitude };
+                const {latitude, longitude} = position.coords;
+                const locationObj = {lat: latitude, lng: longitude};
 
                 setPosition([latitude, longitude]);
                 setInputValue(`${latitude},${longitude}`);
                 setMapKey(prev => prev + 1);
-                onChange(locationObj);
+                onChange?.(locationObj);
+                reverseGeocode(latitude, longitude);
                 setIsLoading(false);
             },
             (error) => {
@@ -163,76 +185,94 @@ export default function LocationPicker({
     function LocationMarker() {
         useMapEvents({
             click(e) {
-                const { lat, lng } = e.latlng;
-                const locationObj = { lat, lng };
+                if (view) return;
+                const {lat, lng} = e.latlng;
+                const locationObj = {lat, lng};
 
                 setPosition([lat, lng]);
                 setInputValue(`${lat},${lng}`);
-                onChange(locationObj);
+                onChange?.(locationObj);
+                reverseGeocode(lat, lng);
                 setError(null);
             },
         });
 
-        return <Marker position={position} icon={defaultIcon} />;
+        return <Marker position={position} icon={defaultIcon}/>;
     }
 
     return (
         <div className="space-y-3">
             <div className="flex gap-2">
-                <div className="flex-1">
-                    <Input
-                        placeholder={placeholder}
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        className={error ? "border-red-500" : ""}
-                    />
-                    {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
-                </div>
-                <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={searchAddress}
-                    disabled={isLoading || !inputValue.trim() || !!parseCoordinates(inputValue)}
-                    title="Search for address"
-                >
-                    <Search className="h-4 w-4" />
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={getCurrentLocation}
-                    disabled={isLoading}
-                    title="Use current location"
-                >
-                    <MapPin className="h-4 w-4" />
-                </Button>
+                {!view ? (
+                    <>
+                        <div className="flex-1">
+                            <Input
+                                placeholder={placeholder}
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                disabled={view}
+                                className={error ? "border-red-500" : ""}
+                            />
+                            {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+                            {addressLabel && (
+                                <p className="text-sm text-muted-foreground mt-1">📍 {addressLabel}</p>
+                            )}
+                        </div>
+
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={searchAddress}
+                            disabled={isLoading || !inputValue.trim() || !!parseCoordinates(inputValue)}
+                            title="Search for address"
+                        >
+                            <Search className="h-4 w-4"/>
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={getCurrentLocation}
+                            disabled={isLoading}
+                            title="Use current location"
+                        >
+                            <MapPin className="h-4 w-4"/>
+                        </Button>
+                    </>
+                ) : (
+                    addressLabel && (
+                        <p className="text-sm text-muted-foreground mt-1">📍 {addressLabel}</p>
+                    )
+                )}
             </div>
 
-            <div className="rounded-lg border overflow-hidden shadow-sm" style={{ height: '300px' }}>
+            <div className="rounded-lg border overflow-hidden shadow-sm" style={{height: '300px'}}>
                 <MapContainer
                     center={position}
                     zoom={13}
-                    style={{ height: '100%', width: '100%' }}
+                    style={{height: '100%', width: '100%'}}
                     key={mapKey}
                     whenReady={handleMapReady}
                     ref={mapRef}
+                    className='z-0'
                 >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <LocationMarker />
+                    <LocationMarker/>
                 </MapContainer>
             </div>
 
-            <div className="text-sm text-muted-foreground">
-                <p>• Click on the map to select a location</p>
-                <p>• Enter coordinates in the format &quot;latitude,longitude&quot; (e.g., 21.0285,105.8542)</p>
-                <p>• Use the search button to find an address</p>
-                <p>• Use the location button to detect your current location</p>
-            </div>
+            {!view && (
+                <div className="text-sm text-muted-foreground">
+                    <p>• Click on the map to select a location</p>
+                    <p>• Enter coordinates in the format &quot;latitude,longitude&quot; (e.g., 21.0285,105.8542)</p>
+                    <p>• Use the search button to find an address</p>
+                    <p>• Use the location button to detect your current location</p>
+                </div>
+            )}
         </div>
     );
 }

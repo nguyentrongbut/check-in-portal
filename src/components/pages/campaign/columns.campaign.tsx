@@ -180,7 +180,12 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                 const campaign = row.original;
                 const nameCampaign = campaign.name;
                 const campaignId = campaign.id;
-                const canEdit = campaign.status == 'pending';
+                const isBeforeStart = (startDate: string) => new Date(startDate) > new Date();
+                const canEdit = ['pending', 'rejected'].includes(campaign.status);
+                const canDelete = ['pending', 'rejected'].includes(campaign.status) ||
+                    (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
+                const canCancel = ['pending'].includes(campaign.status) ||
+                    (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
                 return (
                     <EntityActions
                         id={campaignId}
@@ -189,6 +194,8 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                         entityName={`${nameCampaign} campaign`}
                         onDelete={() => deleteCampaign(campaignId)}
                         edit={canEdit}
+                        canDelete={canDelete}
+                        canCancel={canCancel}
                     />
                 )
             },

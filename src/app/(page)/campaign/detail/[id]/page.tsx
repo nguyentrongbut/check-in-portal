@@ -13,6 +13,8 @@ import TableCheckIns from "@/components/pages/campaign/detail/table.check.ins";
 import {Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import Image from "next/image";
 import QRCodePrint from "@/components/pages/campaign/detail/qr.code.print";
+import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 const DetailPage = async ({params}: { params: Params }) => {
     const {id} = await params
@@ -65,12 +67,15 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </DialogContent>
                     </Dialog>
 
-                   <Link href={`/campaign/edit/${id}`}>
-                       <Button variant="outline" size="sm">
-                           <Edit className="h-4 w-4 mr-1"/>
-                           Edit
-                       </Button>
-                   </Link>
+                    {['pending', 'rejected'].includes(campaign?.status) && (
+                        <Link href={`/campaign/edit/${id}`}>
+                            <Button variant="outline" size="sm">
+                                <Edit className="h-4 w-4 mr-1" />
+                                Edit
+                            </Button>
+                        </Link>
+                    )}
+
                 </div>
             </div>
 
@@ -84,6 +89,19 @@ const DetailPage = async ({params}: { params: Params }) => {
                 {/* Performance Summary */}
                 <PerformanceSummary campaign={campaign}/>
             </div>
+
+            {/* Location */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Location</CardTitle>
+                    <CardDescription>Location of the campaign</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <LocationPickerWrapper
+                        view
+                        value={campaign?.location} />
+                </CardContent>
+            </Card>
 
             {/* Table List Check In*/}
             <TableCheckIns campaignId={id}/>

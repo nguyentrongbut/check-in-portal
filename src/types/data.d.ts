@@ -1,6 +1,6 @@
 export type TRole = 'admin' | 'merchant' | 'user';
 
-export type TStatus = 'pending' | 'approved' | 'rejected' | 'completed' | 'paused'
+export type TStatus = 'pending' | 'approved' | 'active' | 'rejected' | 'expired' | 'cancelled'
 
 export type TCampaign = {
     id: number,
@@ -10,7 +10,10 @@ export type TCampaign = {
     endDate: string,
     startTime: string,
     endTime: string,
-    location: string,
+    location: {
+        lat: number,
+        lng: number,
+    },
     rewardPerCheckin: number,
     pointBudget: number,
     wifi: {
@@ -32,7 +35,8 @@ export type TCheckIn = {
     checkInTime: string,
     pointsEarned: number,
     verify: string,
-    campaignId: number
+    campaignId: number,
+    createdAt: string
 }
 
 export type TTransaction = {
