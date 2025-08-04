@@ -20,6 +20,8 @@ export const getPageTitleFromNavItems = (
         return partialMatch.label;
     }
 
+    if (pathname === "/profile") return "Profile";
+
     // Fallback
     return "Dashboard";
 };

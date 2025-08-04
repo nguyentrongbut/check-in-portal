@@ -1,8 +1,24 @@
 export type TRole = 'admin' | 'merchant' | 'user';
 
-export type TStatus = 'pending' | 'approved' | 'active' | 'rejected' | 'expired' | 'cancelled'
+export type TStatusCapaign = 'pending' | 'approved' | 'active' | 'rejected' | 'expired' | 'cancelled'
 
 export type TStatusVoucher = 'active' | 'expired' | 'draft' | 'scheduled' | 'disabled';
+
+export type TStatusUser = 'active' | 'inactive' | 'banned';
+
+export type TUser = {
+    id: number,
+    name: string,
+    email: string,
+    phone: string,
+    address: string,
+    role: TRole,
+    avatar: string,
+    password: string,
+    createdAt: string,
+    updatedAt: string,
+    status: TStatusUser,
+}
 
 export type TCampaign = {
     id: number,
@@ -25,7 +41,7 @@ export type TCampaign = {
     qrUrl: string,
     used: number,
     checkIns: number,
-    status: TStatus,
+    status: TStatusCapaign,
     createdAt: string,
     updatedAt: string,
 }
