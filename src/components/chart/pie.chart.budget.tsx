@@ -2,16 +2,11 @@
 
 import {PieChart, Pie, Cell, Tooltip, ResponsiveContainer} from 'recharts';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-
-const data = [
-    { campaignName: 'Highlands', usedPoint: 2400 },
-    { campaignName: 'TocoToco', usedPoint: 1600 },
-    { campaignName: 'Gong Cha', usedPoint: 3000 },
-];
+import {TChartCampaignPoint} from "@/types/data";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-export default function PieChartBudget() {
+export default function PieChartBudget({campaignPoints} : {campaignPoints: TChartCampaignPoint[]}) {
     return (
         <Card>
             <CardHeader>
@@ -22,7 +17,7 @@ export default function PieChartBudget() {
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                         <Pie
-                            data={data}
+                            data={campaignPoints}
                             dataKey="usedPoint"
                             nameKey="campaignName"
                             cx="50%"
@@ -30,7 +25,7 @@ export default function PieChartBudget() {
                             outerRadius={100}
                             label
                         >
-                            {data.map((_, index) => (
+                            {campaignPoints.map((_, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>

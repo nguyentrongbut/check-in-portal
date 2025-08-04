@@ -107,3 +107,57 @@ export type TRedemption = {
     pointsSpent: number,
     createdAt: string,
 }
+
+export type TChartCampaignCheckin = {
+    campaignName: string,
+    checkinCount: number,
+}
+
+export type TChartDailyCheckin = {
+    date: string,
+    checkin: number,
+}
+
+export type TChartMapCheckin = {
+    campaignName: string,
+    latitude: number;
+    longitude: number;
+    checkinCount: number,
+}
+
+export type TChartCampaignPoint = {
+    id: number,
+    campaignName: string,
+    usedPoint: number,
+}
+
+export type TDataDashboard = {
+    title: string,
+    value: number,
+    desc: string,
+}
+
+export type TCampaignCheckin = {
+    chart: TChartCampaignCheckin[]
+    userId: number
+}
+
+export type TDailyCheckin = {
+    chart: TChartDailyCheckin[]
+    userId: number
+}
+
+export type TMapCheckin = {
+    chart: TChartMapCheckin[]
+    userId: number
+}
+
+export type TCampaignPoint = {
+    chart: TChartCampaignPoint[]
+    userId: number
+}
+
+export type TDashboardMetric = {
+    data: TDataDashboard[]
+    userId: number
+}
