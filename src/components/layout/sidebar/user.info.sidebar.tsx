@@ -7,9 +7,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {LogOut, Settings, User} from "lucide-react";
+import {LogOut, User} from "lucide-react";
 import {deleteCookie} from "@/utils/logoutClient";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 const UserInfoSidebar = ({userRole} : {userRole: string | undefined}) => {
 
@@ -39,15 +40,13 @@ const UserInfoSidebar = ({userRole} : {userRole: string | undefined}) => {
                 <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4"/>
-                        <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4"/>
-                        <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator/>
+                   <Link href='/profile'>
+                       <DropdownMenuItem>
+                           <User className="mr-2 h-4 w-4"/>
+                           <span>Profile</span>
+                       </DropdownMenuItem>
+                   </Link>
+
                     <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
                         <LogOut className="mr-2 h-4 w-4"/>
                         <span>Log out</span>
