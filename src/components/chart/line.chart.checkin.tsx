@@ -2,16 +2,9 @@
 
 import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer} from 'recharts';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {TChartDailyCheckin} from "@/types/data";
 
-const data = [
-    { date: '2025-07-20', checkin: 30 },
-    { date: '2025-07-21', checkin: 45 },
-    { date: '2025-07-22', checkin: 38 },
-    { date: '2025-07-23', checkin: 52 },
-    { date: '2025-07-24', checkin: 47 },
-];
-
-export default function LineChartCheckin() {
+export default function LineChartCheckin({dailyCheckins} : {dailyCheckins: TChartDailyCheckin[]}) {
     return (
         <Card>
             <CardHeader>
@@ -20,7 +13,7 @@ export default function LineChartCheckin() {
             </CardHeader>
             <CardContent className='-ml-8'>
                 <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={data}>
+                    <LineChart data={dailyCheckins}>
                         <XAxis dataKey="date" />
                         <YAxis />
                         <Tooltip />
