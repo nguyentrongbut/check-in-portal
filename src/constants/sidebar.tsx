@@ -12,5 +12,5 @@ export const adminNavItems: TNavSideBar[] = [
     {href: "/admin/dashboard", label: "Dashboard", icon: Home},
     {href: "/admin/campaign", label: "Review Campaign", icon: Calendar},
     {href: "/admin/fraud", label: "Fraud Detection", icon: Shield},
-    {href: "/admin/users", label: "User Management", icon: Users},
+    {href: "/admin/user", label: "User Management", icon: Users},
 ]

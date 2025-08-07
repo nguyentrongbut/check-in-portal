@@ -20,10 +20,26 @@ export function getBadgeWalletVariant(type: string): BadgeVariant {
         : "default";
 }
 
-const voucherVariants: BadgeVariant[] = ["active", "expired", "draft", "scheduled", "disabled"];
+const voucherVariants: BadgeVariant[] = ["active", "expired", "paused"];
 
 export function getBadgeVoucherVariant(status: string): BadgeVariant {
     return voucherVariants.includes(status as BadgeVariant)
+        ? (status as BadgeVariant)
+        : "default";
+}
+
+const roleVariants: BadgeVariant[] = ["admin", "user", "merchant"];
+
+export function getBadgeRoleVariant(status: string): BadgeVariant {
+    return roleVariants.includes(status as BadgeVariant)
+        ? (status as BadgeVariant)
+        : "default";
+}
+
+const userStatusVariants: BadgeVariant[] = ["active", "inactive"];
+
+export function getBadgeUserStatusVariant(status: string): BadgeVariant {
+    return userStatusVariants.includes(status as BadgeVariant)
         ? (status as BadgeVariant)
         : "default";
 }
