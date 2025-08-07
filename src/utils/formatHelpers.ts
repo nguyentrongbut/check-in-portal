@@ -7,11 +7,13 @@ export const formatDate = (dateString: string) => {
 };
 
 export const formatNumber = (
-    value: number,
+    value: number | string | null | undefined,
     locale: string = 'en-US',
     options?: Intl.NumberFormatOptions
-) => {
-    return new Intl.NumberFormat(locale, options).format(value);
+): string => {
+    const number = Number(value);
+    if (isNaN(number)) return '0';
+    return new Intl.NumberFormat(locale, options).format(number);
 };
 
 export const formatPointsToUSD = (points?: number | null): string => {

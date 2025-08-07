@@ -34,7 +34,15 @@ const badgeVariants = cva(
                     "bg-primary/20 text-primary/80 dark:bg-primary/90 dark:text-primary/30",
 
                 // voucher
-                paused: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                paused: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+
+                // role
+                admin: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
+                merchant: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
+                user: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-300",
+
+                // status
+                inactive: "bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300",
             },
         },
         defaultVariants: {

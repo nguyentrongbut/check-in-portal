@@ -43,7 +43,7 @@ export const columnsRedemption: ColumnDef<TRedemption>[] = [
             )
         },
         cell: ({row}) => {
-            const redemptionTime = row.getValue("createdAt")
+            const redemptionTime: string = row.getValue("createdAt")
 
             return (
                <div>{formatDate(redemptionTime)}</div>
@@ -64,7 +64,7 @@ export const columnsRedemption: ColumnDef<TRedemption>[] = [
             )
         },
         cell: ({row}) => {
-            const pointsSpent = row.getValue("pointsSpent")
+            const pointsSpent: number = row.getValue("pointsSpent")
 
             return (
                 <div className='text-red-800 font-medium'>- {formatNumber(pointsSpent)} pts</div>
