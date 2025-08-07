@@ -7,13 +7,18 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
+import {DialogClose} from "@/components/ui/dialog";
+import {TUser} from "@/types/data";
 import toast from "react-hot-toast";
 import UploadImage from "@/components/common/upload.image";
-import {TUser} from "@/types/data";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Switch} from "@/components/ui/switch";
+import {updateUser} from "@/lib/actions/auth";
 import {useRouter} from "next/navigation";
-import {updateProfile} from "@/lib/actions/auth";
 import {fileToBase64} from "@/utils/convertFileToBase64";
 
+const roleOptions = ["admin", "merchant", "user"] as const;
+const statusOptions = ["active", "inactive", "banned"] as const;
 
 const formSchema = z.object({
     avatar: z.union([
@@ -24,29 +29,31 @@ const formSchema = z.object({
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
     address: z.string().min(1, 'Address cannot be empty'),
+    role: z.enum(roleOptions),
+    status: z.enum(statusOptions),
 });
 
-export type UpdateProfileForm = z.infer<typeof formSchema>;
+export type UserFormUpdate = z.infer<typeof formSchema>;
 
-const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
+const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => void, }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const router = useRouter();
-
     // 1. Define your form.
-    const form = useForm<UpdateProfileForm>({
+    const form = useForm<UserFormUpdate>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            avatar: userInfo?.avatar || '',
-            name: userInfo?.name ?? '',
-            email: userInfo?.email ?? '',
-            phone: userInfo?.phone ?? '',
-            address: userInfo?.address ?? '',
+            avatar: infoUser.avatar || '',
+            name: infoUser.name ?? '',
+            email: infoUser.email ?? '',
+            phone: infoUser.phone ?? '',
+            address: infoUser.address ?? '',
+            role: infoUser.role ?? 'merchant',
+            status: infoUser.status ?? 'active',
         },
     });
 
     // 2. Define a submit handler.
-    async function onSubmit(values: UpdateProfileForm) {
+    async function onSubmit(values: UserFormUpdate) {
         setIsSubmitting(true);
         try {
             let imageBase64 = "";
@@ -62,16 +69,15 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                 avatar: imageBase64
             }
 
-            const result = await updateProfile(userInfo?.id, payload)
-
-            if (!result) return toast.error('Update profile failed. Please try again.');
-
+            const result = await updateUser(infoUser?.id, payload);
+            if (!result) return toast.error('Update user failed. Please try again.');
             if (result === 200) {
-                toast.success('Update profile successfully.');
+                router.refresh()
+                toast.success('Update user successfully.');
+                onClose?.();
             }
-
         } catch (error) {
-            console.error('Error when update profile:', error);
+            console.error('Error when update user:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -82,7 +88,7 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
             <form
                 autoComplete="off"
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6 mt-4">
+                className="space-y-4">
                 <FormField
                     control={form.control}
                     name="avatar"
@@ -90,13 +96,7 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                         <FormItem>
                             <FormLabel>Avatar</FormLabel>
                             <FormControl>
-                                <div className="flex items-center gap-4">
-                                    <UploadImage value={field.value} onChange={field.onChange} className='size-24'/>
-                                    <div>
-                                        <h3 className="font-medium">Profile Picture</h3>
-                                        <p className="text-sm text-gray-600">Upload a new profile picture. JPG, PNG or GIF</p>
-                                    </div>
-                                </div>
+                                <UploadImage value={field.value} onChange={field.onChange}/>
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
@@ -154,11 +154,59 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                         </FormItem>
                     )}
                 />
-                <div className="flex justify-end gap-4">
-                        <Button onClick={() => router.back()} type="button" variant="outline">Cancel</Button>
 
+                <FormField
+                    control={form.control}
+                    name="role"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Role</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select role"/>
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {roleOptions.map((role) => (
+                                        <SelectItem key={role} value={role}>
+                                            {role.charAt(0).toUpperCase() + role.slice(1)}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({field}) => (
+                        <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Status</FormLabel>
+                                <p className="text-sm text-muted-foreground">
+                                    Toggle user status between Active and Inactive
+                                </p>
+                            </div>
+                            <FormControl>
+                                <Switch
+                                    checked={field.value === 'active'}
+                                    onCheckedChange={(checked) => field.onChange(checked ? 'active' : 'inactive')}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+
+                <div className="flex justify-end gap-4 !mt-8">
+                    <DialogClose asChild>
+                        <Button type="button" variant="outline">Cancel</Button>
+                    </DialogClose>
                     <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
-                        Update Profile
+                        Update User
                     </Button>
                 </div>
             </form>
@@ -166,4 +214,4 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
     )
 }
 
-export default FormUpdateProfile;
+export default FormUpdateUser;

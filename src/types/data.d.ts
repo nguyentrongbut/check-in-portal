@@ -18,6 +18,9 @@ export type TUser = {
     createdAt: string,
     updatedAt: string,
     status: TStatusUser,
+    pointsEarned: number,
+    pointsSpent: number,
+    currentBalance: number,
 }
 
 export type TCampaign = {
