@@ -28,10 +28,15 @@ export async function getUsers() {
     }
 }
 
-export async function updateStatus(userId: number, status: TStatusUser) {
+export async function updateStatus(userId: number, status: TStatusUser, reason?: string) {
     try {
+        if (!reason) {
+            reason = '';
+        }
+
         const payload = {
             status,
+            reason,
             updatedAt: new Date(),
         };
 
