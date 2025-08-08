@@ -3,8 +3,32 @@
 import {CreateCampaignForm} from "@/components/pages/campaign/create/form.create.campaign";
 import {UpdateCampaignForm} from "@/components/pages/campaign/form.edit.campaign";
 import QRCode from "qrcode";
+import {TStatusCampaign} from "@/types/data";
 
 const url = `${process.env.API_URL}/campaigns`;
+
+export async function getPendingCampaigns() {
+    try {
+        const res = await fetch(`${url}?status=pending`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            cache: 'no-cache',
+        });
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        return data;
+    } catch (err) {
+        console.error('Failed when get all campaign pending:', err);
+        throw err;
+    }
+}
 
 export async function getCampaigns(userId: number) {
     try {
@@ -147,6 +171,37 @@ export async function updateCampaign(id:number, data: UpdateCampaignForm) {
         return res.status;
     } catch (err) {
         console.error('Failed when update campaign:', err);
+        throw err;
+    }
+}
+
+export async function changeStatusCampaign(id:number, status: TStatusCampaign, reason?: string) {
+    try {
+        if (!reason) {
+            reason = '';
+        }
+
+        const payload = {
+            status,
+            reason,
+        }
+
+        const res = await fetch(`${url}/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP ${res.status}: ${errorText}`);
+        }
+
+        return res.status;
+    } catch (err) {
+        console.error('Failed when change status campaign:', err);
         throw err;
     }
 }
