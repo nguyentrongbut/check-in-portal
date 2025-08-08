@@ -2,25 +2,15 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 import {TRole, TStatusUser, TUser} from "@/types/data";
-import {ArrowUpDown, Edit, UserX} from "lucide-react";
+import {ArrowUpDown, UserX} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate} from "@/utils/formatHelpers";
-import {Button} from "@/components/ui/button";
 import {getBadgeRoleVariant} from "@/utils/getBadgeVariant";
 import UserStatusBadge from "@/components/pages/admin/user/user.status.badge";
 import Image from "next/image";
 import DialogViewUser from "@/components/pages/admin/user/dialog.view.user";
 import DialogDeleteAdmin from "@/components/common/dialog.delete.admin";
 import {deleteUser} from "@/lib/actions/auth";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
-import FormUpdateUser from "@/components/pages/admin/user/form.update.user";
 import DialogEditUser from "@/components/pages/admin/user/dialog.edit.user";
 
 export const columnsUser = (
@@ -196,5 +186,4 @@ export const columnsUser = (
                 )
             },
     }
-    ,
 ]
