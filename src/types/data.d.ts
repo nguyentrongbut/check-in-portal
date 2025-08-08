@@ -165,3 +165,21 @@ export type TDashboardMetric = {
     data: TDataDashboard[]
     userId: number
 }
+
+export type TVelocity = "extreme" | "medium" | "high";
+
+export type TSuspiciousCheckins = {
+    id: number,
+    userId: number,
+    userName: string,
+    campaignName: string,
+    merchantName: string,
+    checkInTime: string,
+    riskScore: number,
+    gpsMatch: boolean,
+    wifiMatch: boolean,
+    location: string,
+    velocity: TVelocity,
+    userLocation:string,
+    previousCheckIn: string,
+}

@@ -43,3 +43,11 @@ export function getBadgeUserStatusVariant(status: string): BadgeVariant {
         ? (status as BadgeVariant)
         : "default";
 }
+
+const velocityVariants: BadgeVariant[] = ["medium", "high", "extreme"];
+
+export function getBadgeVelocityVariant(status: string): BadgeVariant {
+    return velocityVariants.includes(status as BadgeVariant)
+        ? (status as BadgeVariant)
+        : "default";
+}
