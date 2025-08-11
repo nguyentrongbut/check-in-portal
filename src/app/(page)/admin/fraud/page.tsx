@@ -10,20 +10,6 @@ const FraudDetectionPage = async () => {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">Fraud Detection</h1>
-                    <p className="text-gray-600">Monitor and investigate suspicious check-in activities</p>
-                </div>
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    <div className="flex items-center space-x-2">
-                        <AlertTriangle className='text-red-500 size-4'/>
-                        <span>Alerts: 3</span>
-                    </div>
-                </div>
-            </div>
-
             {/* Table */}
             <Card>
                 <CardHeader>

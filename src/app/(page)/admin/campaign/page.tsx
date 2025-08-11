@@ -9,20 +9,6 @@ const ReviewCampaignPage = async () => {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">Campaign Approval</h1>
-                    <p className="text-gray-600">Review and approve merchant campaigns</p>
-                </div>
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    <div className="flex items-center space-x-2">
-                        <div className="size-3 bg-yellow-500 rounded-full"></div>
-                        <span>Pending: {listPendingCampaigns?.length}</span>
-                    </div>
-                </div>
-            </div>
-
             {/* Table */}
             <Card>
                 <CardHeader>
