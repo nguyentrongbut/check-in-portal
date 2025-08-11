@@ -22,3 +22,21 @@ export const formatPointsToUSD = (points?: number | null): string => {
     const usd = points / exchangeRate;
     return `$${usd.toFixed(2)}`;
 };
+
+export const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(amount)
+}
+
+export const formatCompactCurrency = (amount: number) => {
+    if (amount >= 1000000) {
+        return `$${(amount / 1000000).toFixed(1)}M`
+    } else if (amount >= 1000) {
+        return `$${(amount / 1000).toFixed(0)}K`
+    }
+    return formatCurrency(amount)
+}

@@ -11,24 +11,6 @@ const UserManagement = async () => {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">User Management</h1>
-                    <p className="text-gray-600">Manage users and merchants in the system</p>
-                </div>
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    <div className="flex items-center space-x-2">
-                        <div className="size-3 bg-blue-500 rounded-full"></div>
-                        <span>Users: 1</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <div className="size-3 bg-green-500 rounded-full"></div>
-                        <span>Merchants: 1</span>
-                    </div>
-                </div>
-            </div>
-
             {/* Table */}
             <Card>
                 <CardHeader>
