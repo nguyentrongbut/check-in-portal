@@ -29,7 +29,7 @@ export default function RootLayout({
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f9f7f7]`}
         >
-        <main>
+        <main className='select-none'>
             {children}
         </main>
         <Toaster

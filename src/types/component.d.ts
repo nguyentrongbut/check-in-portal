@@ -7,3 +7,13 @@ export type TCardOverview = {
     desc: string;
     color?: string;
 }
+
+export type TContentSection = {
+    title: string;
+    desc: string;
+    icon: LucideIcon;
+}
+
+export type TContentLink = TContentSection & {
+    href: string;
+}
