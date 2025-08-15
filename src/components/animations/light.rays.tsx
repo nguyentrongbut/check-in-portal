@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from "react";
-import { Renderer, Program, Triangle, Mesh } from "ogl";
+import {Renderer, Program, Triangle, Mesh, Geometry} from "ogl";
 
 export type RaysOrigin =
     | "top-center"
@@ -12,6 +12,11 @@ export type RaysOrigin =
     | "bottom-center"
     | "bottom-right"
     | "bottom-left";
+
+type Uniforms = Record<
+    string,
+    { value: number | number[] | [number, number, number] }
+>;
 
 interface LightRaysProps {
     raysOrigin?: RaysOrigin;
@@ -84,12 +89,12 @@ const LightRays: React.FC<LightRaysProps> = ({
                                                  className = "",
                                              }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const uniformsRef = useRef<any>(null);
+    const uniformsRef = useRef<Uniforms | null>(null);
     const rendererRef = useRef<Renderer | null>(null);
     const mouseRef = useRef({ x: 0.5, y: 0.5 });
     const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
     const animationIdRef = useRef<number | null>(null);
-    const meshRef = useRef<any>(null);
+    const meshRef = useRef<Mesh<Geometry> | null>(null);
     const cleanupFunctionRef = useRef<(() => void) | null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const observerRef = useRef<IntersectionObserver | null>(null);
