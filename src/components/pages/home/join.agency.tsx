@@ -7,7 +7,7 @@ import FadeContent from "@/components/animations/fade.content";
 const JoinAgency = () => {
     return (
         <section className='py-20'>
-            <div className='grid grid-cols-2 items-center justify-between'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-20 lg:gap-40 items-center justify-between'>
                 <div>
                     <HomeTitle
                         title="Join agency"
@@ -18,12 +18,12 @@ const JoinAgency = () => {
                         afterHighlight="of creative innovators"
                     />
                 </div>
-                <FadeContent className='ml-40'>
+                <FadeContent>
                     Join our creative community to collaborate, innovate, and thrive together We welcome passionate
                     individuals eager to make.
                 </FadeContent>
             </div>
-            <FadeContent className='grid grid-cols-3 mt-20'>
+            <FadeContent className='grid grid-cols-1 md:grid-cols-3 mt-20'>
                 {joinAgencyItems.map((item, index) => (
                     <AgencyItem
                         key={index}

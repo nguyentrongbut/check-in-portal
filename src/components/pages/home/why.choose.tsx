@@ -9,7 +9,7 @@ import FadeContent from "@/components/animations/fade.content";
 const WhyChoose = () => {
     return (
         <section className='py-20'>
-            <div className='grid grid-cols-2 items-center justify-between'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-20 lg:gap-40 items-center justify-between'>
                 <div>
                     <HomeTitle
                         title="Why Choose"
@@ -20,7 +20,7 @@ const WhyChoose = () => {
                         afterHighlight="journey"
                     />
                 </div>
-                <FadeContent className='ml-40'>
+                <FadeContent>
                     Our dedicated team helps Allocators design and launch impactful campaigns that drive verified
                     customer visits.
                     With precise GPS & Wi-Fi check-ins, real-time tracking, and rewarding systems, we ensure your
@@ -28,7 +28,7 @@ const WhyChoose = () => {
                 </FadeContent>
             </div>
 
-            <FadeContent className='grid grid-cols-2 items-center justify-between gap-[60px] mt-20'>
+            <FadeContent className='grid grid-cols-1 md:grid-cols-2 items-center justify-between md:gap-[60px] mt-20'>
                 <div className='flex flex-col gap-8'>
                     {whyChooseItems.map((item, index) => {
                         return (
@@ -41,7 +41,7 @@ const WhyChoose = () => {
                     })}
                 </div>
 
-                <div style={{position: 'relative'}}>
+                <div style={{position: 'relative'}} className='px-4 mt-10 md:mt-0'>
                     <GlareHover
                         glareColor="#ffffff"
                         glareOpacity={0.3}

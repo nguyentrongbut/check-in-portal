@@ -7,8 +7,8 @@ import FadeContent from "@/components/animations/fade.content";
 const HowItWork = () => {
     return (
         <section className='py-20'>
-            <div className='flex justify-between items-center'>
-                <div className='w-[45%]'>
+            <div className='flex flex-col gap-4 md:flex-row justify-between items-center'>
+                <div className='md:w-[45%]'>
                     <HomeTitle
                         title="How it works"
                     />
@@ -18,12 +18,12 @@ const HowItWork = () => {
                         afterHighlight="for achieving success"
                     />
                 </div>
-                <FadeContent className='w-[45%]'>
+                <FadeContent className='md:w-[45%]'>
                     Our streamlined process ensures both users and businesses get maximum value through a seamless,
                     secure, and rewarding experience.
                 </FadeContent>
             </div>
-            <FadeContent className='grid grid-cols-4 gap-8 mt-25'>
+            <FadeContent className='grid grid-cols-1 md:grid-cols-4 gap-8 mt-25'>
                 {howItWorksItems.map((item, index) => (
                     <HomeCard
                         key={index}

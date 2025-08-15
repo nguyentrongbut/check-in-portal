@@ -7,7 +7,6 @@ const LoginPage =  () => {
 
     return (
         <AuthWrapper>
-
             {/* Form Login*/}
             <div className='size-full flex justify-between items-center'>
                 <div className='w-[334px] mx-auto'>
@@ -20,6 +19,7 @@ const LoginPage =  () => {
                         <span className='opacity-60'>Dont&apos;t have an account.</span>
                         <Link href='/register' className='ml-2 text-primary'>Register</Link>
                     </div>
+                    <Link href='/' className='text-center block text-primary underline mt-2'>Back to home</Link>
                 </div>
             </div>
 

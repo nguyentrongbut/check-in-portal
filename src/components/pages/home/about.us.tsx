@@ -8,8 +8,8 @@ import FadeContent from "@/components/animations/fade.content";
 
 const AboutUs = () => {
     return (
-        <div className='flex justify-between pt-40 pb-20 '>
-            <div className='w-[45%]'>
+        <div className='flex flex-col gap-10 md:flex-row justify-between pt-40 pb-20 '>
+            <div className='md:w-[45%]'>
                 <HomeTitle title="About Check-in Point"/>
                 <HomeDesc
                     beforeHighlight="Crafting"
@@ -31,7 +31,7 @@ const AboutUs = () => {
                 </FadeContent>
             </div>
 
-            <FadeContent className='w-[45.3%] flex flex-col gap-10'>
+            <FadeContent className='md:w-[45.3%] flex flex-col gap-10'>
                 {
                     aboutItems.map((item, index) => (
                         <AboutItem

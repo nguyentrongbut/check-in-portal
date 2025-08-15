@@ -17,6 +17,7 @@ const RegisterPage = () => {
                     <div>
                         <span className='opacity-60'>Already a member?</span>
                         <Link href='/login' className='ml-2 text-primary'>Login</Link>
+                        <Link href='/' className='text-center block text-primary underline mt-2'>Back to home</Link>
                     </div>
                 </div>
             </div>

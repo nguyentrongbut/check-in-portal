@@ -3,6 +3,8 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {Toaster} from "react-hot-toast";
 import React from "react";
+import ProgressWrapper from "@/components/common/progress.wrapper";
+import ScrollToTop from "@/components/common/scroll.to.top";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,9 +31,12 @@ export default function RootLayout({
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f9f7f7]`}
         >
-        <main className='select-none'>
-            {children}
-        </main>
+        <ProgressWrapper>
+            <main className='select-none'>
+                {children}
+                <ScrollToTop/>
+            </main>
+        </ProgressWrapper>
         <Toaster
             position="top-center"
             toastOptions={{

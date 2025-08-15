@@ -8,7 +8,7 @@ const HomeFooter = () => {
     return (
        <FadeContent>
            <footer className='border-t border-[#ffffff1a]'>
-               <div className='py-[60px] grid grid-cols-3 gap-10 items-start'>
+               <div className='py-[60px] grid grid-cols-1 md:grid-cols-3 gap-10 items-start'>
                    {/* Logo*/}
                    <div className="flex items-center space-x-2">
                        <BarChart3 className="size-12 text-primary"/>
@@ -38,7 +38,7 @@ const HomeFooter = () => {
                    <div className='flex flex-col gap-8'>
                        <h2 className='text-[22px] font-medium'>Subscribe Our Newsletter</h2>
                        <div className='flex gap-4 h-10'>
-                           <Input className='border-[#ffffff1a] h-full'/>
+                           <Input className='border-[#ffffff1a] h-full placeholder:text-white' placeholder='Enter your email'/>
                            <Button className='h-full'>Subscribe</Button>
                        </div>
                    </div>
