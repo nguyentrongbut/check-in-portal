@@ -3,7 +3,7 @@ import HomeHeader from "@/components/pages/home/home.header";
 import Container from "@/components/common/container";
 import TextType from "@/components/animations/text.type";
 import CircularText from "@/components/animations/circular.text";
-import {Play} from "lucide-react";
+import PlayIcon from "@/components/pages/home/play.icon";
 
 const HeroContent = () => {
     return (
@@ -23,8 +23,8 @@ const HeroContent = () => {
             />
            <Container>
                <div className='absolute top-1/2 -translate-y-1/2 z-10 mt-10'>
-                   <h1 className='text-[120px]'>
-                       <span className='font-light block -mb-10'>Innovative solutions for</span>
+                   <h1 className='text-[32px] md:text-[64px] lg:text-[100px] xl:text-[120px] flex flex-col md:block gap-3 items-center'>
+                       <span className='font-light block -mb-4 md:-mb-7 lg:-mb-10'>Innovative solutions for</span>
                        <TextType
                            className='font-bold'
                            text={[
@@ -40,20 +40,19 @@ const HeroContent = () => {
                        />
                    </h1>
                   <Container>
-                      <div className='ml-[150px] flex justify-between items-center mt-10'>
-                          <div className='flex items-center'>
+                      <div className='lg:ml-[150px] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-between items-center mt-10'>
+                          <div className='flex items-center justify-center'>
                               <div className='flex justify-center items-center rounded-full bg-primary size-[100px]'>
-                                <Play className='size-8 text-black'/>
+                                <PlayIcon className='size-8'/>
                               </div>
                               <div className='-ml-6'>
                                   <CircularText
                                       text="LEARN MORE * LEARN MORE * LEARN MORE * "
-                                      onHover="speedUp"
                                       spinDuration={20}
                                   />
                               </div>
                           </div>
-                          <div className='w-[60%]'>
+                          <div className='lg:w-[60%] text-center lg:text-start'>
                               <p>
                                   At Check-in Point, we combine GPS, Wi-Fi, and a Check-in-to-Reward model to deliver seamless reward experiences for users while enabling businesses to attract verified in-store visits that can be measured and optimized.
                               </p>

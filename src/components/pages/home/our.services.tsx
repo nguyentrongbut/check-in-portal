@@ -8,7 +8,7 @@ import FadeContent from "@/components/animations/fade.content";
 const OurServices = () => {
     return (
         <section className='py-20 '>
-            <div className='grid grid-cols-2 items-center justify-between'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-20 lg:gap-40 items-center justify-between'>
                 <div>
                     <HomeTitle
                         title="Our Services"
@@ -19,13 +19,13 @@ const OurServices = () => {
                         afterHighlight="to grow your brand"
                     />
                 </div>
-                <FadeContent className='ml-40'>
+                <FadeContent>
                     We provide innovative, location-driven solutions to help your business attract real customers,
                     increase visits, and strengthen brand engagement.
                 </FadeContent>
             </div>
             <FadeContent>
-                <div className='grid grid-cols-3 gap-8 mt-25'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mt-25'>
                     {
                         ourServicesItems.map((service, index) => (
                             <HomeCard

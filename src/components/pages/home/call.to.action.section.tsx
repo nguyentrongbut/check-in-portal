@@ -9,9 +9,9 @@ const CallToActionSection = () => {
             <section className='flex justify-center flex-col items-center pt-10 pb-30'>
                 <h3 className='uppercase text-[22px] font-medium'>LET&apos;S WORK TOGETHER</h3>
                 <div className='relative'>
-                    <h2 className='text-[180px] font-bold text-center uppercase leading-[200px]'>Let&apos;s your
+                    <h2 className='text-[55px] md:text-[100px] lg:text-[180px] font-bold text-center uppercase leading-20 md:leading-[140px] lg:leading-[200px]'>Let&apos;s your
                         Campaign</h2>
-                    <Link href='/login' className='size-[150px] group bg-primary
+                    <Link href='/login' className='size-[100px] md:size-[150px] group bg-primary
                   absolute left-1/2 top-1/2 -translate-1/2 z-10
                 hover:bg-[#1b1b1b]
                   transition-all duration-300 ease-in-out

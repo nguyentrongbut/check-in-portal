@@ -12,42 +12,43 @@ import HomeFooter from "@/components/pages/home/home.footer";
 
 export default function Home() {
     return (
-           <div className='bg-black min-h-screen text-white'>
-              <HeroContent/>
-               <CurvedLoop
-                   marqueeText="Website Design
-                        ✦
-                        Digital Marketing
-                        ✦
-                        Strategy Consulting
-                        ✦
-                        Analytics & Reporting
-                        ✦
-                        Custom Branding"
-                   curveAmount={10}
-               />
-               <div
-                   style={{
-                       transform: 'scaleX(-1)',
-                       backgroundImage: 'url(/section-bg-shape.png)',
-                       backgroundPosition: '100% 700px',
-                       backgroundRepeat: 'repeat-y',
-                       backgroundSize: '100% auto',
-                   }}
-               >
-                   <div style={{ transform: 'scaleX(-1)' }}>
-                       <Container>
-                           <AboutUs />
-                           <OurServices/>
-                           <ImpactSolutions/>
-                           <WhyChoose/>
-                           <JoinAgency/>
-                           <HowItWork />
-                           <CallToActionSection/>
-                           <HomeFooter/>
-                       </Container>
-                   </div>
-               </div>
-           </div>
+        <div className='bg-black min-h-screen text-white'>
+            <HeroContent/>
+            <CurvedLoop
+                marqueeText="✦
+                            Check-in to earn rewards
+                            ✦
+                            Redeem points for vouchers
+                            ✦
+                            Promote your location
+                            ✦
+                            Campaign performance reports
+                            ✦
+                            Fraud prevention system"
+                curveAmount={10}
+            />
+            <div
+                style={{
+                    transform: 'scaleX(-1)',
+                    backgroundImage: 'url(/section-bg-shape.png)',
+                    backgroundPosition: '100% 700px',
+                    backgroundRepeat: 'repeat-y',
+                    backgroundSize: '100% auto',
+                }}
+            >
+                <div style={{transform: 'scaleX(-1)'}}>
+                    <Container>
+                        <AboutUs/>
+                        <OurServices/>
+                        <ImpactSolutions/>
+                        <WhyChoose/>
+                        <JoinAgency/>
+                        <HowItWork/>
+                        <CallToActionSection/>
+                        <HomeFooter/>
+                    </Container>
+                </div>
+            </div>
+        </div>
     )
 }

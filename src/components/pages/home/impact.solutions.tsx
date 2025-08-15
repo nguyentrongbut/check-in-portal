@@ -15,11 +15,11 @@ const ImpactSolutions = () => {
             before:w-[calc(100%-40px)] before:h-[calc(100%-20px)]
                 ">
 
-                <div className="relative p-20 grid grid-cols-2 gap-20">
+                <div className="relative p-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
                     <div>
-                        <FadeText className='text-[50px] mb-[60px]'>Expertise that drives real world <span
+                        <FadeText className='text-[30px] md:text-[45px] lg:text-[50px] mb-8 lg:mb-[60px]'>Expertise that drives real world <span
                             className='text-primary font-medium'>engagement</span></FadeText>
-                        <div className='grid grid-cols-2'>
+                        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-4'>
                             <div>
                                 <span className='text-primary font-medium text-[50px]'>+
                                     <CountUp
@@ -54,7 +54,7 @@ const ImpactSolutions = () => {
                         </div>
                     </div>
                     <FadeContent>
-                        <div className='flex flex-col justify-center gap-30'>
+                        <div className='flex flex-col justify-center gap-10 lg:gap-30'>
                             <div className='flex items-start gap-2'>
                                 <Asterisk className='size-8 text-primary shrink-0'/>
                                 <div>

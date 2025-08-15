@@ -10,7 +10,7 @@ interface AgencyItemProps {
 
 const AgencyItem = ({ icon: Icon, title, desc, href }: AgencyItemProps) => {
     return (
-        <div className="flex mt-5 gap-4 items-end group">
+        <div className="flex mt-5 gap-6 md:gap-4 items-end group">
             <div
                 className="
                     size-20 rounded-full flex items-center justify-center bg-primary -translate-y-5
