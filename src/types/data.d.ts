@@ -183,3 +183,24 @@ export type TSuspiciousCheckins = {
     userLocation:string,
     previousCheckIn: string,
 }
+
+export type TTopMerchants = {
+    name: string,
+    investment: number,
+}
+
+export type TMonthlyRevenues = {
+    month: string,
+    revenue: number,
+}
+
+export type TDailyRevenues = {
+    day: string,
+    revenue: number,
+}
+
+export type TDashboardAdmin = {
+    title: string,
+    value: number,
+    desc: string
+}

@@ -2,7 +2,7 @@ import {TCardOverview} from "@/types/component";
 import {formatNumber} from "@/utils/formatHelpers";
 import {Calendar, CreditCard, DollarSign, LucideIcon, Store, Users} from "lucide-react";
 import CardOverview from "@/components/common/card.overview";
-
+import {TDashboardAdmin} from "@/types/data";
 
 const iconMap: Record<string, LucideIcon> = {
     "Total Revenue": DollarSign,
@@ -18,7 +18,7 @@ const colorMap: Record<string, string> = {
     "Total Merchants": "text-blue-600",
 };
 
-const ListDashboardKpiCard = ({dashboardAdmin} : {dashboardAdmin : any}) => {
+const ListDashboardKpiCard = ({dashboardAdmin} : {dashboardAdmin : TDashboardAdmin[]}) => {
 
     const kpiCards: TCardOverview[] = dashboardAdmin.map((item) => ({
         title: item.title,

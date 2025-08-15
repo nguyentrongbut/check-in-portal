@@ -3,8 +3,9 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {formatCompactCurrency, formatCurrency} from "@/utils/formatHelpers";
+import {TMonthlyRevenues} from "@/types/data";
 
-const LineChartMonthlyRevenue = ({monthlyRevenueData}: {monthlyRevenueData: any}) => {
+const LineChartMonthlyRevenue = ({monthlyRevenueData}: {monthlyRevenueData: TMonthlyRevenues[]}) => {
     return (
         <Card>
             <CardHeader>

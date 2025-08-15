@@ -3,8 +3,9 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {formatCompactCurrency, formatCurrency} from "@/utils/formatHelpers";
+import {TDailyRevenues} from "@/types/data";
 
-const AreaChartDailyRevenue = ({dailyRevenueData} : {dailyRevenueData: any}) => {
+const AreaChartDailyRevenue = ({dailyRevenueData} : {dailyRevenueData: TDailyRevenues[]}) => {
     return (
         <Card>
             <CardHeader>

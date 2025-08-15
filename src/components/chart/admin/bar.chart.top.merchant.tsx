@@ -3,8 +3,9 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {formatCompactCurrency, formatCurrency} from "@/utils/formatHelpers";
+import {TTopMerchants} from "@/types/data";
 
-const BarChartTopMerchant = ({topMerchantsData} : {topMerchantsData: any}) => {
+const BarChartTopMerchant = ({topMerchantsData} : {topMerchantsData: TTopMerchants[]}) => {
     return (
         <Card>
             <CardHeader>
