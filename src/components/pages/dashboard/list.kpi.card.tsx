@@ -19,7 +19,7 @@ const colorMap: Record<string, string> = {
 
 const ListKpiCard = ({dashboardMetrics} : {dashboardMetrics : TDataDashboard[]}) => {
 
-    const kpiCards: TCardOverview[] = dashboardMetrics.map((item) => ({
+    const kpiCards: TCardOverview[] = dashboardMetrics?.map((item) => ({
         title: item.title,
         titleContent: formatNumber(item.value),
         desc: item.desc,
@@ -28,7 +28,7 @@ const ListKpiCard = ({dashboardMetrics} : {dashboardMetrics : TDataDashboard[]})
     }));
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {kpiCards.map((card: TCardOverview) => (
+            {kpiCards?.map((card: TCardOverview) => (
                 <CardOverview
                     key={card.title}
                     title={card.title}

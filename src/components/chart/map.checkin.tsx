@@ -18,9 +18,9 @@ export default function MapCheckin({mapCheckins} : {mapCheckins: TChartMapChecki
                 <CardDescription>Visualize campaign performance by location</CardDescription>
             </CardHeader>
             <CardContent>
-                <MapContainer center={center} zoom={13} style={{ height: 400, width: '100%' }}>
+                <MapContainer center={center} zoom={13} style={{ height: 400, width: '100%', zIndex: 10 }}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    {mapCheckins.map((location, index) => (
+                    {mapCheckins?.map((location, index) => (
                         <Marker
                             key={index}
                             position={[location.latitude, location.longitude] as LatLngExpression}

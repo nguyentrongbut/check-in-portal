@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getUserInfoFromCookie } from '@/utils/getUserInfoFromCookie';
+import {NextRequest, NextResponse} from 'next/server';
+import {getUserInfoFromCookie} from '@/utils/getUserInfoFromCookie';
 
 // 1. Define protected and public routes
-const protectedRoutes = ['/dashboard', '/admin'];
+const protectedRoutes = ['/dashboard', '/admin', '/profile'];
 const merchantOnlyRoutes = ['/voucher', '/campaign', '/wallet'];
 const publicRoutes = ['/login', '/register', '/'];
 
@@ -21,47 +21,54 @@ export async function middleware(req: NextRequest) {
 
     // 4. Handle authentication and authorization
 
-    // If not logged in and trying to access protected or merchant-only routes
+    // If user is not logged in and tries to access protected/merchant-only routes → redirect to home
     if (!role && (isProtectedRoute || isMerchantOnlyRoute)) {
-        return NextResponse.redirect(new URL('/login', req.url));
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
-    // If already logged in but trying to access public pages (login, signup, /)
+    // If user is logged in and tries to access public pages (login, register, home) → redirect by role
     if (role && isPublicRoute) {
         const redirectPath = role === 'admin' ? '/admin' : '/dashboard';
         return NextResponse.redirect(new URL(redirectPath, req.url));
     }
 
-    // Authorization logic for merchant-only routes
+    // --- AUTHORIZATION CHECK ---
+
+    // Merchant-only routes: only merchant can access
     if (isMerchantOnlyRoute) {
-        // Only admin and merchant are allowed
-        if (role === 'admin' || role === 'merchant') {
+        if (role === 'merchant') {
             return NextResponse.next();
         }
-        // Other roles → redirect to login
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
-
-    // Authorization logic for protected routes
-    if (role && isProtectedRoute) {
-        // Merchant is not allowed to access any /admin routes
-        if (role === 'merchant' && path.startsWith('/admin')) {
-            return NextResponse.redirect(new URL('/dashboard', req.url));
-        }
-
-        // Admin can access all protected routes
         if (role === 'admin') {
-            return NextResponse.next();
+            // Admin is NOT allowed here → redirect back to /admin
+            return NextResponse.redirect(new URL('/admin', req.url));
         }
-
-        // Merchant can only access dashboard and its sub-routes
-        if (role === 'merchant' && path.startsWith('/dashboard')) {
-            return NextResponse.next();
-        }
-
-        // Other roles or invalid role → redirect to login
-        return NextResponse.redirect(new URL('/login', req.url));
+        // Any other role → redirect to home
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
+    // Protected routes: restricted based on role
+    if (role && isProtectedRoute) {
+        if (role === 'admin') {
+            // Admin can ONLY access /admin and its sub-routes
+            if (path.startsWith('/admin') || path.startsWith('/profile')) {
+                return NextResponse.next();
+            }
+            return NextResponse.redirect(new URL('/admin', req.url));
+        }
+
+        if (role === 'merchant') {
+            // Merchant can ONLY access /dashboard and its sub-routes
+            if (path.startsWith('/dashboard') || path.startsWith('/profile')) {
+                return NextResponse.next();
+            }
+            return NextResponse.redirect(new URL('/', req.url));
+        }
+
+        // Other roles (e.g. customer) → redirect to home
+        return NextResponse.redirect(new URL('/', req.url));
+    }
+
+    // Default: allow
     return NextResponse.next();
 }

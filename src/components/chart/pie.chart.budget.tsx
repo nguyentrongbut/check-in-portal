@@ -25,7 +25,7 @@ export default function PieChartBudget({campaignPoints} : {campaignPoints: TChar
                             outerRadius={100}
                             label
                         >
-                            {campaignPoints.map((_, index) => (
+                            {campaignPoints?.map((_, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>

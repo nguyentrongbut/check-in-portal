@@ -1,13 +1,16 @@
 import {
     BarChart3,
     Gem,
-    Gift, Instagram, Linkedin,
+    Gift,
+    Instagram,
+    Linkedin,
     MapPin,
     MapPinCheck,
     Megaphone,
     Radar,
     ShieldCheck,
-    TicketPercent, Twitter,
+    TicketPercent,
+    Twitter,
     Wallet
 } from "lucide-react";
 import {TContentLink, TContentSection} from "@/types/component";
@@ -16,78 +19,78 @@ export const aboutItems: TContentSection[] = [
     {
         icon: MapPin,
         title: "Location Marketing",
-        desc: "Boost your brand with precise location-based marketing campaigns that attract real, verified customers.",
+        desc: "Drive real foot traffic with precise, location-based campaigns that connect nearby customers directly to your business.",
     },
     {
         icon: Gift,
         title: "Check-in Rewards",
-        desc: "Reward users instantly for visiting your locations with vouchers, discounts, and exclusive offers.",
+        desc: "Incentivize visits by rewarding customers instantly with digital vouchers, discounts, and exclusive perks.",
     },
     {
         icon: ShieldCheck,
-        title: "Fraud Prevention",
-        desc: "Ensure campaign integrity with advanced location verification and anti-fraud technology.",
+        title: "Fraud Protection",
+        desc: "Protect your budget with GPS & Wi-Fi verification that prevents fake check-ins and ensures only genuine visits count.",
     },
     {
         icon: BarChart3,
-        title: "Measurable Results",
-        desc: "Track and analyze campaign performance with transparent, real-time reporting tools.",
+        title: "Measurable Impact",
+        desc: "Access transparent, real-time reports to monitor performance, track ROI, and optimize future campaigns.",
     },
 ];
 
 export const howItWorksItems: TContentSection[] = [
     {
         icon: Megaphone,
-        title: "Launch Business Campaigns",
-        desc: "For merchants, create and manage location-based campaigns, set rewards, and track performance in real time through our dashboard.",
+        title: "Create Campaigns",
+        desc: "Merchants can easily set up campaigns, define rewards, and manage budgets directly from the dashboard.",
     },
     {
         icon: Wallet,
-        title: "Sign Up & Wallet Creation",
-        desc: "Create a free account to instantly receive your Points wallet. This will store all your earned rewards and vouchers in one place.",
+        title: "Merchant Wallet",
+        desc: "Deposit Points into your wallet to fund campaigns. Points are securely allocated to reward verified check-ins.",
     },
     {
         icon: MapPinCheck,
-        title: "Location Check-In",
-        desc: "Visit partner venues and check in using our GPS & Wi-Fi verification system to ensure authenticity and earn Points instantly.",
+        title: "Verified Check-Ins",
+        desc: "Customers visit your venue and check in using GPS & Wi-Fi validation, ensuring every rewarded visit is authentic.",
     },
     {
         icon: Gift,
-        title: "Redeem Rewards",
-        desc: "Use your Points to claim digital vouchers, discounts, and exclusive offers directly in the app with just a few taps.",
+        title: "Reward Customers",
+        desc: "Customers redeem their earned Points for vouchers or offers you provide—building loyalty and repeat business.",
     },
 ]
 
 export const ourServicesItems: TContentSection[] = [
     {
-        icon: Gem ,
-        title: "Branding & Identity",
-        desc: "Build a strong brand identity through unique check-in campaigns, visual design, and memorable customer experiences that foster lasting connections."
+        icon: Gem,
+        title: "Brand Visibility",
+        desc: "Enhance brand recognition with unique, location-driven campaigns that leave a lasting impression on customers."
     },
     {
-        icon: Radar  ,
-        title: "Digital Marketing",
-        desc: "Leverage location-based marketing to bring customers directly to your venue, boost brand awareness, and encourage repeat visits."
+        icon: Radar,
+        title: "Targeted Marketing",
+        desc: "Attract nearby customers with precise location-based promotions, boosting awareness and driving repeat visits."
     },
     {
-        icon: TicketPercent ,
-        title: "Creative Content & Voucher Production",
-        desc: "Design and deliver engaging voucher campaigns from discounts and special offers to exclusive gifts to maximize check-in participation and customer loyalty."
+        icon: TicketPercent,
+        title: "Voucher Campaigns",
+        desc: "Deliver engaging offers—from discounts to exclusive gifts—designed to maximize participation and loyalty."
     }
 ]
 
 export const whyChooseItems = [
     {
-        title: 'Data-Driven Campaign Management',
-        desc: 'Leverage real-time data and location analytics to track customer engagement, optimize campaign performance, and maximize ROI.'
+        title: 'Data-Driven Insights',
+        desc: 'Track engagement with real-time analytics to refine strategies, boost performance, and maximize campaign ROI.'
     },
     {
-        title: 'Cost-Effective & Scalable Solutions',
-        desc: 'Run impactful campaigns without overspending. Our flexible plans grow with your business needs, ensuring maximum value for every budget.'
+        title: 'Flexible & Scalable',
+        desc: 'Start small or scale big—our solutions adapt to your budget and business goals without overspending.'
     },
     {
-        title: 'Transparent & Ethical Operations',
-        desc: 'We prioritize authentic engagement with verified check-ins, ensuring campaigns maintain credibility and deliver genuine customer interactions.'
+        title: 'Verified Engagement',
+        desc: 'Ensure every result is authentic. With strict check-in validation, you gain trust and credibility with your campaigns.'
     },
 ]
 
@@ -95,19 +98,19 @@ export const joinAgencyItems: TContentLink[] = [
     {
         icon: Twitter,
         href: 'https://x.com/',
-        title: 'Follow Us On Twitter',
-        desc: '@checkInPortal'
+        title: 'Follow Us on X (Twitter)',
+        desc: '@CheckInPoint'
     },
     {
         icon: Linkedin,
         href: 'https://www.linkedin.com/',
-        title: 'Join Us On Linked In',
-        desc: 'user.checkInPortal'
+        title: 'Connect on LinkedIn',
+        desc: 'CheckInPoint Business'
     },
     {
         icon: Instagram,
         href: 'https://www.instagram.com/',
-        title: 'Follow On Instagram',
-        desc: '@checkInPortal_insta'
+        title: 'Discover on Instagram',
+        desc: '@checkinpoint_official'
     },
 ]
