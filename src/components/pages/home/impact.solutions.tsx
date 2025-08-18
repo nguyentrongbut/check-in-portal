@@ -32,8 +32,7 @@ const ImpactSolutions = () => {
                                     />
                                     %</span>
                                 <FadeContent className='mt-3'>
-                                    Increase in verified customer visits through location-based
-                                    check-ins.
+                                    Boost real customer traffic with GPS & Wi-Fi check-in validation.
                                 </FadeContent>
                             </div>
                             <div>
@@ -59,14 +58,14 @@ const ImpactSolutions = () => {
                                 <Asterisk className='size-8 text-primary shrink-0'/>
                                 <div>
                                     <strong className='font-medium text-[22px]'>Location-based Marketing:</strong>
-                                    <span className='ml-2'>Empower your brand with measurable, in-person engagement. Drive traffic to your venues, verify visits via GPS & Wi-Fi, and reward customers instantly.</span>
+                                    <span className='ml-2'>Easily launch measurable campaigns that drive real in-store visits.</span>
                                 </div>
                             </div>
                             <div className='flex items-start gap-2'>
                                 <Asterisk className='size-8 text-primary shrink-0'/>
                                 <div>
                                     <strong className='font-medium text-[22px]'>Reward & Voucher Solutions:</strong>
-                                    <span className='ml-2'>Offer digital vouchers, discounts, and exclusive perks redeemable directly in the app enhancing customer loyalty and repeat visits.</span>
+                                    <span className='ml-2'>Offer digital vouchers, discounts, and exclusive perks to increase loyalty.</span>
                                 </div>
                             </div>
                         </div>
