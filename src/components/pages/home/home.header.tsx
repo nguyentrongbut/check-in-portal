@@ -1,18 +1,15 @@
 import {Button} from "@/components/ui/button";
-import {BarChart3} from "lucide-react";
 import Container from "@/components/common/container";
 import Link from "next/link";
+import Logo from "@/components/common/logo";
 
 const HomeHeader = () => {
     return (
         <header className='absolute w-full border-b border-[#ffffff1a]'>
             <Container className='h-[105px] flex items-center justify-between'>
 
-                {/* Logo*/}
-                <div className="flex items-center space-x-2">
-                    <BarChart3 className="size-12 text-primary"/>
-                    <span className="text-2xl font-bold">Check-in Portal</span>
-                </div>
+                {/* Logo */}
+                <Logo/>
 
                 {/* group btn action */}
                 <div className='flex items-center gap-4 h-[45px]'>

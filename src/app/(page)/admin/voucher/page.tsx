@@ -12,7 +12,7 @@ const VoucherPage = async () => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold">Voucher Management</h1>
+                    <h2 className="text-3xl font-bold">Voucher Management</h2>
                     <p className="opacity-60">Create and manage vouchers for your campaigns</p>
                 </div>
                <Link href='/voucher/create'>

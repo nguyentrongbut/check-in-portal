@@ -2,6 +2,13 @@ import FormCreateCampaign from "@/components/pages/campaign/create/form.create.c
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
 import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Create Campaign - Local Hunt",
+    description:
+        "Create a new Local Hunt campaign to attract customers with check-in marketing, reward points, and digital vouchers.",
+};
 
 const CreateCampaign = async () => {
     const userInfo = await getUserInfoFromCookie()

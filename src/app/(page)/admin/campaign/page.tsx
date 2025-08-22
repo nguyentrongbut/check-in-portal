@@ -2,6 +2,13 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {getPendingCampaigns} from "@/lib/actions/campaign";
 import {DataTable} from "@/components/common/data.table";
 import {columnsPendingCampaign} from "@/components/pages/admin/campaign/columns.pending.campaign";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Review Campaigns - Local Hunt Admin",
+    description:
+        "Review and manage pending campaigns in the Local Hunt admin dashboard. Approve or reject submissions to ensure quality and compliance.",
+};
 
 const ReviewCampaignPage = async () => {
 

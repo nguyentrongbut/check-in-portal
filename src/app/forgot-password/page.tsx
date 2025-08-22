@@ -1,5 +1,29 @@
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Forgot Password - Local Hunt",
+    description:
+        "Reset your Local Hunt account password. Enter your email to receive secure password reset instructions.",
+    robots: {
+        index: false,
+        follow: false,
+    },
+    openGraph: {
+        title: "Forgot Password - Local Hunt",
+        description:
+            "Easily reset your password and regain access to your Local Hunt account.",
+        url: "https://localhunt.io.vn/forgot-password",
+        siteName: "Local Hunt",
+        type: "website",
+    },
+    twitter: {
+        card: "summary",
+        title: "Forgot Password - Local Hunt",
+        description: "Reset your Local Hunt account password securely.",
+    },
+};
 
 const ForgotPassword = () => {
     return (

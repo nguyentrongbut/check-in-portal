@@ -1,12 +1,12 @@
 'use client'
 
-import {BarChart3} from "lucide-react";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {adminNavItems, allocatorNavItems} from "@/constants/sidebar";
 import {usePathname} from "next/navigation";
 import {useUserInfoFromCookie} from "@/hooks/useUserInfoFromCookie";
 import UserInfoSidebar from "@/components/layout/sidebar/user.info.sidebar";
+import Logo from "@/components/common/logo";
 
 const SidebarComponent = () => {
     const userInfo = useUserInfoFromCookie();
@@ -21,15 +21,10 @@ const SidebarComponent = () => {
         <aside className='fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200'>
             <div className='flex flex-col h-full'>
                 {/* Logo */}
-                <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-                    <div className="flex items-center space-x-2">
-                        <BarChart3 className="size-8 text-primary"/>
-                        <span className="text-xl font-bold text-gray-900">Check-in Portal</span>
-                    </div>
-                </div>
+                <Logo href={userRole === 'admin' ? "/admin/dashboard" : "/dashboard" }/>
 
                 {/* Navigation */}
-                <nav className="flex-1 px-4 py-6 space-y-2">
+                <nav className="flex-1 px-4 pb-6 space-y-2">
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
                         {userRole === "admin" ? "Admin Panel" : "Merchant"}
                     </div>

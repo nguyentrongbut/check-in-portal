@@ -12,6 +12,13 @@ import {
     getDashboardMetrics,
     getMapCheckins
 } from "@/lib/actions/chart";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Merchant Dashboard - Local Hunt",
+    description:
+        "View your Local Hunt dashboard: monitor campaigns, track customer check-ins, analyze budget usage, and measure performance metrics in real-time.",
+};
 
 const MerchantDashboard = async () => {
     const userInfo: TUser = await getUserInfoFromCookie();

@@ -7,6 +7,13 @@ import {columnsHistoryTransaction} from "@/components/pages/wallet/columns.histo
 import DialogTopUp from "@/components/pages/wallet/dialog.top.up";
 import {formatNumber} from "@/utils/formatHelpers";
 import {getWallet} from "@/lib/actions/wallet";
+import {Metadata} from "next";
+
+export const metadata : Metadata = {
+    title: "Wallet - Local Hunt",
+    description:
+        "Manage your Local Hunt wallet: view balance, exchange rates, top-up points, and track your transaction history.",
+};
 
 const WalletPage = async () => {
     const userInfo = await getUserInfoFromCookie()

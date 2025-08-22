@@ -3,6 +3,13 @@ import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import FormUpdateProfile from "@/components/pages/profile/form.update.profile";
 import {getUser} from "@/lib/actions/auth";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Profile Settings - Local Hunt",
+    description:
+        "Manage your Local Hunt profile: update personal information, account settings, and user preferences.",
+};
 
 const ProfilePage = async () => {
     const userInfo = await getUserInfoFromCookie()

@@ -2,7 +2,13 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {getSuspiciousCheckins} from "@/lib/actions/fraud.detection";
 import {columnsFraudDetection} from "@/components/pages/admin/fraud/columns.fraud.detection";
 import {DataTable} from "@/components/common/data.table";
-import {AlertTriangle} from "lucide-react";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Fraud Detection - Local Hunt Admin",
+    description:
+        "Monitor and review suspicious check-ins flagged by Local Hunt's fraud detection system to ensure campaign integrity.",
+};
 
 const FraudDetectionPage = async () => {
 

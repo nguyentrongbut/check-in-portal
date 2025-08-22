@@ -3,6 +3,13 @@ import {getDailyRevenues, getDashboardAdmin, getMonthlyRevenues, getTopMerchants
 import LineChartMonthlyRevenue from "@/components/chart/admin/line.chart.monthly.revenue";
 import AreaChartDailyRevenue from "@/components/chart/admin/area.chart.daily.revenue";
 import ListDashboardKpiCard from "@/components/pages/admin/dashboard/list.dashboard.kpi.card";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Admin Dashboard - Local Hunt",
+    description:
+        "Monitor platform performance with Local Hunt Admin Dashboard: view KPIs, track revenues, analyze top merchants, and review daily activities.",
+};
 
 const AdminDashboard = async () => {
 
