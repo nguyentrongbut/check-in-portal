@@ -50,7 +50,7 @@ const WhyChoose = () => {
                         transitionDuration={800}
                         playOnce={false}
                     >
-                        <Image src='/why-choose-image.jpg' alt='why choose image' width={640} height={576}
+                        <Image src='/why-choose-image.jpg' alt='why choose Local Hunt image' width={640} height={576}
                                className='object-cover size-full'
                                loading='lazy'
                         />

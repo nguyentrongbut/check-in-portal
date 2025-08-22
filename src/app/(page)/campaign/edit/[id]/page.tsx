@@ -5,6 +5,18 @@ import {Params} from "@/types/common";
 import {TCampaign} from "@/types/data";
 import {getCampaign} from "@/lib/actions/campaign";
 
+export async function generateMetadata({ params }: { params: Params }) {
+
+    const {id} = await params
+    const campaign: TCampaign = await getCampaign(id)
+
+    return {
+        title: `${campaign?.name} - Edit Campaign | Local Hunt`,
+        description: "Edit your Local Hunt campaign details: update name, description, rewards, and campaign settings.",
+    };
+}
+
+
 const EditCampaign = async ({params}: { params: Params }) => {
 
     const {id} = await params

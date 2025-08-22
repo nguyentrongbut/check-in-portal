@@ -16,6 +16,16 @@ import QRCodePrint from "@/components/pages/campaign/detail/qr.code.print";
 import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
+export async function generateMetadata({params}: { params: Params }) {
+    const {id} = await params
+    const campaign: TCampaign = await getCampaign(id)
+
+    return{
+        title: `${campaign?.name} - Local Hunt`,
+        description: "View campaign details, performance summary, location, and check-in history in Local Hunt.",
+    }
+}
+
 const DetailPage = async ({params}: { params: Params }) => {
     const {id} = await params
     const campaign: TCampaign = await getCampaign(id)
@@ -31,7 +41,7 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold">{campaign?.name}</h1>
+                        <h2 className="text-3xl font-bold">{campaign?.name}</h2>
                         <p className="text-gray-600">{campaign?.description}</p>
                     </div>
                 </div>

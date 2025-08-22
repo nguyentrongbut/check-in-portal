@@ -2,6 +2,33 @@ import FormLogin from "@/components/pages/auth/form.login";
 import Link from "next/link";
 import AuthImgContent from "@/components/pages/auth/auth.img.content";
 import AuthWrapper from "@/components/pages/auth/auth.wrapper";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'Login - Local Hunt',
+    description: 'Sign in to your Local Hunt account to manage campaigns, check rewards, and access the merchant dashboard.',
+    alternates: {
+        canonical: 'https://localhunt.io.vn/login',
+    },
+    robots: {
+        index: false,
+        follow: true,
+    },
+    openGraph: {
+        title: 'Login - Local Hunt',
+        description: 'Access your Local Hunt account securely.',
+        url: 'https://localhunt.io.vn/login',
+        siteName: 'Local Hunt',
+        images: [
+            {
+                url: '/og-localhunt.png',
+                width: 1200,
+                height: 630,
+                alt: 'Local Hunt Logo',
+            },
+        ],
+    },
+};
 
 const LoginPage =  () => {
 

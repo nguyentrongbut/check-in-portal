@@ -6,6 +6,13 @@ import Link from "next/link";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
 import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Campaign Management - Local Hunt",
+    description:
+        "Manage your Local Hunt campaigns: create, edit, and track check-in marketing campaigns to engage customers effectively.",
+};
 
 const Campaign = async () => {
     const user = await getUserInfoFromCookie()

@@ -23,7 +23,7 @@ const HeroContent = () => {
             />
            <Container>
                <div className='absolute top-1/2 -translate-y-1/2 z-10 mt-10'>
-                   <h1 className='text-[32px] md:text-[64px] lg:text-[100px] xl:text-[120px] flex flex-col md:block gap-3 items-center'>
+                   <h2 className='text-[32px] md:text-[64px] lg:text-[100px] xl:text-[120px] flex flex-col md:block gap-3 items-center'>
                        <span className='font-light block -mb-4 md:-mb-7 lg:-mb-10'>Innovative solutions for</span>
                        <TextType
                            className='font-bold'
@@ -38,7 +38,7 @@ const HeroContent = () => {
                            textColors={["#ff6c2f"]}
                            showCursor={false}
                        />
-                   </h1>
+                   </h2>
                   <Container>
                       <div className='lg:ml-[150px] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-between items-center mt-10'>
                           <div className='flex items-center justify-center'>
@@ -54,7 +54,7 @@ const HeroContent = () => {
                           </div>
                           <div className='lg:w-[60%] text-center lg:text-start'>
                               <p>
-                                  At Check-in Point, we combine GPS, Wi-Fi, and a Check-in-to-Reward model to deliver seamless reward experiences for users while enabling businesses to attract verified in-store visits that can be measured and optimized.
+                                  At Local Hunt, we combine GPS, Wi-Fi, and a Check-in-to-Reward model to deliver seamless reward experiences for users while enabling businesses to attract verified in-store visits that can be measured and optimized.
                               </p>
                           </div>
                       </div>

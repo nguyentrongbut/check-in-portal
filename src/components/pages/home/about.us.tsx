@@ -10,7 +10,7 @@ const AboutUs = () => {
     return (
         <div className='flex flex-col gap-10 md:flex-row justify-between pt-40 pb-20 '>
             <div className='md:w-[45%]'>
-                <HomeTitle title="About Check-in Point"/>
+                <HomeTitle title="About Local Hunt"/>
                 <HomeDesc
                     beforeHighlight="Crafting"
                     highlight="location-based rewards"

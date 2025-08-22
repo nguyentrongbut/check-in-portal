@@ -30,7 +30,7 @@ const VoucherDetailPage = async ({params}: { params: Params }) => {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold">{voucher?.title}</h1>
+                        <h2 className="text-3xl font-bold">{voucher?.title}</h2>
                         <p className="text-gray-600">{voucher?.description}</p>
                     </div>
                 </div>
