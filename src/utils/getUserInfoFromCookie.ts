@@ -11,7 +11,7 @@ export async function getUserInfoFromCookie()  {
     try {
         const userInfo = JSON.parse(userInfoRaw);
 
-        if (userInfo.id && userInfo.role && userInfo.name) {
+        if (userInfo.id && userInfo.role) {
             return userInfo;
         }
 

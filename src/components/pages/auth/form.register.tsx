@@ -15,7 +15,7 @@ import InputIcon from "@/components/common/input.icon";
 import {Mail, MapPin, Phone} from "lucide-react";
 
 const formSchema = z.object({
-    name: z.string().min(4, 'Name must be at least 4 characters long'),
+    fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().optional(),
     password: z.string()
@@ -41,7 +41,7 @@ const FormRegister = () => {
     const form = useForm<RegisterForm>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: '',
+            fullName: '',
             email: '',
             phone: '',
             password: '',
@@ -55,7 +55,7 @@ const FormRegister = () => {
         setIsSubmitting(true);
         try {
             const result = await registerUser(values);
-            if (result !== 201) return toast.error('Register failed. Please check your credentials!');
+            if (result !== 200) return toast.error('Register failed. Please check your credentials!');
 
             toast.success('Register successful!');
 
@@ -75,7 +75,7 @@ const FormRegister = () => {
                 className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="fullName"
                     render={({field}) => (
                         <FormItem>
                             <FormControl>
