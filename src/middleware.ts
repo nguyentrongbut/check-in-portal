@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
 
     // If user is logged in and tries to access public pages (login, register, home) → redirect by role
     if (role && isPublicRoute) {
-        const redirectPath = role === 'admin' ? '/admin' : '/dashboard';
+        const redirectPath = role === 'ROLE_ADMIN' ? '/admin/dashboard' : '/dashboard';
         return NextResponse.redirect(new URL(redirectPath, req.url));
     }
 
@@ -36,12 +36,12 @@ export async function middleware(req: NextRequest) {
 
     // Merchant-only routes: only merchant can access
     if (isMerchantOnlyRoute) {
-        if (role === 'merchant') {
+        if (role === 'ROLE_ALLOCATOR') {
             return NextResponse.next();
         }
-        if (role === 'admin') {
+        if (role === 'ROLE_ADMIN') {
             // Admin is NOT allowed here → redirect back to /admin
-            return NextResponse.redirect(new URL('/admin', req.url));
+            return NextResponse.redirect(new URL('/admin/dashboard', req.url));
         }
         // Any other role → redirect to home
         return NextResponse.redirect(new URL('/', req.url));
@@ -49,15 +49,15 @@ export async function middleware(req: NextRequest) {
 
     // Protected routes: restricted based on role
     if (role && isProtectedRoute) {
-        if (role === 'admin') {
+        if (role === 'ROLE_ADMIN') {
             // Admin can ONLY access /admin and its sub-routes
             if (path.startsWith('/admin') || path.startsWith('/profile')) {
                 return NextResponse.next();
             }
-            return NextResponse.redirect(new URL('/admin', req.url));
+            return NextResponse.redirect(new URL('/admin/dashboard', req.url));
         }
 
-        if (role === 'merchant') {
+        if (role === 'ROLE_ALLOCATOR') {
             // Merchant can ONLY access /dashboard and its sub-routes
             if (path.startsWith('/dashboard') || path.startsWith('/profile')) {
                 return NextResponse.next();

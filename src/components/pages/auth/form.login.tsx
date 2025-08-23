@@ -40,12 +40,13 @@ const FormLogin = () => {
         setIsSubmitting(true);
         try {
             const result = await loginUser(values);
+
             if (!result) return toast.error('Login failed. Please check your credentials!');
-            const role = result?.role || '';
+            const roles = result?.roles[0] || '';
 
             toast.success('Login successful!');
 
-            if (role !== 'admin') return router.push('/dashboard');
+            if (roles[0] !== 'ROLE_ADMIN') return router.push('/dashboard');
             return router.push('/admin/dashboard');
         } catch (error) {
             toast.error('Login failed. Please check your credentials!');
