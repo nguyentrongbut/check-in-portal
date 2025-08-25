@@ -1,5 +1,5 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Calendar, CalendarX, HouseWifi, MapPin, Target, Wifi} from "lucide-react";
+import {Calendar, CalendarX, HouseWifi, Target, Wifi} from "lucide-react";
 import {TCampaign} from "@/types/data";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import {Badge} from "@/components/ui/badge";
@@ -19,7 +19,7 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
                 </div>
                 <div>
                     <h4 className="font-medium text-sm text-gray-500 mb-1">Status</h4>
-                    <Badge variant={getBadgeStatusVariant(campaign?.status)}>{campaign?.status}</Badge>
+                    <Badge variant={getBadgeStatusVariant(campaign?.status.toLowerCase())}>{campaign?.status.toLowerCase()}</Badge>
                 </div>
             </div>
 
