@@ -6,7 +6,7 @@ import {useState, useRef, useEffect} from 'react';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {defaultIcon} from '@/utils/leaflet-icon';
-import {MapPin} from 'lucide-react';
+import {Loader2, MapPin} from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 
 type LocationValue = {
@@ -141,14 +141,19 @@ export default function LocationPicker({
         <div className="space-y-3">
             {!view && (
                 <div className="flex gap-2">
-                    <Input
-                        placeholder={placeholder}
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className={error ? "border-red-500" : ""}
-                        disabled={isLoading}
-                    />
+                    <div className="relative w-full">
+                        <Input
+                            placeholder={placeholder}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className={error ? "border-red-500 pr-8" : "pr-8"}
+                            disabled={isLoading}
+                        />
+                        {isLoading && (
+                            <Loader2 className="absolute right-2 top-1/2 -translate-y-1/2 size-4 animate-spin text-primary"/>
+                        )}
+                    </div>
                     <Button
                         type="button"
                         variant="outline"

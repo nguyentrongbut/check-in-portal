@@ -113,7 +113,15 @@ const FormCreateCampaign = () => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2.5">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-2.5"
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.target instanceof HTMLInputElement) {
+                        e.preventDefault();
+                    }
+                }}
+            >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <FormField name="name" control={form.control} render={({field}) => (
                         <FormItem>
@@ -131,9 +139,13 @@ const FormCreateCampaign = () => {
                                     description='This value determines how many points a user receives for each check-in they complete. Higher points encourage more frequent check-ins.'
                                 />
                                 <FormControl>
-                                    <Input type="number"
-                                           {...field}
-                                           onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                    <Input
+                                        type="number"
+                                        {...field}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                        }}
                                     />
                                 </FormControl>
                                 <FormMessage/>
@@ -146,9 +158,14 @@ const FormCreateCampaign = () => {
                                     description='This value defines the total number of points a user can accumulate from completing check-ins. A higher point budget allows users to earn more rewards over time, encouraging consistent engagement and participation.'
                                 />
                                 <FormControl>
-                                    <Input type="number"
-                                           {...field}
-                                           onChange={(e) => field.onChange(e.target.valueAsNumber)}/>
+                                    <Input
+                                        type="number"
+                                        {...field}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                        }}
+                                    />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
