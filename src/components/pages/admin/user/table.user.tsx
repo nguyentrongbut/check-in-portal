@@ -3,39 +3,29 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {DataTable} from "@/components/common/data.table";
 import {columnsUser} from "@/components/pages/admin/user/columns.user";
-import {useEffect, useState} from "react";
-import {TStatusUser, TUser} from "@/types/data";
+import { useState} from "react";
+import {TUser} from "@/types/data";
 import {Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
+import {useRouter, useSearchParams} from "next/navigation";
 
 const TableUser = ({listUser}: { listUser: TUser[] }) => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-    const [users, setUsers] = useState<TUser[]>(listUser);
-    const [roleFilter, setRoleFilter] = useState<string>("all");
-    const [statusFilter, setStatusFilter] = useState<string>("all");
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [roleFilter, setRoleFilter] = useState<string>(searchParams.get("role") || "all");
+    const [statusFilter, setStatusFilter] = useState<string>(searchParams.get("status") || "all");
+    const [searchTerm, setSearchTerm] = useState<string>(searchParams.get("keyword") || "");
 
-    useEffect(() => {
-        setUsers(listUser);
-    }, [listUser]);
-
-    const handleStatusChange = (userId: number, newStatus: TStatusUser) => {
-        setUsers(prev =>
-            prev.map(user =>
-                user.id === userId ? {...user, status: newStatus} : user
-            )
-        );
+    const updateQueryParam = (key: string, value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (value === "all" || value === "") {
+            params.delete(key);
+        } else {
+            params.set(key, value);
+        }
+        router.push(`?${params.toString()}`, { scroll: false });
     };
-
-    const filteredUsers = users.filter((user) => {
-        const roleMatches = roleFilter === "all" || user.role === roleFilter;
-        const statusMatches = statusFilter === "all" || user.status === statusFilter;
-        const searchMatches =
-            user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchTerm.toLowerCase());
-
-        return roleMatches && statusMatches && searchMatches;
-    });
 
     return (
         <>
@@ -46,22 +36,37 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
                     <Input
                         placeholder="Search users..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            updateQueryParam("keyword", e.target.value);
+                        }}
                         className="pl-10"
                     />
                 </div>
-                <Select onValueChange={(value) => setRoleFilter(value)} defaultValue="all">
+                <Select
+                    onValueChange={(value) => {
+                        setRoleFilter(value);
+                        updateQueryParam("role", value);
+                    }}
+                    value={roleFilter}
+                >
                     <SelectTrigger className="w-full sm:w-[150px]">
                         <SelectValue placeholder="Filter by role"/>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All Role</SelectItem>
                         <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="merchant">Merchant</SelectItem>
+                        <SelectItem value="allocator">Merchant</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                 </Select>
-                <Select onValueChange={(value) => setStatusFilter(value)} defaultValue='all'>
+                <Select
+                    onValueChange={(value) => {
+                        setStatusFilter(value);
+                        updateQueryParam("status", value);
+                    }}
+                    value={statusFilter}
+                >
                     <SelectTrigger className="w-full sm:w-[150px]">
                         <SelectValue placeholder="Filter by status"/>
                     </SelectTrigger>
@@ -73,7 +78,7 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
                 </Select>
             </div>
 
-            <DataTable data={filteredUsers} columns={columnsUser(handleStatusChange)}/>
+            <DataTable data={listUser} columns={columnsUser}/>
         </>
     )
 }

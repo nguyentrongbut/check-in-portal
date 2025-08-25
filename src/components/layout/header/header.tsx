@@ -39,7 +39,7 @@ const Header = () => {
             )}
             <h3 className='uppercase font-medium text-lg opacity-60'>
                 {pathname === "/dashboard"
-                    ? `Welcome ${name}!`
+                    ? `Welcome ${name || 'Merchant'} !`
                     : getPageTitleFromNavItems(pathname, role)}
             </h3>
         </header>

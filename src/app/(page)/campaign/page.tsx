@@ -5,7 +5,6 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
-import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
@@ -15,9 +14,10 @@ export const metadata: Metadata = {
 };
 
 const Campaign = async () => {
-    const user = await getUserInfoFromCookie()
-    const { id } = user
-    const listCampaign = await getCampaigns(id)
+
+    const data = await getCampaigns()
+
+    const listCampaign = data?.items
 
     return (
         <div>

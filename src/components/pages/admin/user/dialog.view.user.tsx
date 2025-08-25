@@ -12,10 +12,10 @@ import {Button} from "@/components/ui/button";
 import {Eye} from "lucide-react";
 import {TUser} from "@/types/data";
 import {useEffect, useState} from "react";
-import {getUser} from "@/lib/actions/auth";
 import {Badge} from "@/components/ui/badge";
 import {getBadgeRoleVariant, getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
+import {getUser} from "@/lib/actions/user";
 
 const DialogViewUser = ({userId}: {userId: number}) => {
 
@@ -44,6 +44,8 @@ const DialogViewUser = ({userId}: {userId: number}) => {
         }
     }, [open, userId]);
 
+    console.log("user:: ", user)
+
     if (loading) return 'Loading...';
 
     return (
@@ -57,7 +59,7 @@ const DialogViewUser = ({userId}: {userId: number}) => {
                 <DialogHeader>
                     <DialogTitle>User Profile</DialogTitle>
                     <DialogDescription>
-                        Detailed information for <span className='capitalize'>{user?.name}</span>
+                        Detailed information for <span className='capitalize'>{user?.fullName}</span>
                     </DialogDescription>
                 </DialogHeader>
                 {user && (
@@ -67,19 +69,23 @@ const DialogViewUser = ({userId}: {userId: number}) => {
                                 <h4 className="font-medium">Basic Information</h4>
                                 <div className="space-y-2 text-sm mt-2">
                                     <p>
-                                        <strong>Name:</strong> {user?.name}
+                                        <strong>Name:</strong> {user?.fullName}
                                     </p>
                                     <p>
                                         <strong>Email:</strong> {user?.email}
                                     </p>
                                     <div>
                                         <strong>Role: </strong>
-                                        <Badge variant={getBadgeRoleVariant(user?.role)}>{user?.role}</Badge>
+                                        <Badge
+                                            variant={getBadgeRoleVariant(user?.role?.toLowerCase())}
+                                        >
+                                            {user?.role?.toLowerCase() === "allocator" ? "merchant" : user?.role?.toLowerCase()}
+                                        </Badge>
                                     </div>
 
                                     <div>
                                         <strong>Status: </strong>
-                                        <Badge variant={getBadgeStatusVariant(user?.status)}>{user?.status}</Badge>
+                                        <Badge variant={getBadgeStatusVariant(user?.status?.toLowerCase())}>{user?.status?.toLowerCase()}</Badge>
                                     </div>
                                 </div>
                             </div>

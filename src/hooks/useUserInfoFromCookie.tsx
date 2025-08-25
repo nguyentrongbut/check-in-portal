@@ -21,7 +21,7 @@ export function useUserInfoFromCookie(): UserInfo | null {
             const decoded = decodeURIComponent(raw);
             const parsed = JSON.parse(decoded);
 
-            if (parsed?.id && parsed?.role && parsed?.name) {
+            if (parsed?.id && parsed?.role) {
                 setUserInfo(parsed);
             }
         } catch (err) {

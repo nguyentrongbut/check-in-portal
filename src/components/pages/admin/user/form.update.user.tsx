@@ -25,7 +25,7 @@ const formSchema = z.object({
         z.string().url("Avatar must be a valid URL or an uploaded image file."),
         z.instanceof(File)
     ]),
-    name: z.string().min(4, 'Name must be at least 4 characters long'),
+    fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
     address: z.string().min(1, 'Address cannot be empty'),
@@ -43,12 +43,12 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
         resolver: zodResolver(formSchema),
         defaultValues: {
             avatar: infoUser.avatar || '',
-            name: infoUser.name ?? '',
+            fullName: infoUser.fullName ?? '',
             email: infoUser.email ?? '',
             phone: infoUser.phone ?? '',
             address: infoUser.address ?? '',
-            role: infoUser.role ?? 'merchant',
-            status: infoUser.status ?? 'active',
+            role: (infoUser.role.toLowerCase() === 'allocator' ? 'merchant' : infoUser.role.toLowerCase()) as typeof roleOptions[number],
+            status: (infoUser.status?.toLowerCase() ?? 'active') as typeof statusOptions[number],
         },
     });
 
@@ -104,7 +104,7 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
                 />
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="fullName"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Name</FormLabel>

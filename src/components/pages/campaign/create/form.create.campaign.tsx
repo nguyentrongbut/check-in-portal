@@ -21,21 +21,19 @@ export const formSchema = z.object({
     description: z.string().optional(),
     startDate: z.date(),
     endDate: z.date(),
-    startTime: z.string().min(1, "Start time is required"),
-    endTime: z.string().min(1, "End time is required"),
     location: z.object({
         lat: z.number(),
         lng: z.number(),
     }).nullable(),
-    ssid: z.string().min(1),
-    bssid: z.string().min(1),
-    rewardPerCheckin: z.number().min(1),
-    pointBudget: z.number().min(1),
+    requiredWifiSsid: z.string().min(1),
+    requiredWifiBssid: z.string().min(1),
+    pointsPerCheckin: z.number().min(1),
+    totalBudget: z.number().min(1),
 });
 
 export type CreateCampaignForm = z.infer<typeof formSchema>;
 
-const FormCreateCampaign = ({userId} : {userId: number}) => {
+const FormCreateCampaign = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
@@ -47,13 +45,11 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
             description: "",
             startDate: undefined,
             endDate: undefined,
-            startTime: "",
-            endTime: "",
             location: null,
-            ssid: "",
-            bssid: "",
-            rewardPerCheckin: 10,
-            pointBudget: 1000,
+            requiredWifiSsid: "",
+            requiredWifiBssid: "",
+            pointsPerCheckin: 10,
+            totalBudget: 1000
         },
     });
 
@@ -61,9 +57,9 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
         setIsSubmitting(true);
         try {
 
-            const result = await createCampaign(values, userId);
+            const result = await createCampaign(values);
 
-            if (result === 201) {
+            if (result === 200) {
                 toast.success("Campaign created successfully");
                 router.push("/campaign");
                 return
@@ -91,14 +87,14 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
                     )}/>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <FormField name="rewardPerCheckin" control={form.control} render={({field}) => (
+                        <FormField name="pointsPerCheckin" control={form.control} render={({field}) => (
                             <FormItem>
                                 <FormLabel>Points per Check-in</FormLabel>
                                 <FormControl><Input type="number" {...field} /></FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
-                        <FormField name="pointBudget" control={form.control} render={({field}) => (
+                        <FormField name="totalBudget" control={form.control} render={({field}) => (
                             <FormItem>
                                 <FormLabel>Total Point Budget</FormLabel>
                                 <FormControl><Input type="number" {...field} /></FormControl>
@@ -108,7 +104,7 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <FormField
                         name="startDate"
                         control={form.control}
@@ -118,20 +114,6 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
                                 <FormControl>
                                     <CalendarDate value={field.value} onChange={field.onChange}
                                                   placeholder='Select start date'/>
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        name="startTime"
-                        control={form.control}
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Start Time</FormLabel>
-                                <FormControl>
-                                    <Input type="time"  {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -153,19 +135,6 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
                         )}
                     />
 
-                    <FormField
-                        name="endTime"
-                        control={form.control}
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>End Time</FormLabel>
-                                <FormControl>
-                                    <Input type="time" {...field} />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
                 </div>
 
                 <FormField name="description" control={form.control} render={({field}) => (
@@ -179,14 +148,14 @@ const FormCreateCampaign = ({userId} : {userId: number}) => {
                 )}/>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <FormField name="ssid" control={form.control} render={({field}) => (
+                    <FormField name="requiredWifiSsid" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Wi-Fi SSID</FormLabel>
                             <FormControl><Input {...field} placeholder="e.g. CoffeeShop_WiFi"/></FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
-                    <FormField name="bssid" control={form.control} render={({field}) => (
+                    <FormField name="requiredWifiBssid" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Wi-Fi BSSID (MAC address)</FormLabel>
                             <FormControl><Input {...field} placeholder="e.g. A4:6C:2A:5B:3F:01"/></FormControl>

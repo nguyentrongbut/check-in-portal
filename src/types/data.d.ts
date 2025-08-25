@@ -8,7 +8,7 @@ export type TStatusUser = 'active' | 'inactive' | 'banned';
 
 export type TUser = {
     id: number,
-    name: string,
+    fullName: string,
     email: string,
     phone: string,
     address: string,
