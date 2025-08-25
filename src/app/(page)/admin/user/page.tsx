@@ -23,9 +23,9 @@ export interface GetUsersParams {
 }
 
 
-const UserManagement = async ({searchParams}: { searchParams : GetUsersParams }) => {
+const UserManagement = async ({searchParams}: { searchParams : Promise<{ [key: string]: string | string[] | undefined }> }) => {
 
-    const params = await searchParams;
+    const params: GetUsersParams = await searchParams;
     const data = await getUsers({
         keyword: params.keyword,
         role: params.role,

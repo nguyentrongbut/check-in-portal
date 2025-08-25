@@ -2,11 +2,11 @@
 
 import {MapContainer, TileLayer, Marker, useMapEvents} from 'react-leaflet';
 import {LatLngExpression, Map} from 'leaflet';
-import {useEffect, useState, useCallback, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {defaultIcon} from '@/utils/leaflet-icon';
-import {MapPin, Search} from 'lucide-react';
+import {MapPin} from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 
 type LocationValue = {
@@ -21,133 +21,79 @@ type Props = {
     view?: boolean;
 };
 
+// component con: click map
+function ClickHandler({onSelect}: { onSelect: (lat: number, lng: number) => void }) {
+    useMapEvents({
+        click(e) {
+            onSelect(e.latlng.lat, e.latlng.lng);
+        },
+    });
+    return null;
+}
+
 export default function LocationPicker({
                                            value,
                                            onChange,
-                                           placeholder = "Enter address or coordinates (lat,lng)",
+                                           placeholder = "Enter location or address",
                                            view = false,
                                        }: Props) {
-    const [position, setPosition] = useState<LatLngExpression>([21.0285, 105.8542]);
+    const [position, setPosition] = useState<LatLngExpression>([21.0285, 105.8542]); // default Hanoi
     const [inputValue, setInputValue] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [addressLabel, setAddressLabel] = useState<string | null>(null);
-    const [mapKey, setMapKey] = useState(0);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const mapRef = useRef<Map | null>(null);
 
-    const locationToString = useCallback((location: LocationValue): string => {
-        if (!location) return '';
-        return `${location.lat},${location.lng}`;
-    }, []);
-
-    const parseCoordinates = useCallback((coordString: string): LocationValue => {
-        if (!coordString.trim()) return null;
-        const coords = coordString.split(',').map(coord => parseFloat(coord.trim()));
-        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-            if (coords[0] >= -90 && coords[0] <= 90 && coords[1] >= -180 && coords[1] <= 180) {
-                return {lat: coords[0], lng: coords[1]};
-            }
-        }
-        return null;
-    }, []);
-
-    const reverseGeocode = async (lat: number, lng: number) => {
+    // reverse geocode để lấy địa chỉ text
+    const fetchAddressLabel = async (lat: number, lng: number) => {
         try {
-            const response = await fetch(
+            const res = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
             );
-            if (!response.ok) throw new Error('Reverse geocoding failed');
-            const data = await response.json();
-            setAddressLabel(data.display_name || 'Unknown location');
+            if (!res.ok) throw new Error("Failed to fetch address");
+            const data = await res.json();
+            setAddressLabel(data.display_name || null);
         } catch (err) {
-            console.error('Reverse geocoding error:', err);
+            console.error("Reverse geocoding error:", err);
             setAddressLabel(null);
         }
     };
 
-    useEffect(() => {
-        const newInputValue = locationToString(value);
-        if (newInputValue && newInputValue !== inputValue) {
-            setInputValue(newInputValue);
-            if (value) {
-                const newPosition: LatLngExpression = [value.lat, value.lng];
-                setPosition(newPosition);
-                setMapKey(prev => prev + 1);
-                setError(null);
-                reverseGeocode(value.lat, value.lng);
-            }
-        }
-    }, [value, inputValue, locationToString]);
+    // search khi nhấn Enter
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key !== 'Enter' || !inputValue.trim()) return;
 
-    useEffect(() => {
-        if (value && !inputValue) {
-            setInputValue(locationToString(value));
-            setPosition([value.lat, value.lng]);
-            reverseGeocode(value.lat, value.lng);
-        }
-    }, []);
-
-    const handleMapReady = useCallback(() => {
-        setTimeout(() => {
-            if (mapRef.current) {
-                mapRef.current.invalidateSize();
-            }
-        }, 100);
-    }, []);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        setInputValue(newValue);
         setError(null);
-
-        const coords = parseCoordinates(newValue);
-        if (coords) {
-            setPosition([coords.lat, coords.lng]);
-            setMapKey(prev => prev + 1);
-            onChange?.(coords);
-            reverseGeocode(coords.lat, coords.lng);
-        } else if (newValue.trim() === '') {
-            onChange?.(null);
-            setAddressLabel(null);
-        }
-    };
-
-    const searchAddress = async () => {
-        if (!inputValue.trim() || parseCoordinates(inputValue)) return;
-
         setIsLoading(true);
-        setError(null);
-
         try {
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(inputValue)}&limit=1`
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+                    inputValue
+                )}&limit=1`
             );
-
             if (!response.ok) throw new Error('Geocoding service unavailable');
-
             const data = await response.json();
 
             if (data && data.length > 0) {
                 const lat = parseFloat(data[0].lat);
                 const lng = parseFloat(data[0].lon);
-                const locationObj = {lat, lng};
 
                 setPosition([lat, lng]);
-                setInputValue(`${lat},${lng}`);
-                setMapKey(prev => prev + 1);
-                onChange?.(locationObj);
-                reverseGeocode(lat, lng);
+                onChange?.({lat, lng});
+                fetchAddressLabel(lat, lng);
+                mapRef.current?.setView([lat, lng], 15);
             } else {
-                setError('Address not found. Please try a different keyword.');
+                setError('Location not found. Try another keyword.');
             }
         } catch (err) {
-            setError('Unable to search for address. Please enter coordinates manually.');
             console.error('Geocoding error:', err);
+            setError('Unable to search location. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
 
+    // nút lấy vị trí hiện tại
     const getCurrentLocation = () => {
         if (!navigator.geolocation) {
             setError('Geolocation is not supported by your browser.');
@@ -158,119 +104,95 @@ export default function LocationPicker({
         setError(null);
 
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const {latitude, longitude} = position.coords;
-                const locationObj = {lat: latitude, lng: longitude};
+            (pos) => {
+                const {latitude, longitude} = pos.coords;
 
                 setPosition([latitude, longitude]);
-                setInputValue(`${latitude},${longitude}`);
-                setMapKey(prev => prev + 1);
-                onChange?.(locationObj);
-                reverseGeocode(latitude, longitude);
+                onChange?.({lat: latitude, lng: longitude});
+                fetchAddressLabel(latitude, longitude);
+                mapRef.current?.setView([latitude, longitude], 15);
                 setIsLoading(false);
             },
-            (error) => {
-                setError('Unable to retrieve your current location. Please check your permissions.');
-                console.error('Geolocation error:', error);
+            (err) => {
+                console.error('Geolocation error:', err);
+                setError('Unable to retrieve your location.');
                 setIsLoading(false);
             },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 60000,
-            }
+            {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
         );
     };
 
-    function LocationMarker() {
-        useMapEvents({
-            click(e) {
-                if (view) return;
-                const {lat, lng} = e.latlng;
-                const locationObj = {lat, lng};
+    // khi click map → update vị trí
+    const handleMapClick = (lat: number, lng: number) => {
+        setPosition([lat, lng]);
+        onChange?.({lat, lng});
+        fetchAddressLabel(lat, lng);
+    };
 
-                setPosition([lat, lng]);
-                setInputValue(`${lat},${lng}`);
-                onChange?.(locationObj);
-                reverseGeocode(lat, lng);
-                setError(null);
-            },
-        });
-
-        return <Marker position={position} icon={defaultIcon}/>;
-    }
+    // lần đầu nếu có value thì hiển thị
+    useEffect(() => {
+        if (value) {
+            setPosition([value.lat, value.lng]);
+            fetchAddressLabel(value.lat, value.lng);
+        }
+    }, [value]);
 
     return (
         <div className="space-y-3">
-            <div className="flex gap-2">
-                {!view ? (
-                    <>
-                        <div className="flex-1">
-                            <Input
-                                placeholder={placeholder}
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                disabled={view}
-                                className={error ? "border-red-500" : ""}
-                            />
-                            {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
-                            {addressLabel && (
-                                <p className="text-sm text-muted-foreground mt-1">📍 {addressLabel}</p>
-                            )}
-                        </div>
+            {!view && (
+                <div className="flex gap-2">
+                    <Input
+                        placeholder={placeholder}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        className={error ? "border-red-500" : ""}
+                        disabled={isLoading}
+                    />
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={getCurrentLocation}
+                        disabled={isLoading}
+                        title="Use current location"
+                    >
+                        <MapPin className="h-4 w-4"/>
+                    </Button>
+                </div>
+            )}
 
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={searchAddress}
-                            disabled={isLoading || !inputValue.trim() || !!parseCoordinates(inputValue)}
-                            title="Search for address"
-                        >
-                            <Search className="h-4 w-4"/>
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={getCurrentLocation}
-                            disabled={isLoading}
-                            title="Use current location"
-                        >
-                            <MapPin className="h-4 w-4"/>
-                        </Button>
-                    </>
-                ) : (
-                    addressLabel && (
-                        <p className="text-sm text-muted-foreground mt-1">📍 {addressLabel}</p>
-                    )
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+
+            <p className="text-sm text-muted-foreground mt-1 h-5">
+                {addressLabel && (
+                    <span>📍 {addressLabel}</span>
                 )}
-            </div>
+            </p>
 
             <div className="rounded-lg border overflow-hidden shadow-sm" style={{height: '300px'}}>
                 <MapContainer
                     center={position}
                     zoom={13}
                     style={{height: '100%', width: '100%'}}
-                    key={mapKey}
-                    whenReady={handleMapReady}
                     ref={mapRef}
-                    className='z-0'
+                    className="z-0"
                 >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <LocationMarker/>
+                    <Marker position={position} icon={defaultIcon}/>
+                    <ClickHandler onSelect={handleMapClick}/>
                 </MapContainer>
             </div>
 
             {!view && (
                 <div className="text-sm text-muted-foreground">
-                    <p>• Click on the map to select a location</p>
-                    <p>• Enter coordinates in the format &quot;latitude,longitude&quot; (e.g., 21.0285,105.8542)</p>
-                    <p>• Use the search button to find an address</p>
-                    <p>• Use the location button to detect your current location</p>
+                    <p>• Enter an address in the search box and press <b>Enter</b> to find it.</p>
+                    <p>• Click the map button <b>📍</b> to detect your current location.</p>
+                    <p>• Or click directly on the map to move the marker.</p>
                 </div>
             )}
         </div>

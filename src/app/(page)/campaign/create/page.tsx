@@ -1,7 +1,6 @@
 import FormCreateCampaign from "@/components/pages/campaign/create/form.create.campaign";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
-import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const CreateCampaign = async () => {
-    const userInfo = await getUserInfoFromCookie()
+    // const userInfo = await getUserInfoFromCookie()
     return (
         <Card>
             <CardHeader>
@@ -19,7 +18,7 @@ const CreateCampaign = async () => {
             </CardHeader>
             <Separator/>
             <CardContent>
-                <FormCreateCampaign userId={userInfo?.id}/>
+                <FormCreateCampaign />
             </CardContent>
         </Card>
     )

@@ -14,12 +14,14 @@ interface CalendarDateProps {
     value: Date | undefined;
     onChange: (date: Date | undefined) => void;
     placeholder?: string;
+    minDate?: Date;
+    disabled?: boolean;
 }
 
-const CalendarDate: React.FC<CalendarDateProps> = ({ value, onChange, placeholder }) => {
+const CalendarDate: React.FC<CalendarDateProps> = ({ value, onChange, placeholder, minDate, disabled }) => {
     const [open, setOpen] = useState(false);
 
-    const getMinDate = () => {
+    const getToday = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         return today;
@@ -33,8 +35,9 @@ const CalendarDate: React.FC<CalendarDateProps> = ({ value, onChange, placeholde
                         variant="outline"
                         id="date"
                         className="w-full justify-between font-normal"
+                        disabled={disabled}
                     >
-                        {value ? value.toLocaleDateString() : (placeholder || 'Select Date')}
+                        {value ? value.toLocaleDateString() : (placeholder || 'Choose day')}
                         <ChevronDownIcon />
                     </Button>
                 </PopoverTrigger>
@@ -47,8 +50,10 @@ const CalendarDate: React.FC<CalendarDateProps> = ({ value, onChange, placeholde
                             onChange(date);
                             setOpen(false);
                         }}
-                        disabled={(date) => date < getMinDate()}
-                        fromDate={getMinDate()}
+                        disabled={(date) => {
+                            if (minDate && date < minDate) return true;
+                            return date < getToday();
+                        }}
                     />
                 </PopoverContent>
             </Popover>

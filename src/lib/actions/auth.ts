@@ -108,6 +108,23 @@ export async function updateStatus(userId: number, status: TStatusUser, reason?:
     }
 }
 
+export async function getUser(userId: number) {
+    try {
+        const res = await fetch(`${url}/${userId}`, {
+            method: "GET",
+            cache: "no-cache",
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch user with ID ${userId}`);
+        }
+
+        const user = await res.json();
+        return user;
+    } catch (err) {
+        console.error('Failed when get user:', err);
+    }
+}
 
 
 export async function createUser(data: UserFormCreate) {

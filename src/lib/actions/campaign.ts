@@ -42,9 +42,13 @@ export async function createCampaign(data: CreateCampaignForm) {
         const token = await getTokenFromCookies();
         const { requiredWifiSsid, requiredWifiBssid, location, ...rest } = data;
 
-        const { lat, lng } = location;
-        const latitude = lat;
-        const longitude = lng
+        let latitude: number | undefined;
+        let longitude: number | undefined;
+
+        if (location) {
+            latitude = location.lat;
+            longitude = location.lng;
+        }
         // Generate QR string (tùy chỉnh dữ liệu bạn muốn encode)
         // const qrData = JSON.stringify({
         //     userId
