@@ -15,6 +15,7 @@ import Image from "next/image";
 import QRCodePrint from "@/components/pages/campaign/detail/qr.code.print";
 import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {generateQRCodeBase64} from "@/utils/generateQRCodeBase64";
 
 export async function generateMetadata({params}: { params: Params }) {
     const {id} = await params
@@ -29,6 +30,20 @@ export async function generateMetadata({params}: { params: Params }) {
 const DetailPage = async ({params}: { params: Params }) => {
     const {id} = await params
     const campaign: TCampaign = await getCampaign(id)
+
+    const { name, startDate, endDate, location, wifi, status } = campaign
+
+    const qrData = {
+        id,
+        name,
+        startDate,
+        endDate,
+        location,
+        wifi,
+        status
+    }
+
+    const qrUrl = await generateQRCodeBase64(qrData);
 
     return (
         <div className='space-y-6'>
@@ -46,7 +61,7 @@ const DetailPage = async ({params}: { params: Params }) => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Badge variant={getBadgeStatusVariant(campaign?.status)}>{campaign?.status}</Badge>
+                    <Badge variant={getBadgeStatusVariant(campaign?.status.toLowerCase())}>{campaign?.status.toLowerCase()}</Badge>
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline" size="sm">
@@ -62,22 +77,21 @@ const DetailPage = async ({params}: { params: Params }) => {
                                 </div>
                             </DialogTitle>
                             <div className='size-[300px] mx-auto'>
-                                <Image src={campaign?.qrUrl} alt='qr' width={300} height={300}
-                                       className='size-full object-contain'/>
+                                <Image src={qrUrl} alt='QR Code Local Hunt' width={300} height={300} className='size-full object-contain'/>
                             </div>
                             <div className='flex justify-center gap-2'>
                                 <DialogClose asChild>
                                     <Button variant='outline'>Close</Button>
                                 </DialogClose>
-                                <Link href={campaign?.qrUrl} download={`qr-code-${campaign?.name}`}>
+                                <Link href={qrUrl} download={`qr-code-${campaign?.name}`}>
                                     <Button className='bg-black hover:bg-black/80'>Download QR Code</Button>
                                 </Link>
-                                <QRCodePrint qrCodeUrl={campaign?.qrUrl} title={campaign?.name}/>
+                                <QRCodePrint qrCodeUrl={qrUrl} title={campaign?.name}/>
                             </div>
                         </DialogContent>
                     </Dialog>
 
-                    {['pending', 'rejected'].includes(campaign?.status) && (
+                    {['pending', 'rejected'].includes(campaign?.status.toLowerCase()) && (
                         <Link href={`/campaign/edit/${id}`}>
                             <Button variant="outline" size="sm">
                                 <Edit className="h-4 w-4 mr-1" />

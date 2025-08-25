@@ -189,7 +189,7 @@ export default function LocationPicker({
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <Marker position={position} icon={defaultIcon}/>
-                    <ClickHandler onSelect={handleMapClick}/>
+                    {!view && <ClickHandler onSelect={handleMapClick} />}
                 </MapContainer>
             </div>
 
