@@ -79,7 +79,6 @@ const FormCreateVoucher = ({userId}: { userId: number }) => {
 
             const result = await createVoucher(payload, userId);
 
-            console.log('result', result);
             if (result === 201) {
                 toast.success("Voucher created successfully");
                 router.push("/voucher");

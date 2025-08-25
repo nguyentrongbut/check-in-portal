@@ -52,9 +52,9 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
 
             return (
                 <Badge
-                    variant={getBadgeStatusVariant(status)}
+                    variant={getBadgeStatusVariant(status.toLowerCase())}
                 >
-                    {status}
+                    {status.toLowerCase()}
                 </Badge>
             );
         },

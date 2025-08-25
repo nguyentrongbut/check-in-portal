@@ -39,8 +39,15 @@ export async function loginUser(data: LoginForm) {
 
         cookieStore.set({
             name: 'CIPUserInfo',
-            value: JSON.stringify({id, role, token}),
+            value: JSON.stringify({id, role}),
             httpOnly: false,
+            path: '/',
+        });
+
+        cookieStore.set({
+            name: 'LHToken',
+            value: JSON.stringify({token}),
+            httpOnly: true,
             path: '/',
         });
 
@@ -73,24 +80,6 @@ export async function registerUser(data: RegisterForm) {
 
 // json-server
 
-export async function getUsers() {
-    try {
-        const res = await fetch(url, {
-            method: "GET",
-            cache: "no-cache",
-        });
-
-        if (!res.ok) {
-            throw new Error(`Failed to fetch list user`);
-        }
-
-        const user = await res.json();
-        return user;
-    } catch (err) {
-        console.error('Failed when get list user:', err);
-    }
-}
-
 export async function updateStatus(userId: number, status: TStatusUser, reason?: string) {
     try {
         if (!reason) {
@@ -119,23 +108,7 @@ export async function updateStatus(userId: number, status: TStatusUser, reason?:
     }
 }
 
-export async function getUser(userId: number) {
-    try {
-        const res = await fetch(`${url}/${userId}`, {
-            method: "GET",
-            cache: "no-cache",
-        });
 
-        if (!res.ok) {
-            throw new Error(`Failed to fetch user with ID ${userId}`);
-        }
-
-        const user = await res.json();
-        return user;
-    } catch (err) {
-        console.error('Failed when get user:', err);
-    }
-}
 
 export async function createUser(data: UserFormCreate) {
     const {confirmPassword, ...rest} = data;
@@ -225,49 +198,12 @@ export async function deleteUser(id: number) {
 }
 
 
-// export async function loginUser(data: LoginForm) {
-//     try {
-//         const {email, password} = data
-//         const cookieStore = await cookies();
-//         const res = await fetch(`${url}?email=${email}&password=${password}`, {
-//             method: "GET",
-//             cache: "no-cache",
-//         });
-//
-//         if (!res.ok) {
-//             return res.status;
-//         }
-//
-//         const users = await res.json();
-//
-//         if (!Array.isArray(users) || users.length === 0) {
-//             throw new Error("Invalid email or password");
-//         }
-//
-//         const {id, role, name} = users[0];
-//
-//         if (role !== 'merchant' && role !== 'admin') {
-//             return null
-//         }
-//
-//         cookieStore.set({
-//             name: 'CIPUserInfo',
-//             value: JSON.stringify({id, role, name}),
-//             httpOnly: false,
-//             path: '/',
-//         });
-//
-//         return users[0];
-//     } catch (error) {
-//         console.error("Login failed:", error);
-//     }
-// }
-
 export async function logout() {
     try {
         const cookieStore = await cookies();
 
         cookieStore.delete('CIPUserInfo');
+        cookieStore.delete('LHToken')
 
         return {success: true};
     } catch (err) {

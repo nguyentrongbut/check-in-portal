@@ -13,7 +13,8 @@ const SidebarComponent = () => {
 
     const role = userInfo?.role
     const userRole = role;
-    const navItems = userRole === "admin" ? adminNavItems : allocatorNavItems
+
+    const navItems = userRole === "ROLE_ADMIN" ? adminNavItems : allocatorNavItems
 
     const pathname = usePathname()
 
@@ -21,12 +22,12 @@ const SidebarComponent = () => {
         <aside className='fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200'>
             <div className='flex flex-col h-full'>
                 {/* Logo */}
-                <Logo href={userRole === 'admin' ? "/admin/dashboard" : "/dashboard" }/>
+                <Logo href={userRole === 'ROLE_ADMIN' ? "/admin/dashboard" : "/dashboard" }/>
 
                 {/* Navigation */}
                 <nav className="flex-1 px-4 pb-6 space-y-2">
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
-                        {userRole === "admin" ? "Admin Panel" : "Merchant"}
+                        {userRole === "ROLE_ADMIN" ? "Admin Panel" : "Merchant"}
                     </div>
                     {navItems.map((item) => {
                         const Icon = item.icon

@@ -22,8 +22,8 @@ const ProfilePage = async () => {
                     <h1 className="text-3xl font-bold">Profile Settings</h1>
                     <p className="text-gray-600">Manage your account settings and preferences</p>
                 </div>
-                <Badge variant={userInfo?.role === "admin" ? "destructive" : "default"}>
-                    {userInfo?.role === "admin" ? "Administrator" : "Business User"}
+                <Badge variant={userInfo?.role === "ROLE_ADMIN" ? "destructive" : "default"}>
+                    {userInfo?.role === "ROLE_ADMIN" ? "Administrator" : "Business User"}
                 </Badge>
             </div>
 

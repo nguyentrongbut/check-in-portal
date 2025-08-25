@@ -13,9 +13,7 @@ import DialogDeleteAdmin from "@/components/common/dialog.delete.admin";
 import {deleteUser} from "@/lib/actions/auth";
 import DialogEditUser from "@/components/pages/admin/user/dialog.edit.user";
 
-export const columnsUser = (
-    onStatusChange: (userId: number, newStatus: TStatusUser) => void
-): ColumnDef<TUser>[] => [
+export const columnsUser: ColumnDef<TUser>[] = [
     {
         accessorKey: "name",
         header: ({column}) => {
@@ -42,7 +40,7 @@ export const columnsUser = (
                         width={40}
                         height={40}
                         src={avatar || '/default-avatar.png'}
-                        alt={userName}/>
+                        alt={userName || 'name account local hunt'}/>
                     <div>
                         <p className='font-medium'>
                             {userName}
@@ -67,11 +65,12 @@ export const columnsUser = (
             )
         },
         cell: ({row}) => {
-            const role: TRole = row.getValue("role");
+            const typeRole: TRole = row.getValue("role");
+            const role = typeRole.toLowerCase();
 
             return (
                 <Badge variant={getBadgeRoleVariant(role)}>
-                    {role}
+                    {role === 'allocator' ? 'merchant' : role}
                 </Badge>
             );
         },
@@ -96,11 +95,12 @@ export const columnsUser = (
             const status: TStatusUser = row.getValue("status");
 
             return (
-                <UserStatusBadge
-                    userId={userId}
-                    status={status}
-                    onStatusChange={onStatusChange}
-                />
+                <div>{status.toLowerCase()}</div>
+                // <UserStatusBadge
+                //     userId={userId}
+                //     status={status}
+                //     onStatusChange={onStatusChange}
+                // />
             );
         },
     },
