@@ -38,7 +38,7 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             avatar: userInfo?.avatar || '',
-            name: userInfo?.name ?? '',
+            name: userInfo?.fullName ?? '',
             email: userInfo?.email ?? '',
             phone: userInfo?.phone ?? '',
             address: userInfo?.address ?? '',

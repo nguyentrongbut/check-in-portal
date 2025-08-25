@@ -21,7 +21,7 @@ type Props = {
 const LocationPickerWrapper = ({
                                    value,
                                    onChange,
-                                   placeholder = "Enter address or coordinates (lat,lng)",
+                                   placeholder = "Enter address",
                                    view = false,
                                }: Props) => {
     return (
