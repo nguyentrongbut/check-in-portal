@@ -102,6 +102,49 @@ export async function getCampaign(id: number) {
     }
 }
 
+export async function updateCampaign(id:number, data: UpdateCampaignForm) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const { requiredWifiSsid, requiredWifiBssid, location, ...rest } = data;
+
+        let latitude: number | undefined;
+        let longitude: number | undefined;
+
+        if (location) {
+            latitude = location.lat;
+            longitude = location.lng;
+        }
+
+        const payload = {
+            ...rest,
+            requiredWifiSsid,
+            requiredWifiBssid,
+            latitude,
+            longitude,
+        };
+
+        const res = await fetch(`${urlBe}/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP ${res.status}: ${errorText}`);
+        }
+
+        return res.status;
+    } catch (err) {
+        console.error('Failed when update campaign:', err);
+        throw err;
+    }
+}
+
 // json-server
 
 export async function getPendingCampaigns() {
@@ -167,43 +210,6 @@ export async function deleteCampaign(id: number) {
         return true;
     } catch (err) {
         console.error(`Failed when delete campaign with ID ${id}:`, err);
-        throw err;
-    }
-}
-
-export async function updateCampaign(id:number, data: UpdateCampaignForm) {
-    try {
-
-        const { ssid, bssid, ...rest } = data;
-
-        const payload = {
-            ...rest,
-            wifi: {
-                ssid,
-                bssid,
-            },
-            status: "pending",
-            used: 0,
-            checkIns: 0,
-            updatedAt: new Date(),
-        };
-
-        const res = await fetch(`${url}/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) {
-            const errorText = await res.text();
-            throw new Error(`HTTP ${res.status}: ${errorText}`);
-        }
-
-        return res.status;
-    } catch (err) {
-        console.error('Failed when update campaign:', err);
         throw err;
     }
 }
