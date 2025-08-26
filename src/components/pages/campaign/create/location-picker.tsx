@@ -43,6 +43,7 @@ export default function LocationPicker({
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const mapRef = useRef<Map | null>(null);
+    const initialCenteredRef = useRef(false);
 
     // reverse geocode để lấy địa chỉ text
     const fetchAddressLabel = async (lat: number, lng: number) => {
@@ -123,10 +124,18 @@ export default function LocationPicker({
     };
 
     // khi click map → update vị trí
-    const handleMapClick = (lat: number, lng: number) => {
+    const handleMapClick = async (lat: number, lng: number) => {
+        setIsLoading(true);
         setPosition([lat, lng]);
-        onChange?.({lat, lng});
-        fetchAddressLabel(lat, lng);
+        onChange?.({ lat, lng });
+
+        try {
+            await fetchAddressLabel(lat, lng);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // lần đầu nếu có value thì hiển thị
@@ -136,6 +145,18 @@ export default function LocationPicker({
             fetchAddressLabel(value.lat, value.lng);
         }
     }, [value]);
+
+    // center map
+    useEffect(() => {
+        if (mapRef.current && position) {
+            if (view) {
+                mapRef.current.setView(position, mapRef.current.getZoom(), { animate: false });
+            } else if (!view && !initialCenteredRef.current) {
+                mapRef.current.setView(position, mapRef.current.getZoom(), { animate: false });
+                initialCenteredRef.current = true; // đánh dấu đã căn giữa lần đầu
+            }
+        }
+    }, [view, position]);
 
     return (
         <div className="space-y-3">
@@ -171,8 +192,10 @@ export default function LocationPicker({
 
 
             <p className="text-sm text-muted-foreground mt-1 h-5">
-                {addressLabel && (
-                    <span>📍 {addressLabel}</span>
+                {isLoading ? (
+                    <span>⏳ Loading...</span>
+                ) : (
+                    addressLabel && <span>📍 {addressLabel}</span>
                 )}
             </p>
 
