@@ -3,7 +3,6 @@
 import {ColumnDef} from "@tanstack/react-table"
 import {TCampaign} from "@/types/data";
 import EntityActions from "@/components/common/entity.actions";
-import {deleteCampaign} from "@/lib/actions/campaign";
 import {ArrowUpDown} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
@@ -182,8 +181,8 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                 const campaignId = campaign.id;
                 const isBeforeStart = (startDate: string) => new Date(startDate) > new Date();
                 const canEdit = ['pending', 'rejected'].includes(campaign.status);
-                const canDelete = ['pending', 'rejected'].includes(campaign.status) ||
-                    (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
+                // const canDelete = ['pending', 'rejected'].includes(campaign.status) ||
+                //     (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
                 const canCancel = ['pending'].includes(campaign.status) ||
                     (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
                 return (
@@ -192,9 +191,8 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                         viewUrl={`/campaign/detail/${campaignId}`}
                         editUrl={`/campaign/edit/${campaignId}`}
                         entityName={`${nameCampaign} campaign`}
-                        onDelete={() => deleteCampaign(campaignId)}
+                        // onDelete={() => deleteCampaign(campaignId)}
                         edit={canEdit}
-                        canDelete={canDelete}
                         canCancel={canCancel}
                     />
                 )

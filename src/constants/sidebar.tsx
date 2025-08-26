@@ -9,7 +9,7 @@ export const allocatorNavItems: TNavSideBar[] = [
 
 export const adminNavItems: TNavSideBar[] = [
     {href: "/admin/dashboard", label: "Dashboard", icon: Home},
-    {href: "/admin/campaign", label: "Review Campaign", icon: Calendar},
+    {href: "/admin/campaign", label: "Campaign Management", icon: Calendar},
     {href: "/admin/voucher", label: "Voucher", icon: Gift},
     {href: "/admin/fraud", label: "Fraud Detection", icon: Shield},
     {href: "/admin/user", label: "User Management", icon: Users},

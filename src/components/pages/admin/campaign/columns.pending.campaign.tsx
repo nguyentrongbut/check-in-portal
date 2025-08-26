@@ -5,40 +5,18 @@ import {TCampaign} from "@/types/data";
 import {ArrowUpDown} from "lucide-react";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import Image from "next/image";
-import DialogViewCampaign from "@/components/pages/admin/campaign/dialog.view.campaign";
-import DialogReject from "@/components/pages/admin/campaign/dialog.reject";
-import ApprovedCampaign from "@/components/pages/admin/campaign/approved.campaign";
+import EntityActions from "@/components/common/entity.actions";
+import {deleteCampaign} from "@/lib/actions/campaign";
+import {Badge} from "@/components/ui/badge";
+import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 
 export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
-    {
-        accessorKey: "merchantName",
-        header: ({column}) => {
-            return (
-                <div
-                    className="flex gap-2 items-center cursor-pointer ml-4"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Merchant
-                    <ArrowUpDown className="ml-2 size-4"/>
-                </div>
-            )
-        },
-        cell: ({row}) => {
-            const merchantName: string = row.getValue("merchantName");
-
-            return (
-                <p className='font-medium ml-4'>
-                    {merchantName}
-                </p>
-            );
-        },
-    },
     {
         accessorKey: "name",
         header: ({column}) => {
             return (
                 <div
-                    className="flex gap-2 items-center cursor-pointer"
+                    className="flex gap-2 items-center cursor-pointer ml-4"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Campaign
@@ -52,12 +30,37 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
             const description: string = campaign?.description;
 
             return (
-                <div>
-                    <div className='font-medium'>
+                <div className='ml-4'>
+                    <div className='font-medium '>
                         {campaignName}
                     </div>
                     <div>{description}</div>
                 </div>
+            );
+        },
+    },
+    {
+        accessorKey: "status",
+        header: ({column}) => {
+            return (
+                <div
+                    className="flex gap-2 items-center cursor-pointer"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 size-4"/>
+                </div>
+            )
+        },
+        cell: ({row}) => {
+            const status = row.getValue("status") as string;
+
+            return (
+                <Badge
+                    variant={getBadgeStatusVariant(status.toLowerCase())}
+                >
+                    {status.toLowerCase()}
+                </Badge>
             );
         },
     },
@@ -180,14 +183,20 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
             ({row}) => {
                 const campaign: TCampaign = row.original;
                 const id: number = campaign.id;
+                const nameCampaign = campaign.name;
 
                 return (
                     <div className="flex justify-center space-x-2">
-                        <DialogViewCampaign campaignId={id}/>
-
-                        <ApprovedCampaign campaignId={id}/>
-
-                       <DialogReject campaignId={id}/>
+                        <EntityActions
+                            id={id}
+                            viewUrl={`/admin/campaign/detail/${id}`}
+                            editUrl={`/admin/campaign/edit/${id}`}
+                            entityName={`${nameCampaign} campaign`}
+                            onDelete={() => deleteCampaign(id)}
+                            edit
+                            canCancel
+                            canDelete
+                        />
                     </div>
                 )
             },

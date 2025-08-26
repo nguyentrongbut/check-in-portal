@@ -18,7 +18,7 @@ interface EntityActionsProps {
     viewUrl?: string;
     editUrl: string;
     entityName: string;
-    onDelete: () => Promise<boolean>;
+    onDelete?: () => Promise<boolean>;
     edit?: boolean;
     canCancel?: boolean;
     canDelete?: boolean;
@@ -30,7 +30,7 @@ const EntityActions = ({
                            entityName,
                            onDelete,
                            edit = true,
-                           canDelete = true,
+                           canDelete = false,
                            canCancel = true
                        }: EntityActionsProps) => {
     const [open, setOpen] = useState(false);
@@ -87,7 +87,7 @@ const EntityActions = ({
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {canDelete && (
+            {canDelete && onDelete && (
                 <DialogDelete
                     open={open}
                     onOpenChange={setOpen}
