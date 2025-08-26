@@ -1,5 +1,5 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {getPendingCampaigns} from "@/lib/actions/campaign";
+import {getCampaigns} from "@/lib/actions/campaign";
 import {DataTable} from "@/components/common/data.table";
 import {columnsPendingCampaign} from "@/components/pages/admin/campaign/columns.pending.campaign";
 import {Metadata} from "next";
@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 
 const ReviewCampaignPage = async () => {
 
-    const listPendingCampaigns = await getPendingCampaigns()
+    const data = await getCampaigns()
+
+    const listCampaign = data?.items
 
     return (
         <div className="space-y-6">
@@ -21,13 +23,13 @@ const ReviewCampaignPage = async () => {
                 <CardHeader>
                     <div className='flex justify-between items-center'>
                         <div>
-                            <CardTitle>Pending Campaigns</CardTitle>
+                            <CardTitle>List Campaign</CardTitle>
                             <CardDescription>Review campaign details and approve or reject submissions</CardDescription>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <DataTable data={listPendingCampaigns} columns={columnsPendingCampaign}/>
+                    <DataTable data={listCampaign} columns={columnsPendingCampaign}/>
                 </CardContent>
             </Card>
         </div>

@@ -145,60 +145,14 @@ export async function updateCampaign(id:number, data: UpdateCampaignForm) {
     }
 }
 
-// json-server
-
-export async function getPendingCampaigns() {
-    try {
-        const res = await fetch(`${url}?status=pending`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            cache: 'no-cache',
-        });
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        return data;
-    } catch (err) {
-        console.error('Failed when get all campaign pending:', err);
-        throw err;
-    }
-}
-
-
-// export async function getCampaign(id: number) {
-//     try {
-//         const res = await fetch(`${url}/${id}`, {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             cache: 'no-cache',
-//         });
-//
-//         if (!res.ok) {
-//             throw new Error(`HTTP error! Status: ${res.status}`);
-//         }
-//
-//         const data = await res.json();
-//
-//         return data;
-//     } catch (err) {
-//         console.error('Failed when get campaign:', err);
-//         throw err;
-//     }
-// }
-
 export async function deleteCampaign(id: number) {
     try {
-        const res = await fetch(`${url}/${id}`, {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${urlBe}/${id}`, {
             method: 'DELETE',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         });
@@ -213,6 +167,32 @@ export async function deleteCampaign(id: number) {
         throw err;
     }
 }
+
+export async function approveCampaign(id:number) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${urlBe}/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP ${res.status}: ${errorText}`);
+        }
+
+        return res.status;
+    } catch (err) {
+        console.error('Failed when change status campaign:', err);
+        throw err;
+    }
+}
+
+// json-server
 
 export async function changeStatusCampaign(id:number, status: TStatusCampaign, reason?: string) {
     try {

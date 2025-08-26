@@ -4,7 +4,7 @@ import {CheckCircle, LoaderCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import toast from "react-hot-toast";
-import {changeStatusCampaign} from "@/lib/actions/campaign";
+import {approveCampaign} from "@/lib/actions/campaign";
 import {useRouter} from "next/navigation";
 
 const ApprovedCampaign = ({campaignId}: {campaignId: number}) => {
@@ -14,8 +14,7 @@ const ApprovedCampaign = ({campaignId}: {campaignId: number}) => {
     const handleApprove = async () => {
         setLoading(true);
         try {
-            const approveStatus = "approved";
-            const result = await changeStatusCampaign(campaignId, approveStatus);
+            const result = await approveCampaign(campaignId);
             if (result === 200) {
                 toast.success("Campaign approved successfully.");
                 router.refresh();
