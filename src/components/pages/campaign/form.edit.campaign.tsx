@@ -16,6 +16,8 @@ import {updateCampaign} from "@/lib/actions/campaign";
 import {TCampaign} from "@/types/data";
 import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 import {CreateCampaignForm} from "@/components/pages/campaign/create/form.create.campaign";
+import useWalletBalance from "@/hooks/useWalletBalance";
+import FormLabelTooltip from "@/components/common/form.label.tooltip";
 
 export const formSchema = z.object({
     name: z.string().min(1, { message: "Campaign name is required" }),
@@ -43,10 +45,12 @@ export const formSchema = z.object({
 
 export type UpdateCampaignForm = z.infer<typeof formSchema>;
 
-const FormEditCampaign = ({campaign, href}:{campaign: TCampaign, href: string}) => {
+const FormEditCampaign = ({campaign, href, disablePoints = false}:{campaign: TCampaign, href: string, disablePoints?: boolean}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+
+    const { balance, loading } = useWalletBalance();
 
     const form = useForm<UpdateCampaignForm>({
         resolver: zodResolver(formSchema),
@@ -138,15 +142,45 @@ const FormEditCampaign = ({campaign, href}:{campaign: TCampaign, href: string}) 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <FormField name="pointsPerCheckin" control={form.control} render={({field}) => (
                             <FormItem>
-                                <FormLabel>Points per Check-in</FormLabel>
-                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormLabelTooltip
+                                    label='Points per Check-in'
+                                    description='This value determines how many points a user receives for each check-in they complete. Higher points encourage more frequent check-ins.'
+                                />
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        {...field}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                        }}
+                                    />
+                                </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
                         <FormField name="totalBudget" control={form.control} render={({field}) => (
                             <FormItem>
-                                <FormLabel>Total Point Budget</FormLabel>
-                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormLabelTooltip
+                                    label='Total Point Budget'
+                                    description='This value defines the total number of points a user can allocate. It cannot exceed your wallet balance.'
+                                />
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        {...field}
+                                        disabled={disablePoints}
+                                        onChange={(e) => {
+                                            const value = e.target.valueAsNumber;
+                                            if (!loading && balance !== null && value > balance) {
+                                                field.onChange(balance);
+                                            } else {
+                                                field.onChange(value);
+                                            }
+                                        }}
+                                        placeholder={loading ? "Loading..." : `Max: ${balance}`}
+                                    />
+                                </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>

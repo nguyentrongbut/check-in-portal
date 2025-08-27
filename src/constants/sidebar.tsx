@@ -4,7 +4,7 @@ import {TNavSideBar} from "@/types/layout";
 export const allocatorNavItems: TNavSideBar[] = [
     {href: "/dashboard", label: "Dashboard", icon: Home},
     {href: "/campaign", label: "Campaign", icon: Calendar},
-    {href: "/transaction", label: "Wallet / Point Balance", icon: Wallet},
+    {href: "/wallet", label: "Wallet / Point Balance", icon: Wallet},
 ]
 
 export const adminNavItems: TNavSideBar[] = [

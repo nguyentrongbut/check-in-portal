@@ -11,8 +11,8 @@ import FormTopUp from "@/components/pages/wallet/form.top.up";
 import {TWallet} from "@/types/data";
 import {useState} from "react";
 
-const DialogTopUp = ({userId, wallet}
-                           : {userId: number,wallet: TWallet}) => {
+const DialogTopUp = ({userId}
+                           : {userId: number}) => {
 
     const [open, setOpen] = useState(false);
 
@@ -38,7 +38,7 @@ const DialogTopUp = ({userId, wallet}
                   <FormTopUp
                       onClose={() => setOpen(false)}
                       userId={userId}
-                      wallet={wallet} />
+                  />
               </div>
             </DialogContent>
         </Dialog>

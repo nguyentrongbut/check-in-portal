@@ -10,6 +10,7 @@ import {useUserInfoFromCookie} from "@/hooks/useUserInfoFromCookie";
 import {getPageTitleFromNavItems} from "@/utils/getPageTitle";
 import {formatNumber} from "@/utils/formatHelpers";
 import Link from "next/link";
+import useWalletBalance from "@/hooks/useWalletBalance";
 
 const Header = () => {
     const userInfo = useUserInfoFromCookie()
@@ -19,6 +20,8 @@ const Header = () => {
     const { isMd } = useTailwindBreakpoints()
 
     const pathname = usePathname()
+
+    const { balance, loading } = useWalletBalance();
 
     return (
         <header className='sticky top-0 h-[100px] flex items-center gap-4 bg-[#f9f7f7] px-5 md:px-9 md:ml-64 z-10'>
@@ -44,14 +47,14 @@ const Header = () => {
                     ? `Welcome ${name || 'Merchant'} !`
                     : getPageTitleFromNavItems(pathname, role)}
             </h3>
-            {
-                !pathname.startsWith('/admin') && (
-                    <Link href='/wallet' className='text-primary ml-auto flex items-center justify-center gap-1.5'>
-                        <p className='font-bold'>{formatNumber(100000)}</p>
-                        <CirclePoundSterling className='size-4'/>
-                    </Link>
-                )
-            }
+            {!pathname.startsWith('/admin') && (
+                <Link href='/wallet' className='text-primary ml-auto flex items-center justify-center gap-1.5'>
+                    <p className='font-bold'>
+                        {loading ? "..." : balance !== null ? formatNumber(balance) : "0"}
+                    </p>
+                    <CirclePoundSterling className='size-4'/>
+                </Link>
+            )}
         </header>
     )
 }
