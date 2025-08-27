@@ -27,7 +27,7 @@ const badgeVariants = cva(
                 expired: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300",
                 cancelled: "bg-zinc-100 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300",
 
-                // wallet
+                // transaction
                 spent:
                     "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
                 topup:

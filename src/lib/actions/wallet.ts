@@ -25,7 +25,7 @@ export async function getWallet(userId: number) {
 
         return data[0];
     } catch (err) {
-        console.error('Failed when get wallet:', err);
+        console.error('Failed when get transaction:', err);
         throw err;
     }
 }
@@ -59,7 +59,7 @@ export async function updateWallet(id: number, data: TopUpForm, currentBalance: 
 
         return res.status;
     } catch (err) {
-        console.error('Failed when update wallet:', err);
+        console.error('Failed when update transaction:', err);
         throw err;
     }
 }

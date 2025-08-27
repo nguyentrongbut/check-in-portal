@@ -47,7 +47,7 @@ export const howItWorksItems: TContentSection[] = [
     {
         icon: Wallet,
         title: "Merchant Wallet",
-        desc: "Deposit Points into your wallet to fund campaigns. Points are securely allocated to reward verified check-ins.",
+        desc: "Deposit Points into your transaction to fund campaigns. Points are securely allocated to reward verified check-ins.",
     },
     {
         icon: MapPinCheck,
