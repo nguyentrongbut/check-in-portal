@@ -2,12 +2,14 @@
 
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
-import {Menu} from "lucide-react";
+import { CirclePoundSterling, Menu } from "lucide-react";
 import SidebarComponent from "@/components/layout/sidebar/sidebar.component";
 import useTailwindBreakpoints from "@/hooks/useTailwindBreakpoints";
 import {usePathname} from "next/navigation";
 import {useUserInfoFromCookie} from "@/hooks/useUserInfoFromCookie";
 import {getPageTitleFromNavItems} from "@/utils/getPageTitle";
+import {formatNumber} from "@/utils/formatHelpers";
+import Link from "next/link";
 
 const Header = () => {
     const userInfo = useUserInfoFromCookie()
@@ -42,6 +44,14 @@ const Header = () => {
                     ? `Welcome ${name || 'Merchant'} !`
                     : getPageTitleFromNavItems(pathname, role)}
             </h3>
+            {
+                !pathname.startsWith('/admin') && (
+                    <Link href='/wallet' className='text-primary ml-auto flex items-center justify-center gap-1.5'>
+                        <p className='font-bold'>{formatNumber(100000)}</p>
+                        <CirclePoundSterling className='size-4'/>
+                    </Link>
+                )
+            }
         </header>
     )
 }

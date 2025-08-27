@@ -1,9 +1,12 @@
 'use server'
 
-import {TopUpForm} from "@/components/pages/wallet/form.top.up";
+import {CreateTransactionData, TopUpForm} from "@/components/pages/wallet/form.top.up";
+import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
 
 const url = `${process.env.API_URL}/wallets`;
+const urlApi = `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
 
+// json server
 export async function getWallet(userId: number) {
     try {
         const res = await fetch(`${url}?userId=${userId}`, {

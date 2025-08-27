@@ -5,7 +5,7 @@ import {ColumnDef} from "@tanstack/react-table"
 import {ArrowUpDown} from "lucide-react";
 import {TTransaction} from "@/types/data";
 import {Badge} from "@/components/ui/badge";
-import {getBadgeWalletVariant} from "@/utils/getBadgeVariant";
+import {getBadgeStatusVariant, getBadgeWalletVariant} from "@/utils/getBadgeVariant";
 import {getWalletTypeIcon} from "@/utils/getIcon";
 import {getColorWallet} from "@/utils/getColor";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
@@ -29,9 +29,9 @@ export const columnsHistoryTransaction: ColumnDef<TTransaction>[] = [
 
             return (
                 <div className='ml-4 flex items-center gap-2'>
-                    {getWalletTypeIcon(type)}
-                    <Badge className='capitalize' variant={getBadgeWalletVariant(type)}>
-                        {type}
+                    {getWalletTypeIcon(type.toLowerCase())}
+                    <Badge className='capitalize' variant={getBadgeWalletVariant(type.toLowerCase())}>
+                        {type.toLowerCase()}
                     </Badge>
                 </div>
             );
@@ -57,6 +57,31 @@ export const columnsHistoryTransaction: ColumnDef<TTransaction>[] = [
                 <p className='font-medium'>
                     {description}
                 </p>
+            );
+        },
+    },
+    {
+        accessorKey: "status",
+        header: ({column}) => {
+            return (
+                <div
+                    className="flex gap-2 items-center cursor-pointer"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 size-4"/>
+                </div>
+            )
+        },
+        cell: ({row}) => {
+            const status = row.getValue("status") as string;
+
+            return (
+                <Badge
+                    variant={getBadgeStatusVariant(status.toLowerCase())}
+                >
+                    {status.toLowerCase()}
+                </Badge>
             );
         },
     },

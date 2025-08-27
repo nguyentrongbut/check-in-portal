@@ -128,7 +128,7 @@ const DetailPage = async ({params}: { params: Params }) => {
             </Card>
 
             {/* Table List Check In*/}
-            <TableCheckIns campaignId={id}/>
+            {/*<TableCheckIns campaignId={id}/>*/}
         </div>
     )
 }
