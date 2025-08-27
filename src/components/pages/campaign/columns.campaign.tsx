@@ -148,15 +148,13 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
             ({row}) => {
                 const original = row.original;
                 const startDate: string =  original.startDate;
-                const startTime: string =  original.startTime;
                 const endDate: string =  original.endDate;
-                const endTime: string =  original.endTime;
                 return (
                    <div className='flex items-center gap-2'>
                        <Image src='/date.png' alt='start / end date' width={8} height={36}></Image>
                        <div className='flex flex-col gap-2 text-sm'>
-                           <div>{formatDate(startDate)} <span className='opacity-60'>{startTime}</span></div>
-                           <div>{formatDate(endDate)} <span className='opacity-60'>{endTime}</span></div>
+                           <div>{formatDate(startDate)}</div>
+                           <div>{formatDate(endDate)}</div>
                        </div>
                    </div>
                 )
@@ -179,12 +177,10 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                 const campaign = row.original;
                 const nameCampaign = campaign.name;
                 const campaignId = campaign.id;
-                const isBeforeStart = (startDate: string) => new Date(startDate) > new Date();
-                const canEdit = ['pending', 'rejected'].includes(campaign.status);
-                // const canDelete = ['pending', 'rejected'].includes(campaign.status) ||
+                // const isBeforeStart = (startDate: string) => new Date(startDate) > new Date();
+                const canEdit = ['pending', 'rejected'].includes(campaign.status.toLowerCase());
+                // const canCancel = ['pending'].includes(campaign.status) ||
                 //     (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
-                const canCancel = ['pending'].includes(campaign.status) ||
-                    (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
                 return (
                     <EntityActions
                         id={campaignId}
@@ -193,7 +189,7 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                         entityName={`${nameCampaign} campaign`}
                         // onDelete={() => deleteCampaign(campaignId)}
                         edit={canEdit}
-                        canCancel={canCancel}
+                        // canCancel={canCancel}
                     />
                 )
             },

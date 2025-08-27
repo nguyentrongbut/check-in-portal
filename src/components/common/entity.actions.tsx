@@ -12,6 +12,7 @@ import {Button} from "@/components/ui/button";
 import DialogDelete from "@/components/common/dialog.delete";
 import Link from "next/link";
 import {useState} from "react";
+import CancelCampaign from "@/components/pages/admin/campaign/cancel.campaign";
 
 interface EntityActionsProps {
     id: number;
@@ -31,7 +32,7 @@ const EntityActions = ({
                            onDelete,
                            edit = true,
                            canDelete = false,
-                           canCancel = true
+                           canCancel = false
                        }: EntityActionsProps) => {
     const [open, setOpen] = useState(false);
 
@@ -60,15 +61,6 @@ const EntityActions = ({
                                 <Edit className="size-4"/>
                                 <span>Edit</span>
                             </Link>
-                        </DropdownMenuItem>
-                    )}
-
-                    {canCancel && (
-                        <DropdownMenuItem
-                            className="text-yellow-600 cursor-pointer"
-                        >
-                            <X className="size-4 text-inherit"/>
-                            Cancel
                         </DropdownMenuItem>
                     )}
 

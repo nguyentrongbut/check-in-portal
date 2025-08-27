@@ -25,7 +25,9 @@ export const formSchema = z.object({
     location: z.object({
         lat: z.number(),
         lng: z.number(),
-    }).nullable(),
+    }).nullable().refine((val) => val !== null, {
+        message: "Location is required",
+    }),
     requiredWifiSsid: z.string().min(1, { message: "Wi-Fi SSID is required" }),
     requiredWifiBssid: z.string().min(1, { message: "Wi-Fi BSSID is required" }),
     pointsPerCheckin: z.number().min(1, { message: "Points per check-in must be at least 1" }),
@@ -258,7 +260,6 @@ const FormCreateCampaign = () => {
                         <FormControl>
                             <LocationPickerWrapper value={field.value} onChange={field.onChange}/>
                         </FormControl>
-                        <FormMessage/>
                     </FormItem>
                 )}/>
 

@@ -1,29 +1,29 @@
 'use client'
 
-import {CheckCircle, LoaderCircle} from "lucide-react";
+import { XCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import toast from "react-hot-toast";
-import {approveCampaign} from "@/lib/actions/campaign";
 import {useRouter} from "next/navigation";
+import {deleteCampaign} from "@/lib/actions/campaign";
 
-const ApprovedCampaign = ({campaignId}: { campaignId: number }) => {
+const CancelCampaign = ({campaignId}: { campaignId: number }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleApprove = async () => {
         setLoading(true);
         try {
-            const result = await approveCampaign(campaignId);
-            if (result === 200) {
-                toast.success("Campaign approved successfully.");
+            const result = await deleteCampaign(campaignId);
+            if (result) {
+                toast.success("Campaign cancel successfully.");
                 router.refresh();
                 return
             }
 
             toast.error("Change status campaign fail!");
         } catch (error) {
-            console.error('Error approving campaign:', error);
+            console.error('Error cancel campaign:', error);
         } finally {
             setLoading(false);
         }
@@ -34,15 +34,15 @@ const ApprovedCampaign = ({campaignId}: { campaignId: number }) => {
             onClick={handleApprove}
             variant="outline"
             size="sm"
-            className="text-green-600 hover:text-green-700 hover:bg-green-50"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
             disabled={loading}
             isLoading={loading}
-            loadingColor='border-green-600'
+            loadingColor='border-red-600'
         >
-            <CheckCircle className="size-4"/>
-            Approved
+            <XCircle className="size-4"/>
+            Cancel
         </Button>
     )
 }
 
-export default ApprovedCampaign
+export default CancelCampaign

@@ -47,7 +47,11 @@ const CalendarDate: React.FC<CalendarDateProps> = ({ value, onChange, placeholde
                         selected={value}
                         captionLayout="dropdown"
                         onSelect={(date) => {
-                            onChange(date);
+                            if (date) {
+                                // set the time to 12:00 to prevent shifting by -1 day when converting to UTC
+                                date.setHours(12, 0, 0, 0);
+                                onChange(date);
+                            }
                             setOpen(false);
                         }}
                         disabled={(date) => {

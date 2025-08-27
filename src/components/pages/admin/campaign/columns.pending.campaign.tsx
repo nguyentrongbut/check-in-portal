@@ -130,15 +130,13 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
             ({row}) => {
                 const original = row.original;
                 const startDate: string = original.startDate;
-                const startTime: string = original.startTime;
                 const endDate: string = original.endDate;
-                const endTime: string = original.endTime;
                 return (
                     <div className='flex items-center gap-2'>
                         <Image src='/date.png' alt='start / end date' width={8} height={36}></Image>
                         <div className='flex flex-col gap-2 text-sm'>
-                            <div>{formatDate(startDate)} <span className='opacity-60'>{startTime}</span></div>
-                            <div>{formatDate(endDate)} <span className='opacity-60'>{endTime}</span></div>
+                            <div>{formatDate(startDate)}</div>
+                            <div>{formatDate(endDate)}</div>
                         </div>
                     </div>
                 )
@@ -184,6 +182,7 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                 const campaign: TCampaign = row.original;
                 const id: number = campaign.id;
                 const nameCampaign = campaign.name;
+                const canDelete = campaign.status.toLowerCase() !== 'cancelled';
 
                 return (
                     <div className="flex justify-center space-x-2">
@@ -194,8 +193,7 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                             entityName={`${nameCampaign} campaign`}
                             onDelete={() => deleteCampaign(id)}
                             edit
-                            canCancel
-                            canDelete
+                            canDelete={canDelete}
                         />
                     </div>
                 )
