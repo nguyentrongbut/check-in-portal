@@ -6,7 +6,7 @@ import {Input} from "@/components/ui/input";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
 
-const UploadImage = ({value, onChange, className}: { value: string | File, onChange: (val: string | File) => void, className?: string }) => {
+const UploadImage = ({value, onChange, className}: { value: string | File | undefined, onChange: (val: string | File) => void, className?: string }) => {
     const [preview, setPreview] = useState<string>("/default-avatar.png");
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {

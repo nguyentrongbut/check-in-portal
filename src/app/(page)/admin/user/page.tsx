@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 import TableUser from "@/components/pages/admin/user/table.user";
-import DialogCreateUser from "@/components/pages/admin/user/dialog.create.user";
+// import DialogCreateUser from "@/components/pages/admin/user/dialog.create.user";
 import {getUsers} from "@/lib/actions/user";
 
 export const metadata: Metadata = {
@@ -46,7 +46,7 @@ const UserManagement = async ({searchParams}: { searchParams : Promise<{ [key: s
                             <CardTitle>All Users</CardTitle>
                             <CardDescription>View and manage user accounts and merchant profiles</CardDescription>
                         </div>
-                        <DialogCreateUser/>
+                        {/*<DialogCreateUser/>*/}
                     </div>
                 </CardHeader>
                 <CardContent>

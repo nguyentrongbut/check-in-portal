@@ -2,6 +2,7 @@
 
 import {GetUsersParams} from "@/app/(page)/admin/user/page";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
+import {UserFormUpdate} from "@/components/pages/admin/user/form.update.user";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
@@ -60,5 +61,84 @@ export async function getUser(userId: number) {
         return user.data;
     } catch (err) {
         console.error('Failed when get user:', err);
+    }
+}
+
+export async function updateUser(userId: number, data: UserFormUpdate) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const { role, status, ...rest } = data;
+
+        const roleData = role === 'merchant' ? 'ALLOCATOR' : role?.toUpperCase()
+
+        const payload = {
+            status : status.toUpperCase(),
+            role: roleData,
+            ...rest
+        }
+
+        const res = await fetch(`${url}/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to update user with ID ${userId}`);
+        }
+
+        return res.status;
+    } catch (err) {
+        console.error('Failed when update user:', err);
+    }
+}
+
+export async function blockUser(id: number) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${url}/${id}/block`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to block user with ID ${id}. Status: ${res.status}`);
+        }
+
+        return true;
+    } catch (err) {
+        console.error(`Failed when block user with ID ${id}:`, err);
+        throw err;
+    }
+}
+
+export async function approveUser(id: number) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${url}/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to block user with ID ${id}. Status: ${res.status}`);
+        }
+
+        return true;
+    } catch (err) {
+        console.error(`Failed when block user with ID ${id}:`, err);
+        throw err;
     }
 }

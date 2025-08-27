@@ -13,18 +13,19 @@ import toast from "react-hot-toast";
 import UploadImage from "@/components/common/upload.image";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Switch} from "@/components/ui/switch";
-import {updateUser} from "@/lib/actions/auth";
 import {useRouter} from "next/navigation";
-import {fileToBase64} from "@/utils/convertFileToBase64";
+// import {fileToBase64} from "@/utils/convertFileToBase64";
+import {updateUser} from "@/lib/actions/user";
 
 const roleOptions = ["admin", "merchant", "user"] as const;
 const statusOptions = ["active", "inactive", "banned"] as const;
 
 const formSchema = z.object({
-    avatar: z.union([
-        z.string().url("Avatar must be a valid URL or an uploaded image file."),
-        z.instanceof(File)
-    ]),
+    // avatarUrl: z.union([
+    //     z.string().url("Avatar must be a valid URL or an uploaded image file."),
+    //     z.instanceof(File)
+    // ]),
+    avatarUrl: z.string().optional(),
     fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
@@ -42,7 +43,7 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
     const form = useForm<UserFormUpdate>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            avatar: infoUser.avatar || '',
+            avatarUrl: infoUser.avatar || '',
             fullName: infoUser.fullName ?? '',
             email: infoUser.email ?? '',
             phone: infoUser.phone ?? '',
@@ -56,17 +57,17 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
     async function onSubmit(values: UserFormUpdate) {
         setIsSubmitting(true);
         try {
-            let imageBase64 = "";
-
-            if (values?.avatar instanceof File) {
-                imageBase64 = await fileToBase64(values?.avatar);
-            } else {
-                imageBase64 = values?.avatar;
-            }
+            // let imageBase64 = "";
+            //
+            // if (values?.avatarUrl instanceof File) {
+            //     imageBase64 = await fileToBase64(values?.avatarUrl);
+            // } else {
+            //     imageBase64 = values?.avatarUrl;
+            // }
 
             const payload = {
                 ...values,
-                avatar: imageBase64
+                avatarUrl: ''
             }
 
             const result = await updateUser(infoUser?.id, payload);
@@ -91,12 +92,12 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
                 className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="avatar"
+                    name="avatarUrl"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Avatar</FormLabel>
                             <FormControl>
-                                <UploadImage value={field.value} onChange={field.onChange}/>
+                                <UploadImage value={field?.value} onChange={field.onChange}/>
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
