@@ -61,7 +61,7 @@ const FormLogin = () => {
             <form
                 autoComplete="off"
                 onSubmit={form.handleSubmit((values) => onSubmit(values))}
-                className="space-y-4">
+                className="space-y-3">
                 <FormField
                     control={form.control}
                     name="email"
@@ -71,7 +71,7 @@ const FormLogin = () => {
                             <FormControl>
                                 <Input type="email" placeholder="Enter your email" {...field} />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -87,7 +87,7 @@ const FormLogin = () => {
                                     {...field}
                                 ></InputPassword>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />

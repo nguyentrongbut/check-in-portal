@@ -10,6 +10,8 @@ import JoinAgency from "@/components/pages/home/join.agency";
 import CallToActionSection from "@/components/pages/home/call.to.action.section";
 import HomeFooter from "@/components/pages/home/home.footer";
 import {Metadata} from "next";
+import ScrollToTop from "@/components/common/scroll.to.top";
+import React from "react";
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://localhunt.io.vn'),
@@ -98,6 +100,7 @@ export default function Home() {
                     </Container>
                 </div>
             </div>
+            <ScrollToTop/>
         </div>
     )
 }
