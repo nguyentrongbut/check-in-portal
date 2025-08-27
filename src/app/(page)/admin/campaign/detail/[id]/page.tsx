@@ -17,7 +17,7 @@ import LocationPickerWrapper from "@/components/pages/campaign/create/location-p
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {generateQRCodeBase64} from "@/utils/generateQRCodeBase64";
 import ApprovedCampaign from "@/components/pages/admin/campaign/approved.campaign";
-import DialogReject from "@/components/pages/admin/campaign/dialog.reject";
+import CancelCampaign from "@/components/pages/admin/campaign/cancel.campaign";
 
 export async function generateMetadata({params}: { params: Params }) {
     const {id} = await params
@@ -95,6 +95,13 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </DialogContent>
                     </Dialog>
 
+                    <Link href={`/admin/campaign/edit/${id}`}>
+                        <Button variant="outline" size="sm">
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                        </Button>
+                    </Link>
+
                     {['pending', 'rejected'].includes(campaign?.status.toLowerCase()) && (
                         <Link href={`/admin/campaign/edit/${id}`}>
                             <Button variant="outline" size="sm">
@@ -104,9 +111,16 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </Link>
                     )}
 
-                    <ApprovedCampaign campaignId={id}/>
-
-                    <DialogReject campaignId={id}/>
+                    {
+                        campaign?.status.toLowerCase() !== 'approved' && (
+                            <ApprovedCampaign campaignId={id}/>
+                        )
+                    }
+                    {
+                        campaign?.status.toLowerCase() !== 'cancelled' && (
+                            <CancelCampaign campaignId={id}/>
+                        )
+                    }
                 </div>
             </div>
 

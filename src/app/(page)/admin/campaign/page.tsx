@@ -24,7 +24,7 @@ const ReviewCampaignPage = async () => {
                     <div className='flex justify-between items-center'>
                         <div>
                             <CardTitle>List Campaign</CardTitle>
-                            <CardDescription>Review campaign details and approve or reject submissions</CardDescription>
+                            <CardDescription>List campaign details and approve or reject submissions</CardDescription>
                         </div>
                     </div>
                 </CardHeader>

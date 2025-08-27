@@ -2,12 +2,13 @@
 
 import {MapContainer, TileLayer, Marker, useMapEvents} from 'react-leaflet';
 import {LatLngExpression, Map} from 'leaflet';
-import {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {defaultIcon} from '@/utils/leaflet-icon';
 import {Loader2, MapPin} from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
+import {FormMessage} from "@/components/ui/form";
 
 type LocationValue = {
     lat: number;
@@ -171,6 +172,7 @@ export default function LocationPicker({
                             className={error ? "border-red-500 pr-8" : "pr-8"}
                             disabled={isLoading}
                         />
+                        <FormMessage className='min-h-0'/>
                         {isLoading && (
                             <Loader2 className="absolute right-2 top-1/2 -translate-y-1/2 size-4 animate-spin text-primary"/>
                         )}

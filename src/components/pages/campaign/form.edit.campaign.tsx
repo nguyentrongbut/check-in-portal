@@ -25,7 +25,9 @@ export const formSchema = z.object({
     location: z.object({
         lat: z.number(),
         lng: z.number(),
-    }).nullable(),
+    }).nullable().refine((val) => val !== null, {
+        message: "Location is required",
+    }),
     requiredWifiSsid: z.string().min(1, { message: "Wi-Fi SSID is required" }),
     requiredWifiBssid: z.string().min(1, { message: "Wi-Fi BSSID is required" }),
     pointsPerCheckin: z.number().min(1, { message: "Points per check-in must be at least 1" }),
@@ -41,7 +43,7 @@ export const formSchema = z.object({
 
 export type UpdateCampaignForm = z.infer<typeof formSchema>;
 
-const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
+const FormEditCampaign = ({campaign, href}:{campaign: TCampaign, href: string}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
@@ -235,7 +237,7 @@ const FormEditCampaign = ({campaign}:{campaign: TCampaign}) => {
                 )}/>
 
                 <div className="flex justify-end gap-3 pt-4">
-                    <Link href="/campaign">
+                    <Link href={href}>
                         <Button variant="outline" type="button" disabled={isSubmitting}>Cancel</Button>
                     </Link>
                     <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
