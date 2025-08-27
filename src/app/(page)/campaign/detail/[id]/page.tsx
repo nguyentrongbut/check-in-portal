@@ -126,9 +126,6 @@ const DetailPage = async ({params}: { params: Params }) => {
                         value={campaign?.location} />
                 </CardContent>
             </Card>
-
-            {/* Table List Check In*/}
-            {/*<TableCheckIns campaignId={id}/>*/}
         </div>
     )
 }
