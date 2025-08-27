@@ -15,6 +15,7 @@ import CalendarDate from "@/components/pages/campaign/calendar.date";
 import {createCampaign} from "@/lib/actions/campaign";
 import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 import FormLabelTooltip from "@/components/common/form.label.tooltip";
+import useWalletBalance from "@/hooks/useWalletBalance";
 
 
 export const formSchema = z.object({
@@ -48,6 +49,8 @@ const FormCreateCampaign = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+
+    const { balance, loading } = useWalletBalance();
 
     const form = useForm<CreateCampaignForm>({
         resolver: zodResolver(formSchema),
@@ -157,16 +160,21 @@ const FormCreateCampaign = () => {
                             <FormItem>
                                 <FormLabelTooltip
                                     label='Total Point Budget'
-                                    description='This value defines the total number of points a user can accumulate from completing check-ins. A higher point budget allows users to earn more rewards over time, encouraging consistent engagement and participation.'
+                                    description='This value defines the total number of points a user can allocate. It cannot exceed your wallet balance.'
                                 />
                                 <FormControl>
                                     <Input
                                         type="number"
                                         {...field}
                                         onChange={(e) => {
-                                            const value = e.target.value;
-                                            field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                            const value = e.target.valueAsNumber;
+                                            if (!loading && balance !== null && value > balance) {
+                                                field.onChange(balance);
+                                            } else {
+                                                field.onChange(value);
+                                            }
                                         }}
+                                        placeholder={loading ? "Loading..." : `Max: ${balance}`}
                                     />
                                 </FormControl>
                                 <FormMessage/>

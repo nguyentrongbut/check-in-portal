@@ -37,8 +37,8 @@ export type CreateTransactionData = {
 const exchangeRate = 100;
 const quickAmounts = [5, 10, 15, 20, 25, 30];
 
-const FormTopUp = ({userId, wallet, onClose}
-                   : {userId: number, wallet: TWallet, onClose?: () => void }) => {
+const FormTopUp = ({userId, onClose}
+                   : {userId: number, onClose?: () => void }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 

@@ -6,8 +6,8 @@ import {DataTable} from "@/components/common/data.table";
 import {columnsHistoryTransaction} from "@/components/pages/wallet/columns.history.transaction";
 import DialogTopUp from "@/components/pages/wallet/dialog.top.up";
 import {formatNumber} from "@/utils/formatHelpers";
-import {getWallet} from "@/lib/actions/wallet";
 import {Metadata} from "next";
+import {calcStats} from "@/utils/calcTransaction";
 
 export const metadata : Metadata = {
     title: "Wallet - Local Hunt",
@@ -19,9 +19,8 @@ const WalletPage = async () => {
     const userInfo = await getUserInfoFromCookie()
     const data = await getTransactions();
     const transactions = data?.items
-    const wallet = await getWallet(userInfo?.id);
+    const wallet = calcStats(transactions);
 
-    console.log('transactions', transactions);
     return (
         <div className='space-y-6'>
 
@@ -71,7 +70,6 @@ const WalletPage = async () => {
                         </div>
                         <DialogTopUp
                             userId={userInfo?.id}
-                            wallet={wallet}
                         />
                     </div>
                 </CardHeader>

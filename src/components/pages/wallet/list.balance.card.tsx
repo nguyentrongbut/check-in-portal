@@ -2,15 +2,15 @@ import {TCardOverview} from "@/types/component";
 import CardOverview from "@/components/common/card.overview";
 import {formatNumber, formatPointsToUSD} from "@/utils/formatHelpers";
 import { ArrowUpRight, DollarSign, WalletIcon} from "lucide-react";
-import {TWallet} from "@/types/data";
+import {ICalcStats} from "@/utils/calcTransaction";
 
-const ListBalanceCard = async ({wallet} : {wallet: TWallet}) => {
+const ListBalanceCard = async ({wallet} : {wallet: ICalcStats}) => {
 
 
     const balanceCards: TCardOverview[] = [
         {
             title: 'Current Balance',
-            titleContent: formatNumber(wallet?.balance),
+            titleContent: `${formatNumber(wallet?.balance)} pts`,
             desc: formatPointsToUSD(wallet?.balance),
             Icon: WalletIcon,
             color: 'text-blue-600'
