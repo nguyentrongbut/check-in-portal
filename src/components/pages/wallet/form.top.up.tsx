@@ -13,14 +13,11 @@ import {Input} from "@/components/ui/input";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
 import {DialogClose} from "@/components/ui/dialog";
-import {CreditCard, DollarSign, Wallet} from "lucide-react";
 import {Label} from "@/components/ui/label";
 import {formatNumber} from "@/utils/formatHelpers";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import WalletSummary from "@/components/pages/wallet/wallet.summary";
-import {updateWallet} from "@/lib/actions/wallet";
 import { TWallet} from "@/types/data";
-import {createTransaction} from "@/lib/actions/transaction";
+import { createTransactions} from "@/lib/actions/transaction";
 
 export const formSchema = z.object({
     paymentMethod: z.string().min(1, "Payment method is required"),
@@ -35,17 +32,10 @@ export type CreateTransactionData = {
     amount: number;
     point: number;
     description: string;
-    createdAt: number;
 }
 
 const exchangeRate = 100;
-const quickAmounts = [10, 25, 50, 100, 200, 500];
-
-const paymentMethods = [
-    {id: "credit-card", name: "Credit Card", icon: CreditCard, description: "Visa, Mastercard, Amex"},
-    {id: "paypal", name: "PayPal", icon: Wallet, description: "Pay with your PayPal account"},
-    {id: "bank-transfer", name: "Bank Transfer", icon: DollarSign, description: "Direct bank transfer"},
-];
+const quickAmounts = [5, 10, 15, 20, 25, 30];
 
 const FormTopUp = ({userId, wallet, onClose}
                    : {userId: number, wallet: TWallet, onClose?: () => void }) => {
@@ -70,20 +60,17 @@ const FormTopUp = ({userId, wallet, onClose}
     const onSubmit = async (values: TopUpForm) => {
         setIsSubmitting(true);
         try {
-
             const transactionData : CreateTransactionData = {
-                type: 'topup',
+                type: 'TOPUP',
                 userId,
                 amount: values.amount,
                 point: pointsToReceive,
                 description: `Top up wallet with ${values.amount} USD`,
-                createdAt: Date.now()
             }
 
-            const result = await updateWallet(wallet?.id, values, wallet?.balance, wallet?.totalTopup);
-            const resultTransaction = await createTransaction(transactionData);
+            const resultTransaction = await createTransactions(transactionData);
 
-            if (result === 200 && resultTransaction === 201) {
+            if (resultTransaction === 200) {
                 toast.success("Top up wallet successfully");
                 router.push('/wallet');
                 onClose?.();
@@ -155,53 +142,6 @@ const FormTopUp = ({userId, wallet, onClose}
                         <span className="font-medium text-primary">{formatNumber(pointsToReceive) || 0} points</span>
                     </div>
                 </div>
-
-                {/* Payment Method Selection */}
-                <FormField
-                    control={form.control}
-                    name="paymentMethod"
-                    render={({field}) => (
-                        <FormItem className="space-y-3">
-                            <FormLabel className="text-sm font-medium">Payment Method</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                    className="space-y-2"
-                                >
-                                    {paymentMethods.map((method) => {
-                                        const Icon = method.icon;
-                                        return (
-                                            <Label
-                                                key={method.id}
-                                                htmlFor={method.id}
-                                                className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer"
-                                            >
-                                                <RadioGroupItem
-                                                    value={method.id}
-                                                    id={method.id}
-                                                />
-                                                <Icon className="h-5 w-5 text-gray-600"/>
-                                                <div className="flex-1">
-                                                    <Label
-                                                        htmlFor={method.id}
-                                                        className="font-medium cursor-pointer"
-                                                    >
-                                                        {method.name}
-                                                    </Label>
-                                                    <p className="text-xs text-gray-500">
-                                                        {method.description}
-                                                    </p>
-                                                </div>
-                                            </Label>
-                                        );
-                                    })}
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
 
                 {/* Summary */}
                 {amountWatch && pointsToReceive > 0 && (
