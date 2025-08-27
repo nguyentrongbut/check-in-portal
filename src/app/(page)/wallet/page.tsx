@@ -12,7 +12,7 @@ import {Metadata} from "next";
 export const metadata : Metadata = {
     title: "Wallet - Local Hunt",
     description:
-        "Manage your Local Hunt wallet: view balance, exchange rates, top-up points, and track your transaction history.",
+        "Manage your Local Hunt transaction: view balance, exchange rates, top-up points, and track your transaction history.",
 };
 
 const WalletPage = async () => {

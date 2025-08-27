@@ -64,6 +64,7 @@ export type TCheckIn = {
 export type TTransaction = {
     id: number,
     type: string,
+    status: string,
     point: number,
     amount: number,
     description: string,

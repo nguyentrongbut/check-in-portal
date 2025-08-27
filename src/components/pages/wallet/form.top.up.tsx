@@ -71,13 +71,13 @@ const FormTopUp = ({userId, wallet, onClose}
             const resultTransaction = await createTransactions(transactionData);
 
             if (resultTransaction === 200) {
-                toast.success("Top up wallet successfully");
+                toast.success("Top up transaction successfully");
                 router.push('/wallet');
                 onClose?.();
                 return
             }
 
-            toast.error("Top up wallet fail!");
+            toast.error("Top up transaction fail!");
         } catch (error) {
             console.error(error);
             toast.error("Top up error");

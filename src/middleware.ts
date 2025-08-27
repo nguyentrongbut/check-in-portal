@@ -3,7 +3,7 @@ import {getUserInfoFromCookie} from '@/utils/getUserInfoFromCookie';
 
 // 1. Define protected and public routes
 const protectedRoutes = ['/dashboard', '/admin', '/profile'];
-const merchantOnlyRoutes = ['/campaign', '/wallet'];
+const merchantOnlyRoutes = ['/campaign', '/transaction'];
 const publicRoutes = ['/login', '/register', '/'];
 
 export async function middleware(req: NextRequest) {
