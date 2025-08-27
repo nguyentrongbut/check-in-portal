@@ -81,7 +81,7 @@ const FormRegister = () => {
                             <FormControl>
                                 <Input type="text" placeholder="Enter your name" {...field} />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -98,7 +98,7 @@ const FormRegister = () => {
                                     {...field}
                                 ></InputIcon>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -116,7 +116,7 @@ const FormRegister = () => {
                                     {...field}
                                 ></InputIcon>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -131,7 +131,7 @@ const FormRegister = () => {
                                     {...field}
                                 ></InputPassword>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -146,7 +146,7 @@ const FormRegister = () => {
                                     {...field}
                                 ></InputPassword>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />
@@ -162,7 +162,7 @@ const FormRegister = () => {
                                     {...field}
                                 ></InputIcon>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='min-h-0'/>
                         </FormItem>
                     )}
                 />

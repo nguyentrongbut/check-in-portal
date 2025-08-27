@@ -14,6 +14,6 @@ export async function getTokenFromCookies() {
         const { token } = JSON.parse(tokenCookie.value);
         return token as string;
     } catch (error) {
-        console.log(error)
+        throw new Error("Invalid token format in cookies");
     }
 }

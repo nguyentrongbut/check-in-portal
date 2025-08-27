@@ -25,7 +25,7 @@ export async function loginUser(data: LoginForm) {
         });
 
         if (!res.ok) {
-            return res.status;
+            return false;
         }
 
         const users = await res.json();

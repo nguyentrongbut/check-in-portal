@@ -126,7 +126,6 @@ export default function RootLayout({
         <ProgressWrapper>
             <main className='select-none'>
                 {children}
-                <ScrollToTop/>
             </main>
         </ProgressWrapper>
         <Toaster

@@ -20,7 +20,7 @@ const UserInfoSidebar = ({userRole}: { userRole: string | undefined }) => {
         const result = await logout()
         if (!result.success) return toast.error("User logged out fail!")
         toast.success("User logged out successfully!")
-        router.refresh()
+        router.push('/')
     }
     return (
         <div className="p-4 border-t border-gray-200">
