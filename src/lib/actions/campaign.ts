@@ -58,8 +58,6 @@ export async function createCampaign(data: CreateCampaignForm) {
             longitude,
         };
 
-        console.log("payload:: ", payload);
-
         const res = await fetch(urlBe, {
             method: 'POST',
             headers: {

@@ -29,7 +29,7 @@ const formSchema = z.object({
     fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-    address: z.string().min(1, 'Address cannot be empty'),
+    // address: z.string().min(1, 'Address cannot be empty'),
     role: z.enum(roleOptions),
     status: z.enum(statusOptions),
 });
@@ -43,11 +43,11 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
     const form = useForm<UserFormUpdate>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            avatarUrl: infoUser.avatar || '',
+            avatarUrl: infoUser.avatarUrl || '',
             fullName: infoUser.fullName ?? '',
             email: infoUser.email ?? '',
             phone: infoUser.phone ?? '',
-            address: infoUser.address ?? '',
+            // address: infoUser.address ?? '',
             role: (infoUser.role.toLowerCase() === 'allocator' ? 'merchant' : infoUser.role.toLowerCase()) as typeof roleOptions[number],
             status: (infoUser.status?.toLowerCase() ?? 'active') as typeof statusOptions[number],
         },
@@ -142,19 +142,19 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="address"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Address</FormLabel>
-                            <FormControl>
-                                <Input type="text" placeholder="Enter your address" {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
+                {/*<FormField*/}
+                {/*    control={form.control}*/}
+                {/*    name="address"*/}
+                {/*    render={({field}) => (*/}
+                {/*        <FormItem>*/}
+                {/*            <FormLabel>Address</FormLabel>*/}
+                {/*            <FormControl>*/}
+                {/*                <Input type="text" placeholder="Enter your address" {...field} />*/}
+                {/*            </FormControl>*/}
+                {/*            <FormMessage/>*/}
+                {/*        </FormItem>*/}
+                {/*    )}*/}
+                {/*/>*/}
 
                 <FormField
                     control={form.control}

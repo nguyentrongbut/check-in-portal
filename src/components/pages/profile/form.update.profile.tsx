@@ -11,24 +11,24 @@ import toast from "react-hot-toast";
 import UploadImage from "@/components/common/upload.image";
 import {TUser} from "@/types/data";
 import {useRouter} from "next/navigation";
-import {updateProfile} from "@/lib/actions/auth";
-import {fileToBase64} from "@/utils/convertFileToBase64";
+import {updateProfile} from "@/lib/actions/user";
 
 
 const formSchema = z.object({
-    avatar: z.union([
-        z.string().url("Avatar must be a valid URL or an uploaded image file."),
-        z.instanceof(File)
-    ]),
-    name: z.string().min(4, 'Name must be at least 4 characters long'),
+    // avatar: z.union([
+    //     z.string().url("Avatar must be a valid URL or an uploaded image file."),
+    //     z.instanceof(File)
+    // ]),
+    avatarUrl: z.string().optional(),
+    fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-    address: z.string().min(1, 'Address cannot be empty'),
+    // address: z.string().min(1, 'Address cannot be empty'),
 });
 
 export type UpdateProfileForm = z.infer<typeof formSchema>;
 
-const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
+const FormUpdateProfile = ({userInfo}: { userInfo: TUser }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const router = useRouter();
@@ -37,11 +37,11 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
     const form = useForm<UpdateProfileForm>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            avatar: userInfo?.avatar || '',
-            name: userInfo?.fullName ?? '',
+            avatarUrl: userInfo?.avatarUrl || '',
+            fullName: userInfo?.fullName ?? '',
             email: userInfo?.email ?? '',
             phone: userInfo?.phone ?? '',
-            address: userInfo?.address ?? '',
+            // address: userInfo?.address ?? '',
         },
     });
 
@@ -49,24 +49,27 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
     async function onSubmit(values: UpdateProfileForm) {
         setIsSubmitting(true);
         try {
-            let imageBase64 = "";
+            // let imageBase64 = "";
+            //
+            // if (values?.avatarUrl instanceof File) {
+            //     imageBase64 = await fileToBase64(values?.avatarUrl);
+            // } else {
+            //     imageBase64 = values?.avatarUrl;
+            // }
 
-            if (values?.avatar instanceof File) {
-                imageBase64 = await fileToBase64(values?.avatar);
-            } else {
-                imageBase64 = values?.avatar;
-            }
+            const role = userInfo?.role.toLowerCase() === 'merchant' ? 'ALLOCATOR' : userInfo?.role;
 
             const payload = {
                 ...values,
-                avatar: imageBase64
+                avatarUrl: ''
             }
 
-            const result = await updateProfile(userInfo?.id, payload)
+            const result = await updateProfile(userInfo?.id, payload, role)
 
             if (!result) return toast.error('Update profile failed. Please try again.');
 
             if (result === 200) {
+                router.refresh()
                 toast.success('Update profile successfully.');
             }
 
@@ -82,10 +85,10 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
             <form
                 autoComplete="off"
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6 mt-4">
+                className="space-y-2 mt-4">
                 <FormField
                     control={form.control}
-                    name="avatar"
+                    name="avatarUrl"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Avatar</FormLabel>
@@ -94,7 +97,8 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                                     <UploadImage value={field.value} onChange={field.onChange} className='size-24'/>
                                     <div>
                                         <h3 className="font-medium">Profile Picture</h3>
-                                        <p className="text-sm text-gray-600">Upload a new profile picture. JPG, PNG or GIF</p>
+                                        <p className="text-sm text-gray-600">Upload a new profile picture. JPG, PNG or
+                                            GIF</p>
                                     </div>
                                 </div>
                             </FormControl>
@@ -104,7 +108,7 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                 />
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="fullName"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Name</FormLabel>
@@ -141,21 +145,21 @@ const FormUpdateProfile = ({userInfo } : {userInfo : TUser}) => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="address"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Address</FormLabel>
-                            <FormControl>
-                                <Input type="text" placeholder="Enter your address" {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
+                {/*<FormField*/}
+                {/*    control={form.control}*/}
+                {/*    name="address"*/}
+                {/*    render={({field}) => (*/}
+                {/*        <FormItem>*/}
+                {/*            <FormLabel>Address</FormLabel>*/}
+                {/*            <FormControl>*/}
+                {/*                <Input type="text" placeholder="Enter your address" {...field} />*/}
+                {/*            </FormControl>*/}
+                {/*            <FormMessage/>*/}
+                {/*        </FormItem>*/}
+                {/*    )}*/}
+                {/*/>*/}
                 <div className="flex justify-end gap-4">
-                        <Button onClick={() => router.back()} type="button" variant="outline">Cancel</Button>
+                    <Button onClick={() => router.back()} type="button" variant="outline">Cancel</Button>
 
                     <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
                         Update Profile

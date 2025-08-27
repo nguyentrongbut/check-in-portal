@@ -13,7 +13,7 @@ export type TUser = {
     phone: string,
     address: string,
     role: TRole,
-    avatar: string,
+    avatarUrl: string,
     password: string,
     createdAt: string,
     updatedAt: string,

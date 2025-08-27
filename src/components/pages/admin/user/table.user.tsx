@@ -27,8 +27,6 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
         router.push(`?${params.toString()}`, { scroll: false });
     };
 
-    console.log("list User:: ", listUser)
-
     return (
         <>
             {/* Filters */}
