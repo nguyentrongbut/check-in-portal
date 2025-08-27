@@ -107,24 +107,6 @@ export async function updateStatus(userId: number, status: TStatusUser, reason?:
     }
 }
 
-export async function getUser(userId: number) {
-    try {
-        const res = await fetch(`${url}/${userId}`, {
-            method: "GET",
-            cache: "no-cache",
-        });
-
-        if (!res.ok) {
-            throw new Error(`Failed to fetch user with ID ${userId}`);
-        }
-
-        const user = await res.json();
-        return user;
-    } catch (err) {
-        console.error('Failed when get user:', err);
-    }
-}
-
 
 export async function createUser(data: UserFormCreate) {
     const {confirmPassword, ...rest} = data;
@@ -146,30 +128,6 @@ export async function createUser(data: UserFormCreate) {
         console.error('Failed when create user:', err);
     }
 }
-
-export async function updateProfile(userId: number, data: UpdateProfileForm) {
-    try {
-        const payload = {
-            ...data,
-            updatedAt: new Date(),
-        };
-
-        const res = await fetch(`${url}/${userId}`, {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload),
-        });
-
-        if (!res.ok) {
-            throw new Error(`Failed to update user with ID ${userId}`);
-        }
-
-        return res.status;
-    } catch (err) {
-        console.error('Failed when update profile:', err);
-    }
-}
-
 
 export async function logout() {
     try {

@@ -30,7 +30,7 @@ export const columnsUser: ColumnDef<TUser>[] = [
         cell: ({row}) => {
             const user: TUser = row.original;
             const email: string = user?.email;
-            const avatar: string = user?.avatar;
+            const avatar: string = user?.avatarUrl;
             const userName: string = row.getValue("fullName");
 
             return (

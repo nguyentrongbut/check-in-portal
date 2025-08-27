@@ -2,8 +2,8 @@ import {Badge} from "@/components/ui/badge";
 import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import FormUpdateProfile from "@/components/pages/profile/form.update.profile";
-import {getUser} from "@/lib/actions/auth";
 import {Metadata} from "next";
+import {getUser} from "@/lib/actions/user";
 
 export const metadata: Metadata = {
     title: "Profile Settings - Local Hunt",

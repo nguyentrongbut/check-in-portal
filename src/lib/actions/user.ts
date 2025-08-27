@@ -3,6 +3,7 @@
 import {GetUsersParams} from "@/app/(page)/admin/user/page";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
 import {UserFormUpdate} from "@/components/pages/admin/user/form.update.user";
+import {UpdateProfileForm} from "@/components/pages/profile/form.update.profile";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
@@ -76,6 +77,35 @@ export async function updateUser(userId: number, data: UserFormUpdate) {
             status : status.toUpperCase(),
             role: roleData,
             ...rest
+        }
+
+        const res = await fetch(`${url}/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to update user with ID ${userId}`);
+        }
+
+        return res.status;
+    } catch (err) {
+        console.error('Failed when update user:', err);
+    }
+}
+
+export async function updateProfile(userId: number, data: UpdateProfileForm, role: string) {
+    try {
+        const token = await getTokenFromCookies();
+
+        const payload = {
+            status : "ACTIVE",
+            role,
+            ...data
         }
 
         const res = await fetch(`${url}/${userId}`, {
