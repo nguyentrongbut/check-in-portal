@@ -44,8 +44,6 @@ const DialogViewUser = ({userId}: {userId: number}) => {
         }
     }, [open, userId]);
 
-    console.log("user:: ", user)
-
     if (loading) return 'Loading...';
 
     return (
@@ -59,7 +57,7 @@ const DialogViewUser = ({userId}: {userId: number}) => {
                 <DialogHeader>
                     <DialogTitle>User Profile</DialogTitle>
                     <DialogDescription>
-                        Detailed information for <span className='capitalize'>{user?.fullName}</span>
+                        Detailed information for <span className='capitalize'>{user?.fullName || user?.email}</span>
                     </DialogDescription>
                 </DialogHeader>
                 {user && (
@@ -111,31 +109,31 @@ const DialogViewUser = ({userId}: {userId: number}) => {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <h4 className="font-medium">Points Summary</h4>
-                            <div className={`grid ${user?.role === "user" ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-2`}>
-                                {user?.role === 'user' && (
-                                    <div className="text-center p-3 bg-green-50 rounded-lg">
-                                        <div className="text-lg font-bold text-green-600">
-                                            {formatNumber(user?.pointsEarned) || 0}
-                                        </div>
-                                        <div className="text-xs text-green-600">Points Earned</div>
-                                    </div>
-                                )}
-                                <div className="text-center p-3 bg-red-50 rounded-lg">
-                                    <div className="text-lg font-bold text-red-600">
-                                        {formatNumber(user?.pointsSpent) || 0}
-                                    </div>
-                                    <div className="text-xs text-red-600">Points Spent</div>
-                                </div>
-                                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                                    <div className="text-lg font-bold text-blue-600">
-                                        {formatNumber(user?.currentBalance) || 0}
-                                    </div>
-                                    <div className="text-xs text-blue-600">Current Balance</div>
-                                </div>
-                            </div>
-                        </div>
+                        {/*<div>*/}
+                        {/*    <h4 className="font-medium">Points Summary</h4>*/}
+                        {/*    <div className={`grid ${user?.role === "user" ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-2`}>*/}
+                        {/*        {user?.role === 'user' && (*/}
+                        {/*            <div className="text-center p-3 bg-green-50 rounded-lg">*/}
+                        {/*                <div className="text-lg font-bold text-green-600">*/}
+                        {/*                    {formatNumber(user?.pointsEarned) || 0}*/}
+                        {/*                </div>*/}
+                        {/*                <div className="text-xs text-green-600">Points Earned</div>*/}
+                        {/*            </div>*/}
+                        {/*        )}*/}
+                        {/*        <div className="text-center p-3 bg-red-50 rounded-lg">*/}
+                        {/*            <div className="text-lg font-bold text-red-600">*/}
+                        {/*                {formatNumber(user?.pointsSpent) || 0}*/}
+                        {/*            </div>*/}
+                        {/*            <div className="text-xs text-red-600">Points Spent</div>*/}
+                        {/*        </div>*/}
+                        {/*        <div className="text-center p-3 bg-blue-50 rounded-lg">*/}
+                        {/*            <div className="text-lg font-bold text-blue-600">*/}
+                        {/*                {formatNumber(user?.currentBalance) || 0}*/}
+                        {/*            </div>*/}
+                        {/*            <div className="text-xs text-blue-600">Current Balance</div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
                 )}
             </DialogContent>

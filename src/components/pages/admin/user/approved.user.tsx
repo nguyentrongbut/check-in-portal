@@ -1,22 +1,22 @@
 'use client'
 
-import {CheckCircle} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import {CheckCircle, Loader} from "lucide-react";
 import {useState} from "react";
 import toast from "react-hot-toast";
-import {approveCampaign} from "@/lib/actions/campaign";
 import {useRouter} from "next/navigation";
+import {approveUser} from "@/lib/actions/user";
+import {Button} from "@/components/ui/button";
 
-const ApprovedCampaign = ({campaignId}: { campaignId: number }) => {
+const ApprovedUser = ({userId}: { userId: number }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleApprove = async () => {
         setLoading(true);
         try {
-            const result = await approveCampaign(campaignId);
-            if (result === 200) {
-                toast.success("Campaign approved successfully.");
+            const result = await approveUser(userId);
+            if (result) {
+                toast.success("User approved successfully.");
                 router.refresh();
                 return
             }
@@ -31,18 +31,18 @@ const ApprovedCampaign = ({campaignId}: { campaignId: number }) => {
 
     return (
         <Button
-            onClick={handleApprove}
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="text-green-600 hover:text-green-700 hover:bg-green-50"
+            className="text-green-600 hover:text-red-700 hover:bg-red-50"
+            onClick={handleApprove}
             disabled={loading}
-            isLoading={loading}
-            loadingColor='border-green-600'
         >
-            <CheckCircle className="size-4"/>
-            Approved
+            {
+                loading ? <Loader className='size-4 text-primary'/> :
+                    <CheckCircle className="size-4 cursor-pointer "/>
+            }
         </Button>
     )
 }
 
-export default ApprovedCampaign
+export default ApprovedUser

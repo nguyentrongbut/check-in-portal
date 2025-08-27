@@ -5,7 +5,6 @@ import {LoginForm} from "@/components/pages/auth/form.login";
 import {RegisterForm} from "@/components/pages/auth/form.register";
 import {UpdateProfileForm} from "@/components/pages/profile/form.update.profile";
 import {TStatusUser} from "@/types/data";
-import {UserFormUpdate} from "@/components/pages/admin/user/form.update.user";
 import {UserFormCreate} from "@/components/pages/admin/user/form.create.user";
 
 const url = `${process.env.API_URL}/users`;
@@ -168,49 +167,6 @@ export async function updateProfile(userId: number, data: UpdateProfileForm) {
         return res.status;
     } catch (err) {
         console.error('Failed when update profile:', err);
-    }
-}
-
-export async function updateUser(userId: number, data: UserFormUpdate) {
-    try {
-        const payload = {
-            ...data,
-            updatedAt: new Date(),
-        };
-
-        const res = await fetch(`${url}/${userId}`, {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload),
-        });
-
-        if (!res.ok) {
-            throw new Error(`Failed to update user with ID ${userId}`);
-        }
-
-        return res.status;
-    } catch (err) {
-        console.error('Failed when update user:', err);
-    }
-}
-
-export async function deleteUser(id: number) {
-    try {
-        const res = await fetch(`${url}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!res.ok) {
-            throw new Error(`Failed to delete user with ID ${id}. Status: ${res.status}`);
-        }
-
-        return true;
-    } catch (err) {
-        console.error(`Failed when delete user with ID ${id}:`, err);
-        throw err;
     }
 }
 

@@ -22,6 +22,7 @@ interface DialogDeleteProps {
     onConfirm: () => Promise<boolean>
     successMessage?: string
     errorMessage?: string
+    titleAction?: string
 }
 
 const DialogDelete = ({
@@ -30,7 +31,8 @@ const DialogDelete = ({
                           name,
                           onConfirm,
                           successMessage,
-                          errorMessage
+                          errorMessage,
+                          titleAction = "Delete"
                       }: DialogDeleteProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
@@ -57,12 +59,12 @@ const DialogDelete = ({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-4 text-red-600">
                         <AlertTriangle className="size-5" />
-                        Confirm delete
+                        Confirm {titleAction?.toLowerCase()}
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="text-sm text-muted-foreground px-1 py-2">
-                    Are you sure you want to delete <strong>{name}</strong>? This action cannot be undone.
+                    Are you sure you want to {titleAction?.toLowerCase()} <strong>{name}</strong>?
                 </div>
 
                 <DialogFooter className="flex justify-end gap-2">
@@ -78,7 +80,7 @@ const DialogDelete = ({
                         isLoading={isLoading}
                         disabled={isLoading}
                     >
-                        Delete
+                        {titleAction}
                     </Button>
                 </DialogFooter>
             </DialogContent>

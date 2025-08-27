@@ -27,6 +27,8 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
         router.push(`?${params.toString()}`, { scroll: false });
     };
 
+    console.log("list User:: ", listUser)
+
     return (
         <>
             {/* Filters */}
@@ -73,7 +75,7 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
                     <SelectContent>
                         <SelectItem value="all">All Status</SelectItem>
                         <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
+                        <SelectItem value="banned">Banned</SelectItem>
                     </SelectContent>
                 </Select>
             </div>

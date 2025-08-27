@@ -5,17 +5,17 @@ import {TRole, TStatusUser, TUser} from "@/types/data";
 import {ArrowUpDown, UserX} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate} from "@/utils/formatHelpers";
-import {getBadgeRoleVariant} from "@/utils/getBadgeVariant";
-import UserStatusBadge from "@/components/pages/admin/user/user.status.badge";
+import {getBadgeRoleVariant, getBadgeStatusVariant, getBadgeUserStatusVariant} from "@/utils/getBadgeVariant";
 import Image from "next/image";
 import DialogViewUser from "@/components/pages/admin/user/dialog.view.user";
 import DialogDeleteAdmin from "@/components/common/dialog.delete.admin";
-import {deleteUser} from "@/lib/actions/auth";
 import DialogEditUser from "@/components/pages/admin/user/dialog.edit.user";
+import {blockUser} from "@/lib/actions/user";
+import ApprovedUser from "@/components/pages/admin/user/approved.user";
 
 export const columnsUser: ColumnDef<TUser>[] = [
     {
-        accessorKey: "name",
+        accessorKey: "fullName",
         header: ({column}) => {
             return (
                 <div
@@ -31,7 +31,7 @@ export const columnsUser: ColumnDef<TUser>[] = [
             const user: TUser = row.original;
             const email: string = user?.email;
             const avatar: string = user?.avatar;
-            const userName: string = row.getValue("name");
+            const userName: string = row.getValue("fullName");
 
             return (
                 <div className='ml-4 flex gap-2 items-center'>
@@ -90,17 +90,12 @@ export const columnsUser: ColumnDef<TUser>[] = [
                 )
             },
         cell: ({row}) => {
-            const user: TUser = row.original;
-            const userId: number = user.id;
             const status: TStatusUser = row.getValue("status");
 
             return (
-                <div>{status.toLowerCase()}</div>
-                // <UserStatusBadge
-                //     userId={userId}
-                //     status={status}
-                //     onStatusChange={onStatusChange}
-                // />
+                <Badge variant={getBadgeUserStatusVariant(status?.toLowerCase())}>
+                    {status?.toLowerCase()}
+                </Badge>
             );
         },
     },
@@ -167,7 +162,7 @@ export const columnsUser: ColumnDef<TUser>[] = [
             ({row}) => {
                 const user: TUser = row.original;
                 const userId: number = user.id;
-                const userName: string = row.getValue("name");
+                const userName: string = row.getValue("fullName") || user?.email;
 
                 return (
                     <div className="flex justify-center space-x-2">
@@ -177,11 +172,21 @@ export const columnsUser: ColumnDef<TUser>[] = [
                             infoUser={user}
                         />
 
-                        <DialogDeleteAdmin
-                            onDelete={() => deleteUser(userId)}
-                            Icon={UserX}
-                            entityName={`${userName} user`}
-                        />
+                        {
+                            user?.status.toLowerCase() === 'active' && (
+                                <DialogDeleteAdmin
+                                    onDelete={() => blockUser(userId)}
+                                    Icon={UserX}
+                                    entityName={`${userName}`}
+                                />
+                            )
+                        }
+
+                        {
+                            user?.status.toLowerCase() === 'banned' && (
+                               <ApprovedUser userId={userId}/>
+                            )
+                        }
                     </div>
                 )
             },

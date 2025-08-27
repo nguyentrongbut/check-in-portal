@@ -43,6 +43,7 @@ const badgeVariants = cva(
 
                 // status
                 inactive: "bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300",
+                banned: "bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300",
 
                 // velocity
                 medium: "bg-yellow-500 text-white dark:bg-yellow-900 dark:text-yellow-300",

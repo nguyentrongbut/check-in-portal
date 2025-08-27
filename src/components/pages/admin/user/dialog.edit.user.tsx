@@ -32,7 +32,7 @@ const DialogEditUser = ({infoUser}: { infoUser: TUser }) => {
                     <DialogHeader>
                         <DialogTitle>Update User</DialogTitle>
                         <DialogDescription>
-                            Update information for <span className='capitalize'>{infoUser?.fullName}</span>
+                            Update information for <span className='capitalize'>{infoUser?.fullName || infoUser?.email}</span>
                         </DialogDescription>
                     </DialogHeader>
                     <FormUpdateUser infoUser={infoUser} onClose={() => setOpen(false)}/>

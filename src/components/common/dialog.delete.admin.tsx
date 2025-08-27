@@ -34,8 +34,9 @@ const DialogDeleteAdmin = ({
                 onOpenChange={setOpen}
                 name={entityName}
                 onConfirm={onDelete}
-                successMessage={`Successfully deleted ${entityName}`}
-                errorMessage={`Failed to delete ${entityName}, please try again`}
+                successMessage={`Successfully block ${entityName}`}
+                errorMessage={`Failed to block ${entityName}, please try again`}
+                titleAction='Block'
             />
         </>
     )

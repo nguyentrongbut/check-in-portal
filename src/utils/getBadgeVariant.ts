@@ -36,7 +36,7 @@ export function getBadgeRoleVariant(status: string): BadgeVariant {
         : "default";
 }
 
-const userStatusVariants: BadgeVariant[] = ["active", "inactive"];
+const userStatusVariants: BadgeVariant[] = ["active", "inactive", "banned"];
 
 export function getBadgeUserStatusVariant(status: string): BadgeVariant {
     return userStatusVariants.includes(status as BadgeVariant)
