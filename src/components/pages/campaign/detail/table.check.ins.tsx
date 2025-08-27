@@ -4,7 +4,8 @@ import {columnsCheckin} from "@/components/pages/campaign/detail/columns.checkin
 import {getCheckIn} from "@/lib/actions/checkin";
 
 const TableCheckIns = async ({campaignId}: {campaignId: number}) => {
-    const checkin = await getCheckIn(campaignId)
+    const data = await getCheckIn(campaignId)
+    const checkin = data?.items
     return (
         <Card>
             <CardHeader>

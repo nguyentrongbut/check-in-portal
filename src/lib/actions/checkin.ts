@@ -1,12 +1,17 @@
 'use server'
 
-const url = `${process.env.API_URL}/check-ins`;
+import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
+
+const url = `${process.env.NEXT_PUBLIC_API_URL}/check-ins`;
 
 export async function getCheckIn(campaignId: number) {
     try {
-        const res = await fetch(`${url}?campaignId=${campaignId}`, {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${url}/campaign/${campaignId}`, {
             method: 'GET',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             cache: 'no-cache',
@@ -18,7 +23,7 @@ export async function getCheckIn(campaignId: number) {
 
         const data = await res.json();
 
-        return data;
+        return data?.data;
     } catch (err) {
         console.error('Failed when get campaign:', err);
         throw err;

@@ -102,15 +102,6 @@ const DetailPage = async ({params}: { params: Params }) => {
                         </Button>
                     </Link>
 
-                    {['pending', 'rejected'].includes(campaign?.status.toLowerCase()) && (
-                        <Link href={`/admin/campaign/edit/${id}`}>
-                            <Button variant="outline" size="sm">
-                                <Edit className="h-4 w-4 mr-1"/>
-                                Edit
-                            </Button>
-                        </Link>
-                    )}
-
                     {
                         campaign?.status.toLowerCase() !== 'approved' && (
                             <ApprovedCampaign campaignId={id}/>
