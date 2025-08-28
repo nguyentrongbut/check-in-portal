@@ -23,7 +23,12 @@ export async function createTransactions(data: CreateTransactionData) {
             throw new Error(`HTTP ${res.status}: ${errorText}`);
         }
 
-        return res.status;
+        const responseData  = await res.json();
+
+        return {
+            status: res.status,
+            data: responseData.data ,
+        };
     } catch (err) {
         console.error('Failed when top up transaction:', err);
         throw err;
