@@ -21,6 +21,8 @@ const WalletPage = async () => {
     const transactions = data?.items
     const wallet = calcStats(transactions);
 
+
+    console.log(transactions)
     return (
         <div className='space-y-6'>
 
