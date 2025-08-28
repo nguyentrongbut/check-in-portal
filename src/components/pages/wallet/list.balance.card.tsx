@@ -17,7 +17,7 @@ const ListBalanceCard = async ({wallet} : {wallet: ICalcStats}) => {
         },
         {
             title: 'Total Spent',
-            titleContent: formatNumber(wallet?.totalSpent),
+            titleContent: `${formatNumber(wallet?.totalSpent)} pts`,
             desc: 'On vouchers and rewards',
             Icon: ArrowUpRight,
             color: 'text-red-600'

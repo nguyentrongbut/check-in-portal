@@ -8,7 +8,6 @@ import {
 import {Coins, Plus} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import FormTopUp from "@/components/pages/wallet/form.top.up";
-import {TWallet} from "@/types/data";
 import {useState} from "react";
 
 const DialogTopUp = ({userId}
