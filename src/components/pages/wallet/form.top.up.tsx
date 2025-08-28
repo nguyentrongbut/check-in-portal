@@ -12,7 +12,9 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
-import {DialogClose} from "@/components/ui/dialog";
+import {
+    DialogClose,
+} from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {formatNumber} from "@/utils/formatHelpers";
 import WalletSummary from "@/components/pages/wallet/wallet.summary";
@@ -35,11 +37,13 @@ export type CreateTransactionData = {
 const exchangeRate = 100;
 const quickAmounts = [10, 20, 30, 50, 100, 200];
 
+const usdToVndRate = 25000;
+
 // discount
 const discountRules = [
-    { minAmount: 50, discount: 0.05 },  // 5% bonus
-    { minAmount: 100, discount: 0.1 },  // 10% bonus
-    { minAmount: 200, discount: 0.15 }, // 15% bonus
+    {minAmount: 50, discount: 0.05},  // 5% bonus
+    {minAmount: 100, discount: 0.1},  // 10% bonus
+    {minAmount: 200, discount: 0.15}, // 15% bonus
 ];
 
 const getDiscountRate = (amount: number): number => {
@@ -52,9 +56,10 @@ const getDiscountRate = (amount: number): number => {
     return discount;
 };
 
-const FormTopUp = ({userId, onClose}
-                   : { userId: number, onClose?: () => void }) => {
+const FormTopUp = ({ userId, onClose, onSuccess }
+                   : { userId: number, onClose?: () => void, onSuccess?: (data: string) => void }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
+
     const router = useRouter();
 
     const form = useForm<TopUpForm>({
@@ -91,10 +96,11 @@ const FormTopUp = ({userId, onClose}
 
             const resultTransaction = await createTransactions(transactionData);
 
-            if (resultTransaction === 200) {
-                toast.success("Top up transaction successfully");
-                router.push('/wallet');
-                onClose?.();
+            if (resultTransaction.status === 200) {
+                toast.success("Top up transaction successfully, please scan QR and wait admin approved");
+                router.refresh();
+                onSuccess?.(resultTransaction?.data);
+                onClose?.()
                 return;
             }
 
@@ -133,11 +139,10 @@ const FormTopUp = ({userId, onClose}
                                     <div className="font-medium">{formatNumber(quickAmount)} USD</div>
 
 
-                                    {/* Nếu có bonus thì hiện thêm */}
                                     {discountRate > 0 ? (
-                                            <div className="text-xs text-gray-500">
-                                                🎁 {totalPoints.toLocaleString()} pts ({discountRate * 100}%)
-                                            </div>
+                                        <div className="text-xs text-gray-500">
+                                            🎁 {totalPoints.toLocaleString()} pts ({discountRate * 100}%)
+                                        </div>
                                     ) : (
                                         <div className="text-xs text-gray-500">
                                             {basePoints.toLocaleString()} pts
