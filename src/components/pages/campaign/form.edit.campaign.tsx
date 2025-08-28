@@ -246,14 +246,22 @@ const FormEditCampaign = ({campaign, href, disablePoints = false}:{campaign: TCa
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <FormField name="requiredWifiSsid" control={form.control} render={({field}) => (
                         <FormItem>
-                            <FormLabel>Wi-Fi SSID</FormLabel>
+                            <FormLabelTooltip
+                                href='https://drive.google.com/file/d/1Nk1P7uJE2P0ur6ZRoTXImrHTatzHX8Dj/view?usp=sharing'
+                                label="Wi-Fi SSID"
+                                description="The SSID (Service Set Identifier) is the name of the Wi-Fi network. This value helps users identify and connect to the correct network. Make sure to enter the correct SSID to ensure a stable connection. Click here to view guide"
+                            />
                             <FormControl><Input {...field} placeholder="e.g. CoffeeShop_WiFi"/></FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
                     <FormField name="requiredWifiBssid" control={form.control} render={({field}) => (
                         <FormItem>
-                            <FormLabel>Wi-Fi BSSID (MAC address)</FormLabel>
+                            <FormLabelTooltip
+                                href='https://drive.google.com/file/d/1Nk1P7uJE2P0ur6ZRoTXImrHTatzHX8Dj/view?usp=sharing'
+                                label="Wi-Fi BSSID (MAC address)"
+                                description="The BSSID is the MAC address of the Wi-Fi access point (AP). This unique identifier helps devices connect to the correct AP in a network with multiple access points. Ensure that you enter the correct BSSID to avoid connection issues. Click here to view guide"
+                            />
                             <FormControl><Input {...field} placeholder="e.g. A4:6C:2A:5B:3F:01"/></FormControl>
                             <FormMessage/>
                         </FormItem>

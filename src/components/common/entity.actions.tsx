@@ -11,7 +11,7 @@ import {
 import {Button} from "@/components/ui/button";
 import DialogDelete from "@/components/common/dialog.delete";
 import Link from "next/link";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 
 interface EntityActionsProps {
     id: number;
@@ -22,6 +22,7 @@ interface EntityActionsProps {
     edit?: boolean;
     canCancel?: boolean;
     canDelete?: boolean;
+    extraItems?: ReactNode;
 }
 
 const EntityActions = ({
@@ -31,7 +32,8 @@ const EntityActions = ({
                            onDelete,
                            edit = true,
                            canDelete = false,
-                           canCancel = false
+                           canCancel = false,
+                           extraItems,
                        }: EntityActionsProps) => {
     const [open, setOpen] = useState(false);
 
@@ -62,6 +64,12 @@ const EntityActions = ({
                                 <Edit className="size-4"/>
                                 <span>Edit</span>
                             </Link>
+                        </DropdownMenuItem>
+                    )}
+
+                    {extraItems && (
+                        <DropdownMenuItem asChild>
+                            {extraItems}
                         </DropdownMenuItem>
                     )}
 

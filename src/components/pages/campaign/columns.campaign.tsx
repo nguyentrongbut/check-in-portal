@@ -8,6 +8,7 @@ import {Badge} from "@/components/ui/badge";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import Image from "next/image";
 import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
+import {QRCell} from "@/components/common/qr.cell";
 
 export const columnsCampaign: ColumnDef<TCampaign>[] = [
     {
@@ -83,7 +84,7 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
         },
     },
     {
-        accessorKey: "used",
+        accessorKey: "remaining",
         header:
             ({column}) => {
                 return (
@@ -91,41 +92,18 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                         className="flex gap-2 items-center cursor-pointer"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Used
+                        Remaining Budget
                         <ArrowUpDown className="ml-2 size-4"/>
                     </div>
                 )
             },
         cell: ({row}) => {
-            const used: number = row.getValue("used");
+            const original = row.original;
+            const remaining = original.pointBudget - original.used;
 
             return (
                 <div>
-                    {formatNumber(used)} pts
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "checkIns",
-        header:
-            ({column}) => {
-                return (
-                    <div
-                        className="flex gap-2 items-center cursor-pointer"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Check-ins
-                        <ArrowUpDown className="ml-2 size-4"/>
-                    </div>
-                )
-            },
-        cell: ({row}) => {
-            const checkIns: number = row.getValue("checkIns");
-
-            return (
-                <div>
-                    {formatNumber(checkIns)}
+                    {formatNumber(remaining)} pts
                 </div>
             );
         },
@@ -139,7 +117,7 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                         className="flex gap-2 items-center cursor-pointer"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Start / End Date
+                        Start Date
                         <ArrowUpDown className="ml-2 size-4"/>
                     </div>
                 )
@@ -147,16 +125,33 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
         cell:
             ({row}) => {
                 const original = row.original;
-                const startDate: string =  original.startDate;
-                const endDate: string =  original.endDate;
+                const startDate: string = original.startDate;
                 return (
-                   <div className='flex items-center gap-2'>
-                       <Image src='/date.png' alt='start / end date' width={8} height={36}></Image>
-                       <div className='flex flex-col gap-2 text-sm'>
-                           <div>{formatDate(startDate)}</div>
-                           <div>{formatDate(endDate)}</div>
-                       </div>
-                   </div>
+                    <div>{formatDate(startDate)}</div>
+                )
+            },
+    }
+    ,
+    {
+        accessorKey: "endDate",
+        header:
+            ({column}) => {
+                return (
+                    <div
+                        className="flex gap-2 items-center cursor-pointer"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        End Date
+                        <ArrowUpDown className="ml-2 size-4"/>
+                    </div>
+                )
+            },
+        cell:
+            ({row}) => {
+                const original = row.original;
+                const endDate: string = original.endDate;
+                return (
+                    <div>{formatDate(endDate)}</div>
                 )
             },
     }
@@ -182,15 +177,20 @@ export const columnsCampaign: ColumnDef<TCampaign>[] = [
                 // const canCancel = ['pending'].includes(campaign.status) ||
                 //     (campaign.status === 'approved' && isBeforeStart(campaign?.startDate));
                 return (
-                    <EntityActions
-                        id={campaignId}
-                        viewUrl={`/campaign/detail/${campaignId}`}
-                        editUrl={`/campaign/edit/${campaignId}`}
-                        entityName={`${nameCampaign} campaign`}
-                        // onDelete={() => deleteCampaign(campaignId)}
-                        edit={canEdit}
-                        // canCancel={canCancel}
-                    />
+                    <div>
+                        <EntityActions
+                            id={campaignId}
+                            viewUrl={`/campaign/detail/${campaignId}`}
+                            editUrl={`/campaign/edit/${campaignId}`}
+                            entityName={`${nameCampaign} campaign`}
+                            // onDelete={() => deleteCampaign(campaignId)}
+                            edit={canEdit}
+                            // canCancel={canCancel}
+                            extraItems={
+                                <QRCell data={campaign}/>
+                            }
+                        />
+                    </div>
                 )
             },
     }

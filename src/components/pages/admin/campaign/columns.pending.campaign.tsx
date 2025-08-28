@@ -9,6 +9,7 @@ import EntityActions from "@/components/common/entity.actions";
 import {deleteCampaign} from "@/lib/actions/campaign";
 import {Badge} from "@/components/ui/badge";
 import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
+import {QRCell} from "@/components/common/qr.cell";
 
 export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
     {
@@ -57,9 +58,9 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
 
             return (
                 <Badge
-                    variant={getBadgeStatusVariant(status.toLowerCase())}
+                    variant={getBadgeStatusVariant(status?.toLowerCase())}
                 >
-                    {status.toLowerCase()}
+                    {status?.toLowerCase()}
                 </Badge>
             );
         },
@@ -89,7 +90,7 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
         },
     },
     {
-        accessorKey: "rewardPerCheckin",
+        accessorKey: "remaining",
         header:
             ({column}) => {
                 return (
@@ -97,17 +98,18 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                         className="flex gap-2 items-center cursor-pointer"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Reward
+                        Remaining Budget
                         <ArrowUpDown className="ml-2 size-4"/>
                     </div>
                 )
             },
         cell: ({row}) => {
-            const rewardPerCheckin: string = row.getValue("rewardPerCheckin");
+            const original = row.original;
+            const remaining = original.pointBudget - original.used;
 
             return (
                 <div>
-                    {formatNumber(rewardPerCheckin)} pts
+                    {formatNumber(remaining)} pts
                 </div>
             );
         },
@@ -121,7 +123,7 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                         className="flex gap-2 items-center cursor-pointer"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Start / End Date
+                        Start Date
                         <ArrowUpDown className="ml-2 size-4"/>
                     </div>
                 )
@@ -130,15 +132,31 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
             ({row}) => {
                 const original = row.original;
                 const startDate: string = original.startDate;
+                return (
+                    <div>{formatDate(startDate)}</div>
+                )
+            },
+    },
+    {
+        accessorKey: "endDate",
+        header:
+            ({column}) => {
+                return (
+                    <div
+                        className="flex gap-2 items-center cursor-pointer"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        End Date
+                        <ArrowUpDown className="ml-2 size-4"/>
+                    </div>
+                )
+            },
+        cell:
+            ({row}) => {
+                const original = row.original;
                 const endDate: string = original.endDate;
                 return (
-                    <div className='flex items-center gap-2'>
-                        <Image src='/date.png' alt='start / end date' width={8} height={36}></Image>
-                        <div className='flex flex-col gap-2 text-sm'>
-                            <div>{formatDate(startDate)}</div>
-                            <div>{formatDate(endDate)}</div>
-                        </div>
-                    </div>
+                    <div>{formatDate(endDate)}</div>
                 )
             },
     },
@@ -182,7 +200,7 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                 const campaign: TCampaign = row.original;
                 const id: number = campaign.id;
                 const nameCampaign = campaign.name;
-                const canDelete = campaign.status.toLowerCase() !== 'cancelled';
+                const canDelete = campaign.status?.toLowerCase() !== 'cancelled';
 
                 return (
                     <div className="flex justify-center space-x-2">
@@ -194,6 +212,9 @@ export const columnsPendingCampaign: ColumnDef<TCampaign>[] = [
                             onDelete={() => deleteCampaign(id)}
                             edit
                             canDelete={canDelete}
+                            extraItems={
+                                <QRCell data={campaign}/>
+                            }
                         />
                     </div>
                 )

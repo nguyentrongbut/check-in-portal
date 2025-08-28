@@ -29,9 +29,9 @@ export const columnsHistoryTransaction: ColumnDef<TTransaction>[] = [
 
             return (
                 <div className='ml-4 flex items-center gap-2'>
-                    {getWalletTypeIcon(type.toLowerCase())}
-                    <Badge className='capitalize' variant={getBadgeWalletVariant(type.toLowerCase())}>
-                        {type.toLowerCase()}
+                    {getWalletTypeIcon(type?.toLowerCase())}
+                    <Badge className='capitalize' variant={getBadgeWalletVariant(type?.toLowerCase())}>
+                        {type?.toLowerCase()}
                     </Badge>
                 </div>
             );
@@ -78,9 +78,9 @@ export const columnsHistoryTransaction: ColumnDef<TTransaction>[] = [
 
             return (
                 <Badge
-                    variant={getBadgeStatusVariant(status.toLowerCase())}
+                    variant={getBadgeStatusVariant(status?.toLowerCase())}
                 >
-                    {status.toLowerCase()}
+                    {status?.toLowerCase()}
                 </Badge>
             );
         },

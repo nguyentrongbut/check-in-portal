@@ -39,13 +39,13 @@ const CampaignInformation = ({campaign}: {campaign : TCampaign}) => {
                 <div className="flex items-center space-x-3">
                     <Calendar className="h-4 w-4 text-gray-500" />
                     <span className="text-sm">
-                      {formatDate(campaign?.startDate)} <span className='opacity-60'>{campaign?.startTime}</span>
+                      {formatDate(campaign?.startDate)}
                     </span>
                 </div>
                 <div className="flex items-center space-x-3">
                     <CalendarX className="h-4 w-4 text-gray-500" />
                     <span className="text-sm text-red-600">
-                      {formatDate(campaign?.endDate)} <span className='opacity-60'>{campaign?.endTime}</span>
+                      {formatDate(campaign?.endDate)}
                     </span>
                 </div>
                 <div className="flex items-center space-x-3">
