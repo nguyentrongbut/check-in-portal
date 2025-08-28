@@ -2,11 +2,9 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import ListVoucher from "@/components/pages/voucher/list.voucher";
 import {getVouchers} from "@/lib/actions/voucher";
-import {getUserInfoFromCookie} from "@/utils/getUserInfoFromCookie";
 
 const VoucherPage = async () => {
-    const userInfo = await getUserInfoFromCookie()
-    const vouchers = await getVouchers(userInfo?.id);
+    const vouchers = await getVouchers();
 
     return (
         <div className="space-y-6">
@@ -15,7 +13,7 @@ const VoucherPage = async () => {
                     <h2 className="text-3xl font-bold">Voucher Management</h2>
                     <p className="opacity-60">Create and manage vouchers for your campaigns</p>
                 </div>
-               <Link href='/voucher/create'>
+               <Link href='/admin/voucher/create'>
                    <Button>
                        Add Voucher
                    </Button>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -22,10 +22,10 @@ import {updateVoucher} from "@/lib/actions/voucher";
 export const voucherSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
-    image: z.union([
-        z.string().url("Image must be a valid URL or an uploaded image file."),
-        z.instanceof(File)
-    ]),
+    // image: z.union([
+    //     z.string().url("Image must be a valid URL or an uploaded image file."),
+    //     z.instanceof(File)
+    // ]),
     discountType: z.enum(["fixed", "percent"]),
     discountValue: z.number().min(0),
     minOrderValue: z.number().min(0),
@@ -34,7 +34,14 @@ export const voucherSchema = z.object({
     quantity: z.number().min(1),
     startDate: z.date(),
     endDate: z.date(),
-    isPublished: z.boolean()
+    isPublished: z.boolean(),
+}).refine((data) => {
+    if (!data.startDate || !data.endDate) return true;
+    const minDate = new Date(data.startDate.getTime() + 24 * 60 * 60 * 1000);
+    return data.endDate >= minDate;
+}, {
+    message: "End Date must be at least 1 day after Start Date",
+    path: ["endDate"],
 });
 
 export type UpdateVoucherForm = z.infer<typeof voucherSchema>;
@@ -45,10 +52,12 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
 
     const form = useForm<UpdateVoucherForm>({
         resolver: zodResolver(voucherSchema),
+        mode: "onChange",
+        reValidateMode: "onChange",
         defaultValues: {
             title: voucher?.title,
             description: voucher?.description,
-            image: voucher?.image,
+            // image: voucher?.image,
             discountType: voucher?.discountType,
             discountValue: voucher?.discountValue,
             minOrderValue: voucher?.minOrderValue,
@@ -61,21 +70,23 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
         },
     });
 
+    const {setFocus} = form;
+
     const onSubmit = async (values: UpdateVoucherForm) => {
         setIsSubmitting(true);
         try {
 
-            let imageBase64 = "";
-
-            if (values.image instanceof File) {
-                imageBase64 = await fileToBase64(values?.image);
-            } else {
-                imageBase64 = values?.image;
-            }
+            // let imageBase64 = "";
+            //
+            // if (values.image instanceof File) {
+            //     imageBase64 = await fileToBase64(values?.image);
+            // } else {
+            //     imageBase64 = values?.image;
+            // }
 
             const payload = {
-                ...values,
-                image: imageBase64
+                ...values
+                // image: imageBase64
             }
 
             const result = await updateVoucher(voucher?.id, payload);
@@ -83,21 +94,49 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
 
             if (result === 200) {
                 toast.success("Voucher updated successfully");
-                router.push("/voucher");
+                router.push("/admin/voucher");
                 return
             }
 
             toast.error("Update voucher fail!");
         } catch (error) {
-            toast.error("Failed to create voucher");
+            toast.error("Failed to update voucher");
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    // scroll first error
+    useEffect(() => {
+        const firstError = Object.keys(form.formState.errors)[0] as keyof UpdateVoucherForm;
+        if (firstError) {
+            setFocus(firstError);
+        }
+    }, [form.formState.errors, setFocus]);
+
+
+    // Reset endDate if startDate change and invalid
+    useEffect(() => {
+        const startDate = form.watch("startDate");
+        const endDate = form.watch("endDate");
+
+        if (startDate && endDate) {
+            const minDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+            if (endDate < minDate) {
+                form.setValue("endDate", minDate);
+            }
+        }
+    }, [form.watch("startDate")]);
+
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-2.5"
+                  onKeyDown={(e) => {
+                      if (e.key === "Enter" && e.target instanceof HTMLInputElement) {
+                          e.preventDefault();
+                      }
+                  }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <FormField name="title" control={form.control} render={({field}) => (
                         <FormItem>
@@ -108,24 +147,48 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     )}/>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <FormField name="startDate" control={form.control} render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Start Date</FormLabel>
-                                <FormControl>
-                                    <CalendarDate value={field.value} onChange={field.onChange}/>
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}/>
-                        <FormField name="endDate" control={form.control} render={({field}) => (
-                            <FormItem>
-                                <FormLabel>End Date</FormLabel>
-                                <FormControl>
-                                    <CalendarDate value={field.value} onChange={field.onChange}/>
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}/>
+                        <FormField
+                            name="startDate"
+                            control={form.control}
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Start Date</FormLabel>
+                                    <FormControl>
+                                        <CalendarDate value={field.value} onChange={field.onChange}
+                                                      placeholder='Select start date'/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            name="endDate"
+                            control={form.control}
+                            render={({field}) => {
+                                const startDate = form.watch("startDate");
+
+                                const minDate = startDate
+                                    ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+                                    : undefined;
+
+                                return (
+                                    <FormItem>
+                                        <FormLabel>End Date</FormLabel>
+                                        <FormControl>
+                                            <CalendarDate
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                placeholder="Select end date"
+                                                disabled={!startDate}
+                                                minDate={minDate}
+                                            />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )
+                            }}
+                        />
                     </div>
                 </div>
 
@@ -158,7 +221,13 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     <FormField name="discountValue" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Discount Value</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
+                            <FormControl>
+                                <Input type="number" {...field}
+                                       onChange={(e) => {
+                                           const value = e.target.value;
+                                           field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                       }}/>
+                            </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
@@ -168,7 +237,13 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     <FormField name="minOrderValue" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Minimum Order Value</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
+                            <FormControl>
+                                <Input type="number"   {...field}
+                                       onChange={(e) => {
+                                           const value = e.target.value;
+                                           field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                       }}/>
+                            </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
@@ -176,7 +251,13 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     <FormField name="maxDiscount" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Maximum Discount</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
+                            <FormControl>
+                                <Input type="number"   {...field}
+                                       onChange={(e) => {
+                                           const value = e.target.value;
+                                           field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                       }}/>
+                            </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
@@ -186,7 +267,13 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     <FormField name="quantity" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Quantity</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
+                            <FormControl>
+                                <Input type="number"   {...field}
+                                       onChange={(e) => {
+                                           const value = e.target.value;
+                                           field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                       }}/>
+                            </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
@@ -194,25 +281,31 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                     <FormField name="pointCost" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Point Cost</FormLabel>
-                            <FormControl><Input type="number" {...field} /></FormControl>
+                            <FormControl
+                            ><Input type="number"   {...field}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                    }}/>
+                            </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}/>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    <FormField name="image" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Image</FormLabel>
-                            <FormControl>
-                                <UploadImage
-                                    className='w-full h-60 rounded-md'
-                                    value={field.value}
-                                    onChange={field.onChange}/>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
+                    {/*<FormField name="image" control={form.control} render={({field}) => (*/}
+                    {/*    <FormItem>*/}
+                    {/*        <FormLabel>Image</FormLabel>*/}
+                    {/*        <FormControl>*/}
+                    {/*            <UploadImage*/}
+                    {/*                className='w-full h-60 rounded-md'*/}
+                    {/*                value={field.value}*/}
+                    {/*                onChange={field.onChange}/>*/}
+                    {/*        </FormControl>*/}
+                    {/*        <FormMessage/>*/}
+                    {/*    </FormItem>*/}
+                    {/*)}/>*/}
 
                     <FormField name="isPublished" control={form.control} render={({field}) => (
                         <FormItem>
@@ -229,7 +322,7 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">
-                    <Link href="/voucher">
+                    <Link href="/admin/voucher">
                         <Button variant="outline" type="button" disabled={isSubmitting}>Cancel</Button>
                     </Link>
                     <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
