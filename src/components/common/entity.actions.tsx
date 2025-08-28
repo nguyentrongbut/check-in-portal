@@ -1,6 +1,6 @@
 "use client";
 
-import {Trash2, Edit, Eye, MoreHorizontal, X} from "lucide-react";
+import {Trash2, Edit, Eye, MoreHorizontal} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,7 +12,6 @@ import {Button} from "@/components/ui/button";
 import DialogDelete from "@/components/common/dialog.delete";
 import Link from "next/link";
 import {useState} from "react";
-import CancelCampaign from "@/components/pages/admin/campaign/cancel.campaign";
 
 interface EntityActionsProps {
     id: number;
@@ -37,7 +36,9 @@ const EntityActions = ({
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="flex items-center justify-center mr-4">
+        <div className="flex items-center justify-center mr-4"
+             onClick={(e) => e.stopPropagation()}
+        >
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="size-8 p-0">

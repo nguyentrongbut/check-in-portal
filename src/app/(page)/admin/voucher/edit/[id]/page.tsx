@@ -13,7 +13,7 @@ const EditVoucherPage = async ({params}: { params: Params }) => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Edit Campaign</CardTitle>
+                <CardTitle>Edit Voucher</CardTitle>
             </CardHeader>
             <Separator/>
             <CardContent>

@@ -21,9 +21,14 @@ const useWalletBalance = (): UseWalletBalanceResult => {
                 const data = res?.items;
                 const wallet = calcStats(data);
                 setBalance(wallet?.balance || 0);
-            } catch (e: any) {
-                console.error("Failed to load wallet", e);
-                setError(e?.message || "Unknown error");
+            } catch (err: unknown) {
+                console.error("Failed to load wallet", err);
+
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError(String(err));
+                }
             } finally {
                 setLoading(false);
             }

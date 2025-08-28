@@ -12,7 +12,7 @@ const ListCardOverviewVoucher = ({voucher} : {voucher : TVoucher}) => {
     const overviewVouchers: TCardOverview[] = [
         {
             title: 'Stock Used',
-            titleContent: voucher?.claimed.toString(),
+            titleContent: voucher?.claimed?.toString() || "0",
             desc: `${quantityUsedPercentage} %`,
             Icon: Package,
             color: 'text-gray-500'

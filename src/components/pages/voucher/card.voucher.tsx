@@ -39,7 +39,7 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
         <Card
             className=" relative overflow-hidden border-0 shadow-sm hover:shadow-xl h-full flex flex-col justify-between">
             {/* Image Section with Overlay */}
-            <Link href={`voucher/detail/${voucher.id}`}>
+            <Link href={`/admin/voucher/detail/${voucher.id}`}>
                 <div className="relative aspect-video overflow-hidden group cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"/>
                     <Image
@@ -52,19 +52,20 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
 
                     <div className='absolute top-3 right-3 z-20 '>
                         {/* Status Badge */}
-                        <Badge
-                            variant={getBadgeVoucherVariant(status)}
-                            className="shadow-lg backdrop-blur-sm"
-                        >
-                            {status}
-                        </Badge>
+                        {/*<Badge*/}
+                        {/*    variant={getBadgeVoucherVariant(status?.toLowerCase())}*/}
+                        {/*    className="shadow-lg backdrop-blur-sm"*/}
+                        {/*>*/}
+                        {/*    {status?.toLowerCase()}*/}
+                        {/*</Badge>*/}
 
-                        <div className='mt-4 -mr-4'>
+                        <div className='-mr-4'>
                             <EntityActions
                                 id={id}
-                                viewUrl={`/voucher/detail/${id}`}
-                                editUrl={`/voucher/edit/${id}`}
+                                viewUrl={`/admin/voucher/detail/${id}`}
+                                editUrl={`/admin/voucher/edit/${id}`}
                                 entityName={`${title} voucher`}
+                                canDelete
                                 onDelete={() => deleteVoucher(id)}
                                 canCancel={false}
                             />
@@ -79,7 +80,7 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
 
             {/* Header Section */}
             <CardHeader className='flex flex-col justify-between'>
-                <Link href={`voucher/detail/${voucher.id}`}>
+                <Link href={`/admin/voucher/detail/${voucher.id}`}>
                     <CardTitle className="text-lg flex items-center gap-2 hover:text-primary cursor-pointer" title={title}>
                         <TicketPercent className="size-5 text-primary"/>
                         <span className="line-clamp-1">

@@ -24,7 +24,7 @@ const VoucherDetailPage = async ({params}: { params: Params }) => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <Link href='/voucher'>
+                    <Link href='/admin/voucher'>
                         <Button variant="ghost" className="p-2">
                             <ArrowLeft className="h-4 w-4"/>
                         </Button>
@@ -35,8 +35,8 @@ const VoucherDetailPage = async ({params}: { params: Params }) => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Badge variant={getBadgeStatusVariant(voucher?.status)}>{voucher?.status}</Badge>
-                    <Link href={`/voucher/edit/${id}`}>
+                    {/*<Badge variant={getBadgeStatusVariant(voucher?.status.toLowerCase())}>{voucher?.status.toLowerCase()}</Badge>*/}
+                    <Link href={`/admin/voucher/edit/${id}`}>
                         <Button variant="outline" size="sm">
                             <Edit className="h-4 w-4 mr-1"/>
                             Edit

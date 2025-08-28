@@ -2,14 +2,18 @@
 
 import {CreateVoucherForm} from "@/components/pages/voucher/form.create.voucher";
 import {UpdateVoucherForm} from "@/components/pages/voucher/form.edit.voucher";
+import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
 
-const url = `${process.env.API_URL}/vouchers`;
+const url = `${process.env.NEXT_PUBLIC_API_URL}/v1/vouchers`;
 
-export async function getVouchers(userId: number) {
+export async function getVouchers() {
     try {
-        const res = await fetch(`${url}?userId=${userId}`, {
+        const token = await getTokenFromCookies();
+
+        const res = await fetch(`${url}`, {
             method: 'GET',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             cache: 'no-cache',
@@ -30,9 +34,12 @@ export async function getVouchers(userId: number) {
 
 export async function getVoucher(id: number) {
     try {
+        const token = await getTokenFromCookies();
+
         const res = await fetch(`${url}/${id}`, {
             method: 'GET',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             cache: 'no-cache',
@@ -51,21 +58,20 @@ export async function getVoucher(id: number) {
     }
 }
 
-export async function createVoucher(data: CreateVoucherForm, userId: number) {
+export async function createVoucher(data: CreateVoucherForm) {
     try {
+        const token = await getTokenFromCookies();
 
         const payload = {
             ...data,
-            userId,
             claimed: 0,
-            status: 'active',
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
+            status: 'ACTIVE',
         };
 
         const res = await fetch(url, {
             method: 'POST',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload)
@@ -80,19 +86,24 @@ export async function createVoucher(data: CreateVoucherForm, userId: number) {
 
 export async function updateVoucher(id:number, data: UpdateVoucherForm) {
     try {
+        const token = await getTokenFromCookies();
 
         const payload = {
             ...data,
-            updatedAt: Date.now(),
+            claimed: 0,
+            status: 'ACTIVE',
         };
 
         const res = await fetch(`${url}/${id}`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload)
         });
+
+        console.log('res:: ', res)
 
         if (!res.ok) {
             const errorText = await res.text();
@@ -108,9 +119,12 @@ export async function updateVoucher(id:number, data: UpdateVoucherForm) {
 
 export async function deleteVoucher(id: number) {
     try {
+        const token = await getTokenFromCookies();
+
         const res = await fetch(`${url}/${id}`, {
             method: 'DELETE',
             headers: {
+                "Authorization": `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         });

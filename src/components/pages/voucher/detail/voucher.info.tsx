@@ -27,10 +27,10 @@ const VoucherInfo = ({voucher}: { voucher: TVoucher }) => {
                             <h4 className="font-medium text-sm text-gray-500">Created</h4>
                             <p className="font-medium">{formatDate(voucher?.createdAt)}</p>
                         </div>
-                        <div className='flex gap-2 justify-center items-center lg:block'>
-                            <h4 className="font-medium text-sm text-gray-500">Status</h4>
-                            <Badge variant={getBadgeStatusVariant(voucher?.status)}>{voucher?.status}</Badge>
-                        </div>
+                        {/*<div className='flex gap-2 justify-center items-center lg:block'>*/}
+                        {/*    <h4 className="font-medium text-sm text-gray-500">Status</h4>*/}
+                        {/*    <Badge variant={getBadgeStatusVariant(voucher?.status?.toLowerCase())}>{voucher?.status?.toLowerCase()}</Badge>*/}
+                        {/*</div>*/}
                     </div>
 
                 </div>
