@@ -65,7 +65,7 @@ const FormCreateCampaign = () => {
             requiredWifiSsid: "",
             requiredWifiBssid: "",
             pointsPerCheckin: 10,
-            totalBudget: 10
+            totalBudget: 0
         },
     });
 
@@ -78,7 +78,7 @@ const FormCreateCampaign = () => {
             const result = await createCampaign(values);
 
             if (result === 200) {
-                toast.success("Campaign created successfully");
+                toast.success(" Campaign created successfully. Please wait for admin approval.");
                 router.push("/campaign");
                 return
             }
@@ -243,8 +243,9 @@ const FormCreateCampaign = () => {
                     <FormField name="requiredWifiSsid" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabelTooltip
+                                href='https://drive.google.com/file/d/1Nk1P7uJE2P0ur6ZRoTXImrHTatzHX8Dj/view?usp=sharing'
                                 label="Wi-Fi SSID"
-                                description="The SSID (Service Set Identifier) is the name of the Wi-Fi network. This value helps users identify and connect to the correct network. Make sure to enter the correct SSID to ensure a stable connection."
+                                description="The SSID (Service Set Identifier) is the name of the Wi-Fi network. This value helps users identify and connect to the correct network. Make sure to enter the correct SSID to ensure a stable connection. Click here to view guide"
                             />
                             <FormControl><Input {...field} placeholder="e.g. CoffeeShop_WiFi"/></FormControl>
                             <FormMessage/>
@@ -253,8 +254,9 @@ const FormCreateCampaign = () => {
                     <FormField name="requiredWifiBssid" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabelTooltip
+                                href='https://drive.google.com/file/d/1Nk1P7uJE2P0ur6ZRoTXImrHTatzHX8Dj/view?usp=sharing'
                                 label="Wi-Fi BSSID (MAC address)"
-                                description="The BSSID is the MAC address of the Wi-Fi access point (AP). This unique identifier helps devices connect to the correct AP in a network with multiple access points. Ensure that you enter the correct BSSID to avoid connection issues."
+                                description="The BSSID is the MAC address of the Wi-Fi access point (AP). This unique identifier helps devices connect to the correct AP in a network with multiple access points. Ensure that you enter the correct BSSID to avoid connection issues. Click here to view guide"
                             />
                             <FormControl><Input {...field} placeholder="e.g. A4:6C:2A:5B:3F:01"/></FormControl>
                             <FormMessage/>

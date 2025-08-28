@@ -1,14 +1,14 @@
 'use client';
 
 import {MapContainer, TileLayer, Marker, useMapEvents} from 'react-leaflet';
-import {LatLngExpression, Map} from 'leaflet';
+import {Map} from 'leaflet';
 import React, {useState, useRef, useEffect} from 'react';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {defaultIcon} from '@/utils/leaflet-icon';
 import {Loader2, MapPin} from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
-import {FormMessage} from "@/components/ui/form";
+import {FormLabel, FormMessage} from "@/components/ui/form";
 
 type LocationValue = {
     lat: number;
@@ -22,7 +22,7 @@ type Props = {
     view?: boolean;
 };
 
-// component con: click map
+//  click map
 function ClickHandler({onSelect}: { onSelect: (lat: number, lng: number) => void }) {
     useMapEvents({
         click(e) {
@@ -38,7 +38,8 @@ export default function LocationPicker({
                                            placeholder = "Enter location or address",
                                            view = false,
                                        }: Props) {
-    const [position, setPosition] = useState<LatLngExpression>([21.0285, 105.8542]); // default Hanoi
+
+    const [position, setPosition] = useState<[number, number]>([21.0285, 105.8542]); // default Hanoi
     const [inputValue, setInputValue] = useState('');
     const [addressLabel, setAddressLabel] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -61,7 +62,7 @@ export default function LocationPicker({
         }
     };
 
-    // search khi nhấn Enter
+    // search when Enter
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter' || !inputValue.trim()) return;
 
@@ -95,7 +96,7 @@ export default function LocationPicker({
         }
     };
 
-    // nút lấy vị trí hiện tại
+    // btn get current position
     const getCurrentLocation = () => {
         if (!navigator.geolocation) {
             setError('Geolocation is not supported by your browser.');
@@ -124,11 +125,11 @@ export default function LocationPicker({
         );
     };
 
-    // khi click map → update vị trí
+    // Click map → update position
     const handleMapClick = async (lat: number, lng: number) => {
         setIsLoading(true);
         setPosition([lat, lng]);
-        onChange?.({ lat, lng });
+        onChange?.({lat, lng});
 
         try {
             await fetchAddressLabel(lat, lng);
@@ -192,6 +193,30 @@ export default function LocationPicker({
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
+            {
+                !view && (
+                    <div className="flex gap-4">
+                        <div className="flex-1">
+                            <FormLabel className="text-sm mb-1">Latitude</FormLabel>
+                            <Input
+                                value={position[0]}
+                                disabled
+                                className="bg-gray-50"
+                                placeholder="Latitude"
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <FormLabel className="text-sm mb-1">Longitude</FormLabel>
+                            <Input
+                                value={position[1]}
+                                disabled
+                                className="bg-gray-50"
+                                placeholder="Longitude"
+                            />
+                        </div>
+                    </div>
+                )
+            }
 
             <p className="text-sm text-muted-foreground mt-1 h-5">
                 {isLoading ? (
