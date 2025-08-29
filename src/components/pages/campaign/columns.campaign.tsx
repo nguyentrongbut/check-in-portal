@@ -6,7 +6,6 @@ import EntityActions from "@/components/common/entity.actions";
 import {ArrowUpDown} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
-import Image from "next/image";
 import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 import {QRCell} from "@/components/common/qr.cell";
 

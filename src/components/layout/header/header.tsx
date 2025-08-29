@@ -16,7 +16,7 @@ const Header = () => {
     const userInfo = useUserInfoFromCookie()
 
     const name = userInfo?.name
-    const role = userInfo?.role || ''
+    const role = userInfo?.role === 'ROLE_ADMIN' ? "admin" : 'merchant'
     const { isMd } = useTailwindBreakpoints()
 
     const pathname = usePathname()
@@ -43,8 +43,11 @@ const Header = () => {
                 </Sheet>
             )}
             <h3 className='uppercase font-medium text-lg opacity-60'>
-                {pathname === "/dashboard"
-                    ? `Welcome ${name || 'Merchant'} !`
+                {(
+                    (role !== "admin" && pathname === "/dashboard") ||
+                    (role === "admin" && pathname === "/admin/dashboard")
+                )
+                    ? `Welcome ${name || (role === "admin" ? "Admin" : "Merchant")} !`
                     : getPageTitleFromNavItems(pathname, role)}
             </h3>
             {!pathname.startsWith('/admin') && (
