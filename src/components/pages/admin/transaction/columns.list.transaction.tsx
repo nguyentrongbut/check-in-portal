@@ -116,7 +116,7 @@ export const columnsListTransaction: ColumnDef<TTransaction>[] = [
             const amount = row.amount;
             const type = row.type;
 
-            return type === "spent" ? -Math.abs(amount) : Math.abs(amount);
+            return type === "SPENT" ? -Math.abs(amount) : Math.abs(amount);
         },
         header: ({column}) => {
             return (
@@ -135,7 +135,7 @@ export const columnsListTransaction: ColumnDef<TTransaction>[] = [
 
             return (
                 <p className={`font-medium ${getColorWallet(type)}`}>
-                    {type === "spent" ? "" : "+"}
+                    {type === "SPENT" ? "" : "+"}
                     {amount} USD
                 </p>
             );
@@ -147,7 +147,7 @@ export const columnsListTransaction: ColumnDef<TTransaction>[] = [
             const point = row.point;
             const type = row.type;
 
-            return type === "spent" ? -Math.abs(point) : Math.abs(point);
+            return type === "SPENT" ? -Math.abs(point) : Math.abs(point);
         },
         header: ({column}) => {
             return (
@@ -166,7 +166,7 @@ export const columnsListTransaction: ColumnDef<TTransaction>[] = [
 
             return (
                 <p className={`mr-4 text-right font-medium ${getColorWallet(type)}`}>
-                    {type === "spent" ? "" : "+"}
+                    {type === "SPENT" ? "" : "+"}
                     {formatNumber(point)} pts
                 </p>
             );
@@ -195,12 +195,13 @@ export const columnsListTransaction: ColumnDef<TTransaction>[] = [
                                 <ApprovedTransaction transactionId={transactionId}/>
                             ) : (
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="sm"
                                     className="text-green-600 hover:text-red-700 hover:bg-red-50"
                                     disabled
                                 >
                                     <CheckCircle className="size-4 cursor-pointer "/>
+                                    <span>Approved</span>
                                 </Button>
                             )
                         }
