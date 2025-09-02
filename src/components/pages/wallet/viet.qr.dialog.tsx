@@ -12,15 +12,19 @@ import {
 import {Button} from "@/components/ui/button";
 import VietQR from "@/components/pages/wallet/viet.qr";
 import {formatNumber} from "@/utils/formatHelpers";
+import {TTransactionTopUp} from "@/types/data";
 
 const usdToVndRate = 25000;
 
 const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
     open: boolean,
     onOpenChange: (open: boolean) => void,
-    dataTopUp: string
+    dataTopUp: TTransactionTopUp | null
 }) => {
     if (!dataTopUp) return null;
+
+    const ID = `${dataTopUp?.type}${dataTopUp?.id}${dataTopUp?.userId}`
+    const amount = dataTopUp?.amount * usdToVndRate || 0;
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,8 +42,8 @@ const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
                                 className="bg-white p-4 rounded-lg shadow-sm border-2 border-dashed border-gray-200">
                                 {dataTopUp && (
                                     <VietQR
-                                        amount={usdToVndRate}
-                                        addInfo={`TOP_UP_${dataTopUp}`}
+                                        amount={amount}
+                                        addInfo={ID}
                                     />
                                 )}
                             </div>
@@ -61,9 +65,9 @@ const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
                                         Instructions </h4>
                                         <div className="text-sm text-amber-700 space-y-1"><p>• Use exactly this payment
                                             note: <span
-                                                className="font-mono bg-white px-2 py-1 rounded border font-semibold">TOP_UP_{dataTopUp}</span>
+                                                className="font-mono bg-white px-2 py-1 rounded border font-semibold">{ID}</span>
                                         </p> <p>• Transfer
-                                            amount: <strong>{formatNumber(usdToVndRate)} VND</strong></p>
+                                            amount: <strong>{formatNumber(amount)} VND</strong></p>
                                             <p>• Wait for admin approval after payment</p></div>
                                     </div>
                                 </div>

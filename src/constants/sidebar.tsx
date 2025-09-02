@@ -21,7 +21,6 @@ export const adminNavItems = async () => {
         {href: "/admin/transaction", label: "Transaction Management", icon: CirclePoundSterling, badge: pendingTransactions || 0},
         {href: "/admin/campaign", label: "Campaign Management", icon: Calendar, badge: pendingCampaigns || 0},
         {href: "/admin/voucher", label: "Voucher Management", icon: Gift},
-        {href: "/admin/fraud", label: "Fraud Detection", icon: Shield},
         {href: "/admin/user", label: "User Management", icon: Users},
     ]
 }

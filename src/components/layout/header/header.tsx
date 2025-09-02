@@ -2,7 +2,7 @@
 
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
-import { CirclePoundSterling, Menu } from "lucide-react";
+import {CirclePoundSterling, Menu} from "lucide-react";
 import SidebarComponent from "@/components/layout/sidebar/sidebar.component";
 import useTailwindBreakpoints from "@/hooks/useTailwindBreakpoints";
 import {usePathname} from "next/navigation";
@@ -17,11 +17,11 @@ const Header = () => {
 
     const name = userInfo?.name
     const role = userInfo?.role === 'ROLE_ADMIN' ? "admin" : 'merchant'
-    const { isMd } = useTailwindBreakpoints()
+    const {isMd} = useTailwindBreakpoints()
 
     const pathname = usePathname()
 
-    const { balance, loading } = useWalletBalance();
+    const {balance, loading} = useWalletBalance();
 
     return (
         <header className='sticky top-0 h-[100px] flex items-center gap-4 bg-[#f9f7f7] px-5 md:px-9 md:ml-64 z-10'>
@@ -50,7 +50,7 @@ const Header = () => {
                     ? `Welcome ${name || (role === "admin" ? "Admin" : "Merchant")} !`
                     : getPageTitleFromNavItems(pathname, role)}
             </h3>
-            {!pathname.startsWith('/admin') && (
+            {(userInfo?.role === 'ROLE_ALLOCATOR') && (
                 <Link href='/wallet' className='text-primary ml-auto flex items-center justify-center gap-1.5'>
                     <p className='font-bold'>
                         {loading ? "..." : balance !== null ? formatNumber(balance) : "0"}
