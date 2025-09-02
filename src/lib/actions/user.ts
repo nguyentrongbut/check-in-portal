@@ -1,23 +1,28 @@
 'use server'
 
-import {GetUsersParams} from "@/app/(page)/admin/user/page";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
 import {UserFormUpdate} from "@/components/pages/admin/user/form.update.user";
 import {UpdateProfileForm} from "@/components/pages/profile/form.update.profile";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
-export async function getUsers(params: GetUsersParams = {}) {
+export async function getUsers( page: number = 0,
+                                size: number = 10,
+                                extra?: { keyword?: string; role?: string; status?: string }) {
 
     try {
         const token = await getTokenFromCookies();
 
         const searchParams = new URLSearchParams();
-        if (params.keyword) searchParams.append("keyword", params.keyword);
-        if (params.role) searchParams.append("role", params.role.toUpperCase());
-        if (params.status) searchParams.append("status", params.status.toUpperCase());
-        if (params.page !== undefined) searchParams.append("page", params.page.toString());
-        if (params.size !== undefined) searchParams.append("size", params.size.toString());
+        searchParams.set("page", page.toString());
+        searchParams.set("size", size.toString());
+
+        if (extra?.keyword) searchParams.append("keyword", extra.keyword);
+        if (extra?.role) searchParams.append("role", extra.role.toUpperCase());
+        if (extra?.status) searchParams.append("status", extra.status.toUpperCase());
+
+        const urlTest = `${url}?${searchParams.toString()}`;
+        console.log('urlTest:: ', urlTest)
 
         const res = await fetch(`${url}?${searchParams.toString()}`, {
             method: "GET",
@@ -32,9 +37,9 @@ export async function getUsers(params: GetUsersParams = {}) {
             throw new Error(`Failed to fetch list user`);
         }
 
-        const user = await res.json();
+        const data = await res.json();
 
-        return user;
+        return data?.data;
     } catch (err) {
         console.error('Failed when get list user:', err);
     }

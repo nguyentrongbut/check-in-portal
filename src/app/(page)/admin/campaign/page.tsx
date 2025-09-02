@@ -1,8 +1,11 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {getCampaigns} from "@/lib/actions/campaign";
-import {DataTable} from "@/components/common/data.table";
 import {columnsPendingCampaign} from "@/components/pages/admin/campaign/columns.pending.campaign";
 import {Metadata} from "next";
+import {getPaginatedResult} from "@/utils/pagination";
+import {TCampaign} from "@/types/data";
+import {SearchParamsProps} from "@/app/(page)/wallet/page";
+import {DataTableServer} from "@/components/common/data.table.server";
 
 export const metadata: Metadata = {
     title: "Review Campaigns - Local Hunt Admin",
@@ -10,11 +13,10 @@ export const metadata: Metadata = {
         "Review and manage pending campaigns in the Local Hunt admin dashboard. Approve or reject submissions to ensure quality and compliance.",
 };
 
-const ReviewCampaignPage = async () => {
+const ReviewCampaignPage = async ({searchParams}: SearchParamsProps) => {
 
-    const data = await getCampaigns()
-
-    const listCampaign = data?.items
+    const {currentPage, pageSize, items: listCampaign, total, totalPages} =
+        await getPaginatedResult<TCampaign>(searchParams, getCampaigns);
 
     return (
         <div className="space-y-6">
@@ -29,7 +31,14 @@ const ReviewCampaignPage = async () => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <DataTable data={listCampaign} columns={columnsPendingCampaign}/>
+                    <DataTableServer
+                        data={listCampaign}
+                        columns={columnsPendingCampaign}
+                        total={total}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                        totalPages={totalPages}
+                    />
                 </CardContent>
             </Card>
         </div>
