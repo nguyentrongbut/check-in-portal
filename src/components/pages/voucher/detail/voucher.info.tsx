@@ -1,8 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import Image from "next/image";
 import {TVoucher} from "@/types/data";
-import {Badge} from "@/components/ui/badge";
-import {getBadgeStatusVariant} from "@/utils/getBadgeVariant";
 import {Calendar, Gift, Target} from "lucide-react";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 
@@ -19,7 +17,7 @@ const VoucherInfo = ({voucher}: { voucher: TVoucher }) => {
                         height={400}
                         src={voucher?.image || "/default-avatar.png"}
                         alt={voucher?.title}
-                        className="w-full h-40 object-cover rounded-md col-span-2"
+                        className="w-full h-60 object-cover rounded-md col-span-2"
                     />
 
                     <div className='flex flex-row lg:flex-col justify-between lg:justify-center lg:gap-4 size-full'>
@@ -27,10 +25,6 @@ const VoucherInfo = ({voucher}: { voucher: TVoucher }) => {
                             <h4 className="font-medium text-sm text-gray-500">Created</h4>
                             <p className="font-medium">{formatDate(voucher?.createdAt)}</p>
                         </div>
-                        {/*<div className='flex gap-2 justify-center items-center lg:block'>*/}
-                        {/*    <h4 className="font-medium text-sm text-gray-500">Status</h4>*/}
-                        {/*    <Badge variant={getBadgeStatusVariant(voucher?.status?.toLowerCase())}>{voucher?.status?.toLowerCase()}</Badge>*/}
-                        {/*</div>*/}
                     </div>
 
                 </div>

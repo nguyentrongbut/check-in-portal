@@ -19,6 +19,7 @@ import {Label} from "@/components/ui/label";
 import {formatNumber} from "@/utils/formatHelpers";
 import WalletSummary from "@/components/pages/wallet/wallet.summary";
 import {createTransactions} from "@/lib/actions/transaction";
+import {TTransactionTopUp} from "@/types/data";
 
 export const formSchema = z.object({
     amount: z.number().min(10, "Amount must be greater than 10"),
@@ -36,8 +37,6 @@ export type CreateTransactionData = {
 
 const exchangeRate = 100;
 const quickAmounts = [10, 20, 30, 50, 100, 200];
-
-const usdToVndRate = 25000;
 
 // discount
 const discountRules = [
@@ -57,7 +56,7 @@ const getDiscountRate = (amount: number): number => {
 };
 
 const FormTopUp = ({ userId, onClose, onSuccess }
-                   : { userId: number, onClose?: () => void, onSuccess?: (data: string) => void }) => {
+                   : { userId: number, onClose?: () => void, onSuccess?: (data: TTransactionTopUp) => void }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const router = useRouter();
@@ -96,6 +95,7 @@ const FormTopUp = ({ userId, onClose, onSuccess }
 
             const resultTransaction = await createTransactions(transactionData);
 
+            console.log("resultTransaction:: ", resultTransaction)
             if (resultTransaction.status === 200) {
                 toast.success("Top-up request has been submitted., please scan QR and wait admin approved");
                 router.refresh();

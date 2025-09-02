@@ -17,12 +17,11 @@ export const metadata : Metadata = {
 
 const WalletPage = async () => {
     const userInfo = await getUserInfoFromCookie()
+    const userId = userInfo?.id;
     const data = await getTransactions();
     const transactions = data?.items
     const wallet = calcStats(transactions);
 
-
-    console.log(transactions)
     return (
         <div className='space-y-6'>
 
@@ -71,7 +70,7 @@ const WalletPage = async () => {
                             <CardDescription>Your recent point transactions and activities</CardDescription>
                         </div>
                         <DialogTopUp
-                            userId={userInfo?.id}
+                            userId={userId}
                         />
                     </div>
                 </CardHeader>

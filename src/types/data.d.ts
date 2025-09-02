@@ -104,6 +104,17 @@ export type TVoucher = {
     updatedAt: string
 }
 
+export type TTransactionTopUp = {
+    id: number,
+    type: string,
+    status: string,
+    amount: number,
+    point: number,
+    description: string,
+    userId: number,
+    createdAt: string,
+}
+
 export type TRedemption = {
     id: number,
     userName: string,
@@ -165,24 +176,6 @@ export type TCampaignPoint = {
 export type TDashboardMetric = {
     data: TDataDashboard[]
     userId: number
-}
-
-export type TVelocity = "extreme" | "medium" | "high";
-
-export type TSuspiciousCheckins = {
-    id: number,
-    userId: number,
-    userName: string,
-    campaignName: string,
-    merchantName: string,
-    checkInTime: string,
-    riskScore: number,
-    gpsMatch: boolean,
-    wifiMatch: boolean,
-    location: string,
-    velocity: TVelocity,
-    userLocation:string,
-    previousCheckIn: string,
 }
 
 export type TTopMerchants = {

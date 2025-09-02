@@ -13,11 +13,12 @@ import {Button} from "@/components/ui/button";
 import FormTopUp from "@/components/pages/wallet/form.top.up";
 import {useState} from "react";
 import VietQRDialog from "@/components/pages/wallet/viet.qr.dialog";
+import {TTransactionTopUp} from "@/types/data";
 
 const DialogTopUp = ({userId}: { userId: number }) => {
     const [open, setOpen] = useState(false);
     const [openQR, setOpenQR] = useState(false);
-    const [dataTopUp, setDataTopUp] = useState<string>('');
+    const [dataTopUp, setDataTopUp] = useState<TTransactionTopUp | null>(null);
 
     return (
         <>
@@ -42,7 +43,7 @@ const DialogTopUp = ({userId}: { userId: number }) => {
 
                         <FormTopUp
                             userId={userId}
-                            onSuccess={(data) => {
+                            onSuccess={(data: TTransactionTopUp) => {
                                 setDataTopUp(data);
                                 setOpen(false);
                                 setOpenQR(true);

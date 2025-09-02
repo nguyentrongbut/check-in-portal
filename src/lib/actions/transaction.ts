@@ -27,7 +27,7 @@ export async function createTransactions(data: CreateTransactionData) {
 
         return {
             status: res.status,
-            data: responseData.data ,
+            data: responseData?.data
         };
     } catch (err) {
         console.error('Failed when top up transaction:', err);
