@@ -5,8 +5,10 @@ export const dynamic = 'force-dynamic';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 import TableUser from "@/components/pages/admin/user/table.user";
-// import DialogCreateUser from "@/components/pages/admin/user/dialog.create.user";
 import {getUsers} from "@/lib/actions/user";
+import {SearchParamsProps} from "@/app/(page)/wallet/page";
+import {getPaginatedResult} from "@/utils/pagination";
+import { TUser} from "@/types/data";
 
 export const metadata: Metadata = {
     title: "User Management - Local Hunt Admin",
@@ -14,27 +16,25 @@ export const metadata: Metadata = {
         "Manage all Local Hunt users: view, create, update, and control merchant and customer accounts in the admin dashboard.",
 };
 
-export interface GetUsersParams {
-    keyword?: string;
-    role?: string;
-    status?: string;
-    page?: number;
-    size?: number;
+export interface SearchParamsUserProps extends SearchParamsProps {
+    searchParams: Promise<{
+        page?: string;
+        size?: string;
+        keyword?: string;
+        role?: string;
+        status?: string;
+    }>;
 }
 
 
-const UserManagement = async ({searchParams}: { searchParams : Promise<{ [key: string]: string | string[] | undefined }> }) => {
+const UserManagement = async ({searchParams}: SearchParamsUserProps) => {
 
-    const params: GetUsersParams = await searchParams;
-    const data = await getUsers({
-        keyword: params.keyword,
-        role: params.role,
-        status: params.status,
-        page: Number(params.page) || 0,
-        size: Number(params.size) || 10,
-    });
-
-    const listUser = data?.data?.items || [];
+    const data = await getPaginatedResult<TUser, { keyword?: string; role?: string; status?: string }>(
+        searchParams,
+        async (page, size, extra) => {
+            return getUsers(page, size, extra);
+        }
+    );
 
     return (
         <div className="space-y-6">
@@ -46,11 +46,10 @@ const UserManagement = async ({searchParams}: { searchParams : Promise<{ [key: s
                             <CardTitle>All Users</CardTitle>
                             <CardDescription>View and manage user accounts and merchant profiles</CardDescription>
                         </div>
-                        {/*<DialogCreateUser/>*/}
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <TableUser listUser={listUser}/>
+                    <TableUser data={data}/>
                 </CardContent>
             </Card>
         </div>

@@ -35,11 +35,11 @@ export async function createTransactions(data: CreateTransactionData) {
     }
 }
 
-export async function getTransactions() {
+export async function getTransactions(page: number = 0, size: number = 10) {
     try {
         const token = await getTokenFromCookies();
 
-        const res = await fetch(`${url}/get-all?page=0&size=10`, {
+        const res = await fetch(`${url}/get-all?page=${page}&size=${size}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`,

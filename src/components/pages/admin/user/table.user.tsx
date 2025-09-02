@@ -1,15 +1,23 @@
 'use client'
 
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {DataTable} from "@/components/common/data.table";
 import {columnsUser} from "@/components/pages/admin/user/columns.user";
-import { useState} from "react";
-import {TUser} from "@/types/data";
+import {useState} from "react";
 import {Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {useRouter, useSearchParams} from "next/navigation";
+import {DataTableServer} from "@/components/common/data.table.server";
+import {TUser} from "@/types/data";
 
-const TableUser = ({listUser}: { listUser: TUser[] }) => {
+interface TableUserProps {
+    currentPage: number;
+    pageSize: number;
+    items: TUser[];
+    total: number;
+    totalPages: number;
+}
+
+const TableUser = ({data}: { data: TableUserProps }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -24,7 +32,7 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
         } else {
             params.set(key, value);
         }
-        router.push(`?${params.toString()}`, { scroll: false });
+        router.push(`?${params.toString()}`, {scroll: false});
     };
 
     return (
@@ -78,7 +86,14 @@ const TableUser = ({listUser}: { listUser: TUser[] }) => {
                 </Select>
             </div>
 
-            <DataTable data={listUser} columns={columnsUser}/>
+            <DataTableServer
+                data={data.items}
+                columns={columnsUser}
+                total={data.total}
+                currentPage={data.currentPage}
+                pageSize={data.pageSize}
+                totalPages={data.totalPages}
+            />
         </>
     )
 }
