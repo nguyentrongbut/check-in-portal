@@ -4,7 +4,7 @@ import {CreateVoucherForm} from "@/components/pages/voucher/form.create.voucher"
 import {UpdateVoucherForm} from "@/components/pages/voucher/form.edit.voucher";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL}/v1/vouchers`;
+const url = `${process.env.NEXT_PUBLIC_API_URL}/vouchers`;
 
 export async function getVouchers() {
     try {
