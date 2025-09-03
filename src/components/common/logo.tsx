@@ -7,6 +7,7 @@ const Logo = ({href = '/'} : {href?: string}) => {
             <Image src='/localhunt-icon.png' alt='Local Hunt'
                    width={60}
                    height={50}
+                   className='w-[60px] h-[120px] rounded-lg'
             />
             <span className="text-2xl font-bold">Local Hunt</span>
         </Link>

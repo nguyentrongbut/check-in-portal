@@ -4,7 +4,6 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {TicketPercent, Clock, Gift} from "lucide-react";
 import {TVoucher} from "@/types/data";
-import {getBadgeVoucherVariant} from "@/utils/getBadgeVariant";
 import {formatDate, formatNumber} from "@/utils/formatHelpers";
 import EntityActions from "../../common/entity.actions";
 import Image from "next/image";
@@ -24,7 +23,6 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
         quantity,
         claimed,
         endDate,
-        status
     } = voucher;
 
     const remaining = quantity - claimed;
