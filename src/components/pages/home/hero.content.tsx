@@ -3,7 +3,8 @@ import HomeHeader from "@/components/pages/home/home.header";
 import Container from "@/components/common/container";
 import TextType from "@/components/animations/text.type";
 import CircularText from "@/components/animations/circular.text";
-import PlayIcon from "@/components/pages/home/play.icon";
+
+import VideoModal from "@/components/pages/home/video.modal";
 
 const HeroContent = () => {
     return (
@@ -42,9 +43,7 @@ const HeroContent = () => {
                   <Container>
                       <div className='lg:ml-[150px] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-between items-center mt-10'>
                           <div className='flex items-center justify-center'>
-                              <div className='flex justify-center items-center rounded-full bg-primary size-[100px]'>
-                                <PlayIcon className='size-8'/>
-                              </div>
+                             <VideoModal/>
                               <div className='-ml-6'>
                                   <CircularText
                                       text="LEARN MORE * LEARN MORE * LEARN MORE * "
@@ -52,7 +51,7 @@ const HeroContent = () => {
                                   />
                               </div>
                           </div>
-                          <div className='lg:w-[60%] text-center lg:text-start'>
+                          <div className='lg:w-[60%] text-center lg:text-start text-lg'>
                               <p>
                                   At Local Hunt, we combine GPS, Wi-Fi, and a Check-in-to-Reward model to deliver seamless reward experiences for users while enabling businesses to attract verified in-store visits that can be measured and optimized.
                               </p>

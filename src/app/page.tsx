@@ -63,7 +63,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
     return (
-        <div className='bg-black min-h-screen text-white'>
+        <div className='bg-black min-h-screen text-white overflow-hidden'>
             <HeroContent/>
             <CurvedLoop
                 marqueeText="✦
@@ -89,13 +89,68 @@ export default function Home() {
             >
                 <div style={{transform: 'scaleX(-1)'}}>
                     <Container>
-                        <AboutUs/>
+                        <div className='relative'>
+                            <AboutUs/>
+                            <div
+                                className="
+                                absolute
+                                -left-1/5 top-1/2
+                                w-[386px] h-[400px]
+                                bg-[url('/about-agency-bg.png')]
+                                bg-no-repeat bg-left bg-contain
+                                opacity-50
+                                animate-circlerotate
+                                "
+                            ></div>
+                        </div>
                         <OurServices/>
                         <ImpactSolutions/>
-                        <WhyChoose/>
+                        <div className='relative'>
+                            <WhyChoose/>
+                            <div
+                                className="
+                                 absolute
+                                -right-1/5 top-1/2 left-auto
+                                w-[310px] h-[325px]
+                                bg-[url('/why-choose-bg-shape.png')]
+                                bg-no-repeat bg-left bg-contain
+                                opacity-50
+                                animate-circlezoomrotate
+                                -z-10
+                                "
+                            ></div>
+                        </div>
                         <JoinAgency/>
-                        <HowItWork/>
-                        <CallToActionSection/>
+                       <div className='relative'>
+                           <HowItWork/>
+                           <div
+                               className="
+                                 absolute
+                                -left-1/5 top-1/2 right-auto
+                                w-[279px] h-[340px]
+                                bg-[url('/how-work-bg-shape.png')]
+                                bg-no-repeat bg-left bg-contain
+                                opacity-50
+                                animate-roundrotate
+                                -z-10
+                                "
+                           ></div>
+                       </div>
+                       <div className='relative'>
+                           <CallToActionSection/>
+                           <div
+                               className="
+                                 absolute
+                                -right-1/5 top-1/3 left-auto
+                                w-[305px] h-[315px]
+                                bg-[url('/work-together-bg-shape.png')]
+                                bg-no-repeat bg-left bg-contain
+                                opacity-50
+                                animate-circlmoveerotate
+                                -z-10
+                                "
+                           ></div>
+                       </div>
                         <HomeFooter/>
                     </Container>
                 </div>
