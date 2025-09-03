@@ -39,7 +39,7 @@ export const adminNavItemsArray: TNavSideBar[] = [
     {href: "/admin/dashboard", label: "Dashboard", icon: Home},
     {href: "/admin/transaction", label: "Transaction Management", icon: CirclePoundSterling},
     {href: "/admin/campaign", label: "Campaign Management", icon: Calendar},
-    {href: "/admin/voucher", label: "Voucher Management", icon: Gift},
+    // {href: "/admin/voucher", label: "Voucher Management", icon: Gift},
     {href: "/admin/user", label: "User Management", icon: Users},
 ]
 
