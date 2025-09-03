@@ -1,11 +1,11 @@
-import {Calendar, CirclePoundSterling, Gift, Home, Shield, Users, Wallet} from "lucide-react";
+import {Calendar, CirclePoundSterling, Gift, Home, Users, Wallet} from "lucide-react";
 import {TNavSideBar} from "@/types/layout";
 import {getTransactions} from "@/lib/actions/transaction";
 import {getCampaigns} from "@/lib/actions/campaign";
 
 export const adminNavItems = async () => {
-    const dataTransactions = await getTransactions(0, 100);
-    const dataCampaign = await getCampaigns(0, 100);
+    const dataTransactions = await getTransactions(0, 50);
+    const dataCampaign = await getCampaigns(0, 50);
 
     const pendingTransactions = dataTransactions?.items.filter(
         (t: { status: string }) => t.status === "PENDING"
@@ -40,7 +40,6 @@ export const adminNavItemsArray: TNavSideBar[] = [
     {href: "/admin/transaction", label: "Transaction Management", icon: CirclePoundSterling},
     {href: "/admin/campaign", label: "Campaign Management", icon: Calendar},
     {href: "/admin/voucher", label: "Voucher Management", icon: Gift},
-    {href: "/admin/fraud", label: "Fraud Detection", icon: Shield},
     {href: "/admin/user", label: "User Management", icon: Users},
 ]
 
