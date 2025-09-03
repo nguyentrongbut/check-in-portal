@@ -11,17 +11,24 @@ import {getPageTitleFromNavItems} from "@/utils/getPageTitle";
 import {formatNumber} from "@/utils/formatHelpers";
 import Link from "next/link";
 import useWalletBalance from "@/hooks/useWalletBalance";
+import {Skeleton} from "@/components/ui/skeleton";
+import {useEffect, useState} from "react";
+import HeaderSkeleton from "@/components/skeleton/header.skeleton";
 
 const Header = () => {
-    const userInfo = useUserInfoFromCookie()
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
+    const userInfo = useUserInfoFromCookie()
     const name = userInfo?.name
     const role = userInfo?.role === 'ROLE_ADMIN' ? "admin" : 'merchant'
     const {isMd} = useTailwindBreakpoints()
-
     const pathname = usePathname()
-
     const {balance, loading} = useWalletBalance();
+
+    if (!mounted) return <HeaderSkeleton/>;
 
     return (
         <header className='sticky top-0 h-[100px] flex items-center gap-4 bg-[#f9f7f7] px-5 md:px-9 md:ml-64 z-10'>
@@ -53,7 +60,7 @@ const Header = () => {
             {(userInfo?.role === 'ROLE_ALLOCATOR') && (
                 <Link href='/wallet' className='text-primary ml-auto flex items-center justify-center gap-1.5'>
                     <p className='font-bold'>
-                        {loading ? "..." : balance !== null ? formatNumber(balance) : "0"}
+                        {loading ? <Skeleton className='w-11 h-6 bg-gray-200'/> : balance !== null ? formatNumber(balance) : "0"}
                     </p>
                     <CirclePoundSterling className='size-4'/>
                 </Link>

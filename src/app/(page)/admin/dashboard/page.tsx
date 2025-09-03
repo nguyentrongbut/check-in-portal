@@ -1,9 +1,13 @@
-import BarChartTopMerchant from "@/components/chart/admin/bar.chart.top.merchant";
-import {getDailyRevenues, getDashboardAdmin, getMonthlyRevenues, getTopMerchants} from "@/lib/actions/chart";
-import LineChartMonthlyRevenue from "@/components/chart/admin/line.chart.monthly.revenue";
-import AreaChartDailyRevenue from "@/components/chart/admin/area.chart.daily.revenue";
-import ListDashboardKpiCard from "@/components/pages/admin/dashboard/list.dashboard.kpi.card";
 import {Metadata} from "next";
+import {Suspense} from "react";
+import LineChartMonthlyRevenueWrapper from "@/components/chart/wrapper/line.chart.monthly.revenue.wrapper";
+import BarChartTopMerchantWrapper from "@/components/chart/wrapper/bar.chart.top.merchant.wrapper";
+import AreaChartDailyRevenueWrapper from "@/components/chart/wrapper/area.chart.daily.revenue.wrapper";
+import ListDashboardKpiCardWrapper from "@/components/pages/admin/dashboard/list.dashboard.kpi.card.wrapper";
+import SkeletonListDashboardKpiCard from "@/components/skeleton/admin/skeleton.list.dashboard.kpi.card";
+import SkeletonBarChartTopMerchant from "@/components/skeleton/chart/skeleton.bar.chart.top.merchant";
+import SkeletonLineChartMonthlyRevenue from "@/components/skeleton/chart/skeleton.line.chart.monthly.revenue";
+import SkeletonAreaChartDailyRevenue from "@/components/skeleton/chart/skeleton.area.chart.daily.revenue";
 
 export const metadata: Metadata = {
     title: "Admin Dashboard - Local Hunt",
@@ -13,19 +17,22 @@ export const metadata: Metadata = {
 
 const AdminDashboard = async () => {
 
-    const topMerchants = await getTopMerchants();
-    const monthlyRevenues = await getMonthlyRevenues();
-    const dailyRevenues = await getDailyRevenues();
-    const listDashboardKpi = await getDashboardAdmin()
-
     return (
         <div className='space-y-6'>
-            <ListDashboardKpiCard dashboardAdmin={listDashboardKpi}/>
+            <Suspense fallback={<SkeletonListDashboardKpiCard/>}>
+                <ListDashboardKpiCardWrapper/>
+            </Suspense>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <BarChartTopMerchant topMerchantsData={topMerchants}/>
-                <LineChartMonthlyRevenue monthlyRevenueData={monthlyRevenues}/>
+                <Suspense fallback={<SkeletonBarChartTopMerchant/>}>
+                    <BarChartTopMerchantWrapper/>
+                </Suspense>
+                <Suspense fallback={<SkeletonLineChartMonthlyRevenue/>}>
+                    <LineChartMonthlyRevenueWrapper/>
+                </Suspense>
             </div>
-            <AreaChartDailyRevenue dailyRevenueData={dailyRevenues}/>
+            <Suspense fallback={<SkeletonAreaChartDailyRevenue/>}>
+                <AreaChartDailyRevenueWrapper/>
+            </Suspense>
         </div>
     )
 }
