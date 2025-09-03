@@ -19,38 +19,6 @@ const ImpactSolutions = () => {
                     <div>
                         <FadeText className='text-[30px] md:text-[45px] lg:text-[50px] mb-8 lg:mb-[60px]'>Expertise that drives real world <span
                             className='text-primary font-medium'>engagement</span></FadeText>
-                        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-4'>
-                            <div>
-                                <span className='text-primary font-medium text-[50px]'>+
-                                    <CountUp
-                                        from={0}
-                                        to={60}
-                                        separator=","
-                                        direction="up"
-                                        duration={1}
-                                        className="count-up-text"
-                                    />
-                                    %</span>
-                                <FadeContent className='mt-3'>
-                                    Boost real customer traffic with GPS & Wi-Fi check-in validation.
-                                </FadeContent>
-                            </div>
-                            <div>
-                                <span className='text-primary font-medium text-[50px]'>+
-                                     <CountUp
-                                         from={0}
-                                         to={30}
-                                         separator=","
-                                         direction="up"
-                                         duration={1}
-                                         className="count-up-text"
-                                     />
-                                    %</span>
-                                <FadeContent className='mt-3'>
-                                    Rise in campaign ROI as more visitors redeem rewards.
-                                </FadeContent>
-                            </div>
-                        </div>
                     </div>
                     <FadeContent>
                         <div className='flex flex-col justify-center gap-10 lg:gap-30'>

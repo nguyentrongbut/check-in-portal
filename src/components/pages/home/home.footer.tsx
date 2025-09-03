@@ -25,12 +25,12 @@ const HomeFooter = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href='mailto:checkInPortal@gmail.com' className='flex gap-4 items-center'>
+                                <Link href='mailto:localhunt@gmail.com' className='flex gap-4 items-center'>
                                     <div
                                         className='size-10 rounded-full border border-primary flex items-center justify-center'>
                                         <Mail className='text-primary size-5'/>
                                     </div>
-                                    <span className='font-medium'>checkInPortal@gmail.com</span>
+                                    <span className='font-medium'>localhunt@gmail.com</span>
                                 </Link>
                             </li>
                         </ul>

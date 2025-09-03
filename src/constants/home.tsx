@@ -99,18 +99,18 @@ export const joinAgencyItems: TContentLink[] = [
         icon: Twitter,
         href: 'https://x.com/',
         title: 'Follow Us on X (Twitter)',
-        desc: '@CheckInPoint'
+        desc: '@localHunt'
     },
     {
         icon: Linkedin,
         href: 'https://www.linkedin.com/',
         title: 'Connect on LinkedIn',
-        desc: 'CheckInPoint Business'
+        desc: 'LocalHunt Business'
     },
     {
         icon: Instagram,
         href: 'https://www.instagram.com/',
         title: 'Discover on Instagram',
-        desc: '@checkinpoint_official'
+        desc: '@localhunt_official'
     },
 ]
