@@ -90,7 +90,7 @@ const FormCreateVoucher = () => {
 
             const result = await createVoucher(payload);
 
-            if (result === 201) {
+            if (result === 200) {
                 toast.success("Voucher created successfully");
                 router.push("/admin/voucher");
                 return
