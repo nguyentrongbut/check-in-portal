@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path);
 
     // 3. Get user info from cookies
-    const user = await getUserInfoFromCookie();
+    const user = await getUserInfoFromCookie();  
     const role = user?.role;
 
     // 4. Handle authentication and authorization

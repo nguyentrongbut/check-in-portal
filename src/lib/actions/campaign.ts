@@ -3,6 +3,7 @@
 import {CreateCampaignForm} from "@/components/pages/campaign/create/form.create.campaign";
 import {UpdateCampaignForm} from "@/components/pages/campaign/form.edit.campaign";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
+import {mergeDateAndTime} from "@/utils/helpersDateTime";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/campaigns`;
 
@@ -36,7 +37,7 @@ export async function createCampaign(data: CreateCampaignForm) {
     try {
         const token = await getTokenFromCookies();
 
-        const {requiredWifiSsid, requiredWifiBssid, location, ...rest} = data;
+        const {requiredWifiSsid, requiredWifiBssid, location, startDate, startTime, endDate, endTime, requiredCheckins, ...rest} = data;
 
         let latitude: number | undefined;
         let longitude: number | undefined;
@@ -46,12 +47,17 @@ export async function createCampaign(data: CreateCampaignForm) {
             longitude = location.lng;
         }
 
+        const startDateTime = mergeDateAndTime(startDate, startTime);
+        const endDateTime = mergeDateAndTime(endDate, endTime);
+
         const payload = {
             ...rest,
             requiredWifiSsid,
             requiredWifiBssid,
             latitude,
             longitude,
+            startDate: startDateTime,
+            endDate: endDateTime,
         };
 
         const res = await fetch(url, {
@@ -64,7 +70,6 @@ export async function createCampaign(data: CreateCampaignForm) {
         });
 
         return res.status
-
     } catch (err) {
         console.error('Failed when create campaign:', err);
         throw err;
@@ -101,7 +106,7 @@ export async function updateCampaign(id: number, data: UpdateCampaignForm) {
     try {
         const token = await getTokenFromCookies();
 
-        const {requiredWifiSsid, requiredWifiBssid, location, ...rest} = data;
+        const {requiredWifiSsid, requiredWifiBssid, location, startDate, startTime, endDate, endTime, requiredCheckins, ...rest} = data;
 
         let latitude: number | undefined;
         let longitude: number | undefined;
@@ -111,12 +116,17 @@ export async function updateCampaign(id: number, data: UpdateCampaignForm) {
             longitude = location.lng;
         }
 
+        const startDateTime = mergeDateAndTime(startDate, startTime);
+        const endDateTime = mergeDateAndTime(endDate, endTime);
+
         const payload = {
             ...rest,
             requiredWifiSsid,
             requiredWifiBssid,
             latitude,
             longitude,
+            startDate: startDateTime,
+            endDate: endDateTime,
         };
 
         const res = await fetch(`${url}/${id}`, {

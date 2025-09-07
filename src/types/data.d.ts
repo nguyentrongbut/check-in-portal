@@ -27,6 +27,7 @@ export type TCampaign = {
     id: number,
     name: string,
     merchantName: string,
+    radiusMeters: number,
     description: string,
     startDate: string,
     endDate: string,

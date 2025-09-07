@@ -16,30 +16,41 @@ import {createCampaign} from "@/lib/actions/campaign";
 import LocationPickerWrapper from "@/components/pages/campaign/create/location-picker.wrapper";
 import FormLabelTooltip from "@/components/common/form.label.tooltip";
 import useWalletBalance from "@/hooks/useWalletBalance";
+import {mergeDateAndTime} from "@/utils/helpersDateTime";
+import {useDateValidation} from "@/hooks/useDateValidation";
+import {useScrollToFirstError} from "@/hooks/useScrollToFirstError";
+import {calculateCheckins, calculatePointsPerCheckin, calculateTotalBudget} from "@/utils/helpersCampaign";
 
 
 export const formSchema = z.object({
-    name: z.string().min(1, { message: "Campaign name is required" }),
+    name: z.string().min(1, {message: "Campaign name is required"}),
     description: z.string().optional(),
     startDate: z.date(),
     endDate: z.date(),
+    startTime: z.string().min(1, "Start time is required"),
+    endTime: z.string().min(1, "End time is required"),
     location: z.object({
         lat: z.number(),
         lng: z.number(),
     }).nullable().refine((val) => val !== null, {
         message: "Location is required",
     }),
-    requiredWifiSsid: z.string().min(1, { message: "Wi-Fi SSID is required" }),
-    requiredWifiBssid: z.string().min(1, { message: "Wi-Fi BSSID is required" }),
-    pointsPerCheckin: z.number().min(1, { message: "Points per check-in must be at least 1" }),
-    totalBudget: z.number().min(10, { message: "Total budget must be at least 10" }),
+    requiredWifiSsid: z.string().min(1, {message: "Wi-Fi SSID is required"}),
+    requiredWifiBssid: z.string().min(1, {message: "Wi-Fi BSSID is required"}),
+    pointsPerCheckin: z.number().min(1, {message: "Points per check-in must be at least 1"}),
+    requiredCheckins: z.number().min(1, {message: "Required check-ins must be at least 1"}),
+    totalBudget: z.number().min(10, {message: "Total budget must be at least 10"}),
+    radiusMeters: z.number().min(1, {message: "Radius must be at least 1m"})
 }).refine((data) => {
-    if (!data.startDate || !data.endDate) return true;
-    const minDate = new Date(data.startDate.getTime() + 24 * 60 * 60 * 1000);
-    return data.endDate >= minDate;
+    if (!data.startDate || !data.endDate || !data.startTime || !data.endTime) return true;
+
+    const start = mergeDateAndTime(data.startDate, data.startTime);
+    const end = mergeDateAndTime(data.endDate, data.endTime);
+
+    return start < end;
 }, {
-    message: "End Date must be at least 1 day after Start Date",
-    path: ["endDate"],
+    message: "End date & time must be after start date & time",
+    path: ["endTime"],
 });
 
 
@@ -50,7 +61,7 @@ const FormCreateCampaign = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
-    const { balance, loading } = useWalletBalance();
+    const {balance, loading} = useWalletBalance();
 
     const form = useForm<CreateCampaignForm>({
         resolver: zodResolver(formSchema),
@@ -61,15 +72,32 @@ const FormCreateCampaign = () => {
             description: "",
             startDate: undefined,
             endDate: undefined,
+            startTime: "",
+            endTime: "",
             location: null,
             requiredWifiSsid: "",
             requiredWifiBssid: "",
             pointsPerCheckin: 10,
-            totalBudget: 0
+            requiredCheckins: 1,
+            totalBudget: 0,
+            radiusMeters: 1,
         },
     });
 
-    const { setFocus } = form;
+    const startDate = form.watch("startDate");
+    const pointsPerCheckin = form.watch("pointsPerCheckin");
+    const requiredCheckins = form.watch("requiredCheckins");
+
+    useScrollToFirstError(form);
+    useDateValidation(form);
+
+    useEffect(() => {
+        const total = calculateTotalBudget(pointsPerCheckin, requiredCheckins);
+        form.setValue("totalBudget", total, {shouldValidate: true});
+    }, [pointsPerCheckin, requiredCheckins, form]);
+
+    const maxCheckins = calculateCheckins(balance ?? 0, pointsPerCheckin);
+    const maxPoints = calculatePointsPerCheckin(balance ?? 0, requiredCheckins);
 
     const onSubmit = async (values: CreateCampaignForm) => {
         setIsSubmitting(true);
@@ -93,28 +121,6 @@ const FormCreateCampaign = () => {
         }
     };
 
-
-    // scroll first error
-    useEffect(() => {
-        const firstError = Object.keys(form.formState.errors)[0] as keyof CreateCampaignForm;
-        if (firstError) {
-            setFocus(firstError);
-        }
-    }, [form.formState.errors, setFocus]);
-
-
-    // Reset endDate if startDate change and invalid
-    useEffect(() => {
-        const startDate = form.watch("startDate");
-        const endDate = form.watch("endDate");
-
-        if (startDate && endDate) {
-            const minDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
-            if (endDate < minDate) {
-                form.setValue("endDate", minDate);
-            }
-        }
-    }, [form.watch("startDate")]);
 
     return (
         <Form {...form}>
@@ -148,42 +154,98 @@ const FormCreateCampaign = () => {
                                         type="number"
                                         {...field}
                                         onChange={(e) => {
-                                            const value = e.target.value;
-                                            field.onChange(value === "" ? undefined : e.target.valueAsNumber);
-                                        }}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}/>
-                        <FormField name="totalBudget" control={form.control} render={({field}) => (
-                            <FormItem>
-                                <FormLabelTooltip
-                                    label='Total Point Budget'
-                                    description='This value defines the total number of points a user can allocate. It cannot exceed your wallet balance.'
-                                />
-                                <FormControl>
-                                    <Input
-                                        type="number"
-                                        {...field}
-                                        onChange={(e) => {
                                             const value = e.target.valueAsNumber;
-                                            if (!loading && balance !== null && value > balance) {
-                                                field.onChange(balance);
+
+                                            if (!loading && balance !== null && value > maxPoints) {
+                                                field.onChange(maxPoints);
+                                            } else if (value < 1) {
+                                                field.onChange(1);
                                             } else {
                                                 field.onChange(value);
                                             }
                                         }}
-                                        placeholder={loading ? "Loading..." : `Max: ${balance}`}
+                                        placeholder={
+                                            loading ? "Loading..." : `Max point per checkins: ${maxPoints}`
+                                        }
                                     />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
+                        <FormField
+                            name="radiusMeters"
+                            control={form.control}
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabelTooltip
+                                        label="Radius (m)"
+                                        description="This value defines the radius around the campaign location within which users are allowed to check in. A smaller radius ensures more precise check-ins, while a larger radius allows more flexibility for users who are nearby."
+                                    />
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            {...field}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                field.onChange(value === "" ? undefined : e.target.valueAsNumber);
+                                            }}
+                                            placeholder="Enter required radius in meters"
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
+                    <FormField name="requiredCheckins" control={form.control} render={({field}) => (
+                        <FormItem>
+                            <FormLabelTooltip
+                                label='Required Check-ins'
+                                description='Number of check-ins required for this campaign.'
+                            />
+                            <FormControl>
+                                <Input
+                                    type="number"
+                                    {...field}
+                                    onChange={(e) => {
+                                        const value = e.target.valueAsNumber;
+
+                                        if (!loading && balance !== null && value > maxCheckins) {
+                                            field.onChange(maxCheckins);
+                                        } else if (value < 1) {
+                                            field.onChange(1);
+                                        } else {
+                                            field.onChange(value);
+                                        }
+                                    }}
+                                    placeholder={
+                                        loading ? "Loading..." : `Max checkins: ${maxCheckins}`
+                                    }
+                                />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}/>
+                    <FormField name="totalBudget" control={form.control} render={({field}) => (
+                        <FormItem>
+                            <FormLabelTooltip
+                                label='Total Points Needed'
+                                description='This value defines the total number of points a user can allocate. It cannot exceed your wallet balance.'
+                            />
+                            <FormControl>
+                                <Input
+                                    type="number"
+                                    {...field}
+                                    disabled
+                                />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}/>
                     <FormField
                         name="startDate"
                         control={form.control}
@@ -200,31 +262,51 @@ const FormCreateCampaign = () => {
                     />
 
                     <FormField
+                        name="startTime"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Start Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time"  {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
                         name="endDate"
                         control={form.control}
-                        render={({ field }) => {
-                            const startDate = form.watch("startDate");
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>End Date</FormLabel>
+                                <FormControl>
+                                    <CalendarDate
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        placeholder="Select end date"
+                                        disabled={!startDate} // disable when don't select startDate
+                                        minDate={startDate}
+                                    />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
 
-                            const minDate = startDate
-                                ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
-                                : undefined;
-
-                            return (
-                                <FormItem>
-                                    <FormLabel>End Date</FormLabel>
-                                    <FormControl>
-                                        <CalendarDate
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            placeholder="Select end date"
-                                            disabled={!startDate}
-                                            minDate={minDate}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )
-                        }}
+                    <FormField
+                        name="endTime"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>End Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} disabled={!startDate}/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
                     />
 
                 </div>

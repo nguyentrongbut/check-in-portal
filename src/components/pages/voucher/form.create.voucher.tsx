@@ -17,6 +17,7 @@ import {Switch} from "@/components/ui/switch";
 import UploadImage from "@/components/common/upload.image";
 import {createVoucher} from "@/lib/actions/voucher";
 import {fileToBase64} from "@/utils/convertFileToBase64";
+import {useScrollToFirstError} from "@/hooks/useScrollToFirstError";
 
 export const voucherSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -69,8 +70,6 @@ const FormCreateVoucher = () => {
         },
     });
 
-    const {setFocus} = form;
-
     const onSubmit = async (values: CreateVoucherForm) => {
         setIsSubmitting(true);
         try {
@@ -105,13 +104,7 @@ const FormCreateVoucher = () => {
         }
     };
 
-    // scroll first error
-    useEffect(() => {
-        const firstError = Object.keys(form.formState.errors)[0] as keyof CreateVoucherForm;
-        if (firstError) {
-            setFocus(firstError);
-        }
-    }, [form.formState.errors, setFocus]);
+    useScrollToFirstError(form);
 
 
     // Reset endDate if startDate change and invalid

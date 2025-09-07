@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const CreateCampaign = async () => {
-    // const userInfo = await getUserInfoFromCookie()
+
     return (
         <Card>
             <CardHeader>

@@ -29,7 +29,7 @@ const EditCampaign = async ({params}: { params: Params }) => {
             </CardHeader>
             <Separator/>
             <CardContent>
-                <FormEditCampaign campaign={campaign} href='/admin/campaign' disablePoints/>
+                <FormEditCampaign disableCheckins={true} campaign={campaign} href='/admin/campaign' />
             </CardContent>
         </Card>
     )
