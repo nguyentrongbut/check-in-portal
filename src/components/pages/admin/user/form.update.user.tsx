@@ -14,22 +14,21 @@ import UploadImage from "@/components/common/upload.image";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Switch} from "@/components/ui/switch";
 import {useRouter} from "next/navigation";
-// import {fileToBase64} from "@/utils/convertFileToBase64";
 import {updateUser} from "@/lib/actions/user";
+import {uploadImage} from "@/lib/actions/uploadImg";
 
 const roleOptions = ["admin", "merchant", "user"] as const;
 const statusOptions = ["active", "inactive", "banned"] as const;
 
 const formSchema = z.object({
-    // avatarUrl: z.union([
-    //     z.string().url("Avatar must be a valid URL or an uploaded image file."),
-    //     z.instanceof(File)
-    // ]),
-    avatarUrl: z.string().optional(),
+    avatarUrl: z.union([
+        z.string().url("Avatar must be a valid URL or an uploaded image file."),
+        z.instanceof(File)
+    ]),
     fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-    // address: z.string().min(1, 'Address cannot be empty'),
+    address: z.string().min(1, 'Address cannot be empty'),
     role: z.enum(roleOptions),
     status: z.enum(statusOptions),
 });
@@ -47,7 +46,7 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
             fullName: infoUser.fullName ?? '',
             email: infoUser.email ?? '',
             phone: infoUser.phone ?? '',
-            // address: infoUser.address ?? '',
+            address: infoUser.address ?? '',
             role: (infoUser.role.toLowerCase() === 'allocator' ? 'merchant' : infoUser.role.toLowerCase()) as typeof roleOptions[number],
             status: (infoUser.status?.toLowerCase() ?? 'active') as typeof statusOptions[number],
         },
@@ -57,18 +56,24 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
     async function onSubmit(values: UserFormUpdate) {
         setIsSubmitting(true);
         try {
-            // let imageBase64 = "";
-            //
-            // if (values?.avatarUrl instanceof File) {
-            //     imageBase64 = await fileToBase64(values?.avatarUrl);
-            // } else {
-            //     imageBase64 = values?.avatarUrl;
-            // }
+            let imgUrl: string;
+
+            if (values.avatarUrl instanceof File) {
+                const uploaded = await uploadImage(values.avatarUrl);
+                if (!uploaded) {
+                    toast.error('Image upload failed. Please try again.');
+                    onClose?.();
+                    return;
+                }
+                imgUrl = uploaded;
+            } else {
+                imgUrl = values.avatarUrl;
+            }
 
             const payload = {
                 ...values,
-                avatarUrl: ''
-            }
+                avatarUrl: imgUrl,
+            };
 
             const result = await updateUser(infoUser?.id, payload);
             if (!result) return toast.error('Update user failed. Please try again.');
@@ -142,19 +147,19 @@ const FormUpdateUser = ({infoUser, onClose}: { infoUser: TUser, onClose?: () => 
                         </FormItem>
                     )}
                 />
-                {/*<FormField*/}
-                {/*    control={form.control}*/}
-                {/*    name="address"*/}
-                {/*    render={({field}) => (*/}
-                {/*        <FormItem>*/}
-                {/*            <FormLabel>Address</FormLabel>*/}
-                {/*            <FormControl>*/}
-                {/*                <Input type="text" placeholder="Enter your address" {...field} />*/}
-                {/*            </FormControl>*/}
-                {/*            <FormMessage/>*/}
-                {/*        </FormItem>*/}
-                {/*    )}*/}
-                {/*/>*/}
+                <FormField
+                    control={form.control}
+                    name="address"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Address</FormLabel>
+                            <FormControl>
+                                <Input type="text" placeholder="Enter your address" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
 
                 <FormField
                     control={form.control}

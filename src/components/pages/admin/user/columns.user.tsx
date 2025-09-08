@@ -5,7 +5,7 @@ import {TRole, TStatusUser, TUser} from "@/types/data";
 import {ArrowUpDown, UserX} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {formatDate} from "@/utils/formatHelpers";
-import {getBadgeRoleVariant, getBadgeStatusVariant, getBadgeUserStatusVariant} from "@/utils/getBadgeVariant";
+import {getBadgeRoleVariant, getBadgeUserStatusVariant} from "@/utils/getBadgeVariant";
 import Image from "next/image";
 import DialogViewUser from "@/components/pages/admin/user/dialog.view.user";
 import DialogDeleteAdmin from "@/components/common/dialog.delete.admin";

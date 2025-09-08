@@ -12,18 +12,18 @@ import UploadImage from "@/components/common/upload.image";
 import {TUser} from "@/types/data";
 import {useRouter} from "next/navigation";
 import {updateProfile} from "@/lib/actions/user";
+import {uploadImage} from "@/lib/actions/uploadImg";
 
 
 const formSchema = z.object({
-    // avatar: z.union([
-    //     z.string().url("Avatar must be a valid URL or an uploaded image file."),
-    //     z.instanceof(File)
-    // ]),
-    avatarUrl: z.string().optional(),
+    avatarUrl: z.union([
+        z.string().url("Avatar must be a valid URL or an uploaded image file."),
+        z.instanceof(File)
+    ]),
     fullName: z.string().min(4, 'Name must be at least 4 characters long'),
     email: z.string().email('Invalid email address'),
     phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-    // address: z.string().min(1, 'Address cannot be empty'),
+    address: z.string().min(1, 'Address cannot be empty'),
 });
 
 export type UpdateProfileForm = z.infer<typeof formSchema>;
@@ -41,7 +41,7 @@ const FormUpdateProfile = ({userInfo}: { userInfo: TUser }) => {
             fullName: userInfo?.fullName ?? '',
             email: userInfo?.email ?? '',
             phone: userInfo?.phone ?? '',
-            // address: userInfo?.address ?? '',
+            address: userInfo?.address ?? '',
         },
     });
 
@@ -49,19 +49,24 @@ const FormUpdateProfile = ({userInfo}: { userInfo: TUser }) => {
     async function onSubmit(values: UpdateProfileForm) {
         setIsSubmitting(true);
         try {
-            // let imageBase64 = "";
-            //
-            // if (values?.avatarUrl instanceof File) {
-            //     imageBase64 = await fileToBase64(values?.avatarUrl);
-            // } else {
-            //     imageBase64 = values?.avatarUrl;
-            // }
+            let imgUrl: string;
+
+            if (values.avatarUrl instanceof File) {
+                const uploaded = await uploadImage(values.avatarUrl);
+                if (!uploaded) {
+                    toast.error('Image upload failed. Please try again.');
+                    return;
+                }
+                imgUrl = uploaded;
+            } else {
+                imgUrl = values.avatarUrl;
+            }
 
             const role = userInfo?.role.toLowerCase() === 'merchant' ? 'ALLOCATOR' : userInfo?.role;
 
             const payload = {
                 ...values,
-                avatarUrl: ''
+                avatarUrl: imgUrl
             }
 
             const result = await updateProfile(userInfo?.id, payload, role)
@@ -145,19 +150,19 @@ const FormUpdateProfile = ({userInfo}: { userInfo: TUser }) => {
                         </FormItem>
                     )}
                 />
-                {/*<FormField*/}
-                {/*    control={form.control}*/}
-                {/*    name="address"*/}
-                {/*    render={({field}) => (*/}
-                {/*        <FormItem>*/}
-                {/*            <FormLabel>Address</FormLabel>*/}
-                {/*            <FormControl>*/}
-                {/*                <Input type="text" placeholder="Enter your address" {...field} />*/}
-                {/*            </FormControl>*/}
-                {/*            <FormMessage/>*/}
-                {/*        </FormItem>*/}
-                {/*    )}*/}
-                {/*/>*/}
+                <FormField
+                    control={form.control}
+                    name="address"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Address</FormLabel>
+                            <FormControl>
+                                <Input type="text" placeholder="Enter your address" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
                 <div className="flex justify-end gap-4">
                     <Button onClick={() => router.back()} type="button" variant="outline">Cancel</Button>
 

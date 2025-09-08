@@ -19,14 +19,15 @@ import {fileToBase64} from "@/utils/convertFileToBase64";
 import {TVoucher} from "@/types/data";
 import {updateVoucher} from "@/lib/actions/voucher";
 import {useScrollToFirstError} from "@/hooks/useScrollToFirstError";
+import {uploadImage} from "@/lib/actions/uploadImg";
 
 export const voucherSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
-    // image: z.union([
-    //     z.string().url("Image must be a valid URL or an uploaded image file."),
-    //     z.instanceof(File)
-    // ]),
+    image: z.union([
+        z.string().url("Image must be a valid URL or an uploaded image file."),
+        z.instanceof(File)
+    ]),
     discountType: z.enum(["fixed", "percent"]),
     discountValue: z.number().min(0),
     minOrderValue: z.number().min(0),
@@ -58,7 +59,7 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
         defaultValues: {
             title: voucher?.title,
             description: voucher?.description,
-            // image: voucher?.image,
+            image: voucher?.image || '',
             discountType: voucher?.discountType,
             discountValue: voucher?.discountValue,
             minOrderValue: voucher?.minOrderValue,
@@ -75,17 +76,22 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
         setIsSubmitting(true);
         try {
 
-            // let imageBase64 = "";
-            //
-            // if (values.image instanceof File) {
-            //     imageBase64 = await fileToBase64(values?.image);
-            // } else {
-            //     imageBase64 = values?.image;
-            // }
+            let imgUrl: string;
+
+            if (values.image instanceof File) {
+                const uploaded = await uploadImage(values.image);
+                if (!uploaded) {
+                    toast.error('Image upload failed. Please try again.');
+                    return;
+                }
+                imgUrl = uploaded;
+            } else {
+                imgUrl = values.image;
+            }
 
             const payload = {
-                ...values
-                // image: imageBase64
+                ...values,
+                image: imgUrl
             }
 
             const result = await updateVoucher(voucher?.id, payload);
@@ -287,18 +293,18 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    {/*<FormField name="image" control={form.control} render={({field}) => (*/}
-                    {/*    <FormItem>*/}
-                    {/*        <FormLabel>Image</FormLabel>*/}
-                    {/*        <FormControl>*/}
-                    {/*            <UploadImage*/}
-                    {/*                className='w-full h-60 rounded-md'*/}
-                    {/*                value={field.value}*/}
-                    {/*                onChange={field.onChange}/>*/}
-                    {/*        </FormControl>*/}
-                    {/*        <FormMessage/>*/}
-                    {/*    </FormItem>*/}
-                    {/*)}/>*/}
+                    <FormField name="image" control={form.control} render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Image</FormLabel>
+                            <FormControl>
+                                <UploadImage
+                                    className='w-full h-60 rounded-md'
+                                    value={field.value}
+                                    onChange={field.onChange}/>
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}/>
 
                     <FormField name="isPublished" control={form.control} render={({field}) => (
                         <FormItem>
