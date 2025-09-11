@@ -3,6 +3,7 @@
 import {CreateVoucherForm} from "@/components/pages/voucher/form.create.voucher";
 import {UpdateVoucherForm} from "@/components/pages/voucher/form.edit.voucher";
 import {getTokenFromCookies} from "@/utils/getTokenFromCookies";
+import {mergeDateAndTime} from "@/utils/helpersDateTime";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/vouchers`;
 
@@ -62,10 +63,17 @@ export async function createVoucher(data: CreateVoucherForm) {
     try {
         const token = await getTokenFromCookies();
 
+        const {startDate, startTime, endDate, endTime, ...rest} = data;
+
+        const startDateTime = mergeDateAndTime(startDate, startTime);
+        const endDateTime = mergeDateAndTime(endDate, endTime);
+
         const payload = {
-            ...data,
+            ...rest,
             claimed: 0,
             status: 'ACTIVE',
+            startDate: startDateTime,
+            endDate: endDateTime,
         };
 
         const res = await fetch(url, {
@@ -88,10 +96,17 @@ export async function updateVoucher(id:number, data: UpdateVoucherForm) {
     try {
         const token = await getTokenFromCookies();
 
+        const {startDate, startTime, endDate, endTime, ...rest} = data;
+
+        const startDateTime = mergeDateAndTime(startDate, startTime);
+        const endDateTime = mergeDateAndTime(endDate, endTime);
+
         const payload = {
-            ...data,
+            ...rest,
             claimed: 0,
             status: 'ACTIVE',
+            startDate: startDateTime,
+            endDate: endDateTime,
         };
 
         const res = await fetch(`${url}/${id}`, {
@@ -102,8 +117,6 @@ export async function updateVoucher(id:number, data: UpdateVoucherForm) {
             },
             body: JSON.stringify(payload)
         });
-
-        console.log('res:: ', res)
 
         if (!res.ok) {
             const errorText = await res.text();

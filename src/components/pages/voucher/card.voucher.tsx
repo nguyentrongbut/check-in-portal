@@ -16,7 +16,7 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
         id,
         title,
         description,
-        image,
+        imageUrl,
         discountType,
         discountValue,
         pointCost,
@@ -35,13 +35,13 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
 
     return (
         <Card
-            className=" relative overflow-hidden border-0 shadow-sm hover:shadow-xl h-full flex flex-col justify-between">
+            className=" relative overflow-hidden border-0 shadow-sm hover:shadow-xl h-full flex flex-col justify-between pt-0">
             {/* Image Section with Overlay */}
             <Link href={`/admin/voucher/detail/${voucher.id}`}>
                 <div className="relative aspect-video overflow-hidden group cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"/>
                     <Image
-                        src={image || "/placeholder.svg"}
+                        src={imageUrl || "/placeholder.svg"}
                         alt={title}
                         width={702}
                         height={398}
@@ -49,13 +49,6 @@ const CardVoucher = ({voucher}: { voucher: TVoucher }) => {
                     />
 
                     <div className='absolute top-3 right-3 z-20 '>
-                        {/* Status Badge */}
-                        {/*<Badge*/}
-                        {/*    variant={getBadgeVoucherVariant(status?.toLowerCase())}*/}
-                        {/*    className="shadow-lg backdrop-blur-sm"*/}
-                        {/*>*/}
-                        {/*    {status?.toLowerCase()}*/}
-                        {/*</Badge>*/}
 
                         <div className='-mr-4'>
                             <EntityActions

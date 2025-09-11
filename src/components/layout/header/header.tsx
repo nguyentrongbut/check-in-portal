@@ -31,7 +31,7 @@ const Header = () => {
     if (!mounted) return <HeaderSkeleton/>;
 
     return (
-        <header className='sticky top-0 h-[100px] flex items-center gap-4 bg-[#f9f7f7] px-5 md:px-9 md:ml-64 z-10'>
+        <header className='sticky top-0 h-[100px] flex items-center gap-4 bg-[#f9f7f7] px-5 md:px-9 md:ml-64 z-50'>
             {/* Sidebar mobile, tablet */}
             {!isMd && (
                 <Sheet>

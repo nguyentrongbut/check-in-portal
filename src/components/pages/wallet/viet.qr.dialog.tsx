@@ -23,7 +23,7 @@ const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
     dataTopUp: TTransactionTopUp | null
 }) => {
 
-    const ID = dataTopUp ? `${dataTopUp.type}${dataTopUp.id}${dataTopUp.userId}` : "";
+    const ID = dataTopUp ? `${dataTopUp.codeTransaction}` : "";
     const amount = dataTopUp ? dataTopUp.amount * usdToVndRate : 0;
 
     return (

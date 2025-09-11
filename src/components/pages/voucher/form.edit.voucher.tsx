@@ -15,16 +15,17 @@ import CalendarDate from "@/components/pages/campaign/calendar.date";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Switch} from "@/components/ui/switch";
 import UploadImage from "@/components/common/upload.image";
-import {fileToBase64} from "@/utils/convertFileToBase64";
 import {TVoucher} from "@/types/data";
 import {updateVoucher} from "@/lib/actions/voucher";
 import {useScrollToFirstError} from "@/hooks/useScrollToFirstError";
 import {uploadImage} from "@/lib/actions/uploadImg";
+import {getTimeFromDate, mergeDateAndTime} from "@/utils/helpersDateTime";
+import {useDateValidation} from "@/hooks/useDateValidation";
 
 export const voucherSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
-    image: z.union([
+    imageUrl: z.union([
         z.string().url("Image must be a valid URL or an uploaded image file."),
         z.instanceof(File)
     ]),
@@ -36,19 +37,24 @@ export const voucherSchema = z.object({
     quantity: z.number().min(1),
     startDate: z.date(),
     endDate: z.date(),
+    startTime: z.string().min(1, "Start time is required"),
+    endTime: z.string().min(1, "End time is required"),
     isPublished: z.boolean(),
 }).refine((data) => {
-    if (!data.startDate || !data.endDate) return true;
-    const minDate = new Date(data.startDate.getTime() + 24 * 60 * 60 * 1000);
-    return data.endDate >= minDate;
+    if (!data.startDate || !data.endDate || !data.startTime || !data.endTime) return true;
+
+    const start = mergeDateAndTime(data.startDate, data.startTime);
+    const end = mergeDateAndTime(data.endDate, data.endTime);
+
+    return start < end;
 }, {
-    message: "End Date must be at least 1 day after Start Date",
-    path: ["endDate"],
+    message: "End date & time must be after start date & time",
+    path: ["endTime"],
 });
 
 export type UpdateVoucherForm = z.infer<typeof voucherSchema>;
 
-const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
+const FormEditVoucher = ({voucher}: { voucher: TVoucher }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
@@ -59,16 +65,18 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
         defaultValues: {
             title: voucher?.title,
             description: voucher?.description,
-            image: voucher?.image || '',
+            imageUrl: voucher?.imageUrl || '',
             discountType: voucher?.discountType,
             discountValue: voucher?.discountValue,
             minOrderValue: voucher?.minOrderValue,
             maxDiscount: voucher?.maxDiscount,
             pointCost: voucher?.pointCost,
             quantity: voucher?.quantity,
-            startDate: new Date(),
-            endDate: new Date(),
-            isPublished: false
+            startDate: new Date(voucher?.startDate),
+            endDate: new Date(voucher?.endDate),
+            startTime: getTimeFromDate(new Date(voucher?.startDate)),
+            endTime: getTimeFromDate(new Date(voucher?.endDate)),
+            isPublished: voucher?.isPublished
         },
     });
 
@@ -78,20 +86,20 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
 
             let imgUrl: string;
 
-            if (values.image instanceof File) {
-                const uploaded = await uploadImage(values.image);
+            if (values.imageUrl instanceof File) {
+                const uploaded = await uploadImage(values.imageUrl);
                 if (!uploaded) {
                     toast.error('Image upload failed. Please try again.');
                     return;
                 }
                 imgUrl = uploaded;
             } else {
-                imgUrl = values.image;
+                imgUrl = values.imageUrl;
             }
 
             const payload = {
                 ...values,
-                image: imgUrl
+                imageUrl: imgUrl
             }
 
             const result = await updateVoucher(voucher?.id, payload);
@@ -111,21 +119,9 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
         }
     };
 
+    const startDate = form.watch("startDate");
     useScrollToFirstError(form);
-
-
-    // Reset endDate if startDate change and invalid
-    useEffect(() => {
-        const startDate = form.watch("startDate");
-        const endDate = form.watch("endDate");
-
-        if (startDate && endDate) {
-            const minDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
-            if (endDate < minDate) {
-                form.setValue("endDate", minDate);
-            }
-        }
-    }, [form.watch("startDate")]);
+    useDateValidation(form);
 
     return (
         <Form {...form}>
@@ -136,59 +132,76 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                           e.preventDefault();
                       }
                   }}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <FormField name="title" control={form.control} render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Title</FormLabel>
-                            <FormControl><Input {...field} placeholder='e.g. 20% Off at Highlands'/></FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}/>
+                <FormField name="title" control={form.control} render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl><Input {...field} placeholder='e.g. 20% Off at Highlands'/></FormControl>
+                        <FormMessage/>
+                    </FormItem>
+                )}/>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    <FormField
+                        name="startDate"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Start Date</FormLabel>
+                                <FormControl>
+                                    <CalendarDate value={field.value} onChange={field.onChange}
+                                                  placeholder='Select start date'/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                            name="startDate"
-                            control={form.control}
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Start Date</FormLabel>
-                                    <FormControl>
-                                        <CalendarDate value={field.value} onChange={field.onChange}
-                                                      placeholder='Select start date'/>
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        name="startTime"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Start Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time"  {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            name="endDate"
-                            control={form.control}
-                            render={({field}) => {
-                                const startDate = form.watch("startDate");
+                    <FormField
+                        name="endDate"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>End Date</FormLabel>
+                                <FormControl>
+                                    <CalendarDate
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        placeholder="Select end date"
+                                        disabled={!startDate} // disable when don't select startDate
+                                        minDate={startDate}
+                                    />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
 
-                                const minDate = startDate
-                                    ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
-                                    : undefined;
-
-                                return (
-                                    <FormItem>
-                                        <FormLabel>End Date</FormLabel>
-                                        <FormControl>
-                                            <CalendarDate
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                placeholder="Select end date"
-                                                disabled={!startDate}
-                                                minDate={minDate}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
-                                )
-                            }}
-                        />
-                    </div>
+                    <FormField
+                        name="endTime"
+                        control={form.control}
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>End Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} disabled={!startDate}/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                 </div>
 
                 <FormField name="description" control={form.control} render={({field}) => (
@@ -293,7 +306,7 @@ const FormEditVoucher = ({voucher}:{voucher: TVoucher}) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    <FormField name="image" control={form.control} render={({field}) => (
+                    <FormField name="imageUrl" control={form.control} render={({field}) => (
                         <FormItem>
                             <FormLabel>Image</FormLabel>
                             <FormControl>

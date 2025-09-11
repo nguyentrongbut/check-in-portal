@@ -88,7 +88,7 @@ export type TVoucher = {
     id: number;
     title: string;
     description: string;
-    image: string;
+    imageUrl: string;
     discountType: 'fixed' | 'percent';
     discountValue: number;
     minOrderValue: number;
@@ -108,6 +108,7 @@ export type TVoucher = {
 export type TTransactionTopUp = {
     id: number,
     type: string,
+    codeTransaction: string,
     status: string,
     amount: number,
     point: number,

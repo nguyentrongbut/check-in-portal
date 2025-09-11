@@ -15,7 +15,7 @@ const VoucherInfo = ({voucher}: { voucher: TVoucher }) => {
                     <Image
                         width={400}
                         height={400}
-                        src={voucher?.image || "/default-avatar.png"}
+                        src={voucher?.imageUrl || "/default-avatar.png"}
                         alt={voucher?.title}
                         className="w-full h-60 object-cover rounded-md col-span-2"
                     />
