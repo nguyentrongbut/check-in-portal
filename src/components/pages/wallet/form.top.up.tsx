@@ -95,7 +95,6 @@ const FormTopUp = ({ userId, onClose, onSuccess }
 
             const resultTransaction = await createTransactions(transactionData);
 
-            console.log("resultTransaction:: ", resultTransaction)
             if (resultTransaction.status === 200) {
                 toast.success("Top-up request has been submitted., please scan QR and wait admin approved");
                 router.refresh();

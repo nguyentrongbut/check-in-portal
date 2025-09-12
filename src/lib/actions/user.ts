@@ -22,7 +22,6 @@ export async function getUsers( page: number = 0,
         if (extra?.status) searchParams.append("status", extra.status.toUpperCase());
 
         const urlTest = `${url}?${searchParams.toString()}`;
-        console.log('urlTest:: ', urlTest)
 
         const res = await fetch(`${url}?${searchParams.toString()}`, {
             method: "GET",

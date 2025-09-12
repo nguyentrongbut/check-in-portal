@@ -8,7 +8,7 @@ import {SearchParamsProps} from "@/app/(page)/wallet/page";
 import {DataTableServer} from "@/components/common/data.table.server";
 
 export const metadata: Metadata = {
-    title: "Review Campaigns - Local Hunt Admin",
+    title: "Campaign Management - Local Hunt",
     description:
         "Review and manage pending campaigns in the Local Hunt admin dashboard. Approve or reject submissions to ensure quality and compliance.",
 };
