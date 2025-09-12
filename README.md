@@ -1,15 +1,19 @@
 # 🎯 Local Hunt Frontend
 
-A frontend web application built with **Next.js** and **shadcn/ui**, supporting key business flows:
-- **Campaign**: manage and participate in campaigns (check-in, voucher redemption, approvals).
-- **Top-up**: deposit funds into the wallet to engage with the system.
-
----
 <div align="center">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js">
   <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=radix-ui&logoColor=white" alt="shadcn/ui">
 </div>
+
+<div align="center">
+  <h3>🌟 A frontend web application built with <b>Next.js</b> and <b>shadcn/ui</b>, supporting key business flows: 🌟</h3>
+</div>
+
+- **Campaign**: manage and participate in campaigns (check-in, voucher redemption, approvals).
+- **Top-up**: deposit funds into the wallet to engage with the system.
+
+---
 
 ## 🚀 Tech Stack
 
@@ -81,4 +85,5 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_CODE=YOUR_GOOGLE_SITE_VERIFICATION_CODE_HER
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME_HERE
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=YOUR_CLOUDINARY_UPLOAD_PRESET_HERE
 ```
+
 
