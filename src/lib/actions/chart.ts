@@ -1,6 +1,7 @@
 'use server'
 
 const url = `${process.env.API_URL}`;
+const urlDashboard = `${process.env.NEXT_PUBLIC_API_URL}/dashboard`;
 
 export async function getCampaignCheckins(userId: number) {
     try {
@@ -120,7 +121,7 @@ export async function getDashboardMetrics(userId: number) {
 
 export async function getTopMerchants() {
     try {
-        const res = await fetch(`${url}/topMerchants`, {
+        const res = await fetch(`${urlDashboard}/topMerchants`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -134,7 +135,7 @@ export async function getTopMerchants() {
 
         const data = await res.json();
 
-        return data;
+        return data?.data?.items;
     } catch (err) {
         console.error('Failed when get Dashboard Metrics:', err);
         throw err;
@@ -143,7 +144,7 @@ export async function getTopMerchants() {
 
 export async function getMonthlyRevenues() {
     try {
-        const res = await fetch(`${url}/monthlyRevenues`, {
+        const res = await fetch(`${urlDashboard}/monthlyRevenues`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -157,7 +158,7 @@ export async function getMonthlyRevenues() {
 
         const data = await res.json();
 
-        return data;
+        return data?.data?.items;
     } catch (err) {
         console.error('Failed when get Dashboard Metrics:', err);
         throw err;
@@ -166,7 +167,7 @@ export async function getMonthlyRevenues() {
 
 export async function getDailyRevenues() {
     try {
-        const res = await fetch(`${url}/dailyRevenues`, {
+        const res = await fetch(`${urlDashboard}/dailyRevenues`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,7 +181,7 @@ export async function getDailyRevenues() {
 
         const data = await res.json();
 
-        return data;
+        return data?.data?.items;
     } catch (err) {
         console.error('Failed when get Dashboard Metrics:', err);
         throw err;
