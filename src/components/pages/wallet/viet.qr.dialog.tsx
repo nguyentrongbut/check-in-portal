@@ -14,6 +14,7 @@ import VietQR from "@/components/pages/wallet/viet.qr";
 import {formatNumber} from "@/utils/formatHelpers";
 import {TTransactionTopUp} from "@/types/data";
 import VietQRSkeleton from "@/components/skeleton/merchant/viet.qr.skeleton";
+import toast from "react-hot-toast";
 
 const usdToVndRate = 25000;
 
@@ -25,6 +26,14 @@ const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
 
     const ID = dataTopUp ? `${dataTopUp.codeTransaction}` : "";
     const amount = dataTopUp ? dataTopUp.amount * usdToVndRate : 0;
+
+    const handleToppedUp = () => {
+        if (!dataTopUp) return;
+
+        toast.success(
+            `Top-up of ${formatNumber(amount)} VND with code ${ID} has been marked as completed. Waiting for admin approval.`
+        );
+    }
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -104,6 +113,9 @@ const VietQRDialog = ({open, onOpenChange, dataTopUp}: {
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button variant="outline">Close</Button>
+                            </DialogClose>
+                            <DialogClose asChild onClick={handleToppedUp}>
+                                <Button>Topped Up</Button>
                             </DialogClose>
                         </DialogFooter>
                     </div>
