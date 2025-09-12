@@ -190,7 +190,7 @@ export async function getDailyRevenues() {
 
 export async function getDashboardAdmin() {
     try {
-        const res = await fetch(`${url}/dashboardAdmin`, {
+        const res = await fetch(`${urlDashboard}/dashboardAdmin`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export async function getDashboardAdmin() {
 
         const data = await res.json();
 
-        return data;
+        return data?.data?.items;
     } catch (err) {
         console.error('Failed when get Dashboard Metrics:', err);
         throw err;
