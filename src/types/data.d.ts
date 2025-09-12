@@ -74,16 +74,6 @@ export type TTransaction = {
     createdAt: string,
 }
 
-export type TWallet = {
-    id: number,
-    userId: number,
-    balance: number,
-    totalSpent: number,
-    totalTopup: number,
-    createdAt: string,
-    updatedAt: string
-}
-
 export type TVoucher = {
     id: number;
     title: string;
@@ -153,31 +143,6 @@ export type TDataDashboard = {
     title: string,
     value: number,
     desc: string,
-}
-
-export type TCampaignCheckin = {
-    chart: TChartCampaignCheckin[]
-    userId: number
-}
-
-export type TDailyCheckin = {
-    chart: TChartDailyCheckin[]
-    userId: number
-}
-
-export type TMapCheckin = {
-    chart: TChartMapCheckin[]
-    userId: number
-}
-
-export type TCampaignPoint = {
-    chart: TChartCampaignPoint[]
-    userId: number
-}
-
-export type TDashboardMetric = {
-    data: TDataDashboard[]
-    userId: number
 }
 
 export type TTopMerchants = {
